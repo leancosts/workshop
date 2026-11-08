@@ -1,5 +1,7 @@
 # Modelo: checagem do frontmatter de docs/
 
+O script abaixo roda em Node e fica para o acompanhamento, fora dos laboratórios. Num repositório .NET, peça ao agente a mesma checagem em C#, num arquivo como `scripts/verificar.cs`.
+
 Um portão para a base de conhecimento: um script em Node, sem dependências, que confere cada Markdown de `docs/` contra o padrão do método (OKF v0.2 mais a política local da empresa), lista cada problema com o arquivo e sai com erro quando há algum. Copie para `scripts/check-docs.mjs` e ajuste as listas do topo.
 
 O que ele confere:
