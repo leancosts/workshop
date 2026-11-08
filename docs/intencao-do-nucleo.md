@@ -26,4 +26,4 @@ Login, interface elaborada, banco de dados externo, integração com os sistemas
 Dados fictícios. Matrícula fictícia no lugar do nome de pessoa. Roda localmente com um comando.
 
 ## Pronto quando
-O núcleo tem testes que falharam antes e passam depois, e o commit liga a intenção, a spec, o plano e o veredito da revisão.
+O núcleo e uma extensão têm testes que falharam antes e passam depois, e o commit liga a intenção, a spec, o plano e o veredito da revisão.

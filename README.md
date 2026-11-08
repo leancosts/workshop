@@ -34,7 +34,8 @@ dotnet run scripts/verificar.cs
 
 | Caminho | O que tem |
 |---|---|
-| `src/`, `tests/` | Uma classe e um teste que só provam que o ambiente funciona. Apague os dois quando o núcleo existir |
+| `src/`, `tests/` | Uma classe e um teste que só provam que o ambiente funciona. A demonstração os troca pelo núcleo |
+| `VISION.md`, `CLAUDE.md`, `docs/` | A base de que a demonstração parte, com a intenção do núcleo |
 | `ARCHITECTURE.md` | O que o repositório já decidiu. O time o completa |
 | `ci/` | A CI do laboratório 3, para GitHub Actions e Azure Pipelines. Copie o arquivo para o lugar indicado na primeira linha dele |
 | `modelos/` | Os modelos do minibook, para copiar e preencher no repositório |
