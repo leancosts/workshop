@@ -1,0 +1,23 @@
+{
+  "name": "prontidao-da-tripulacao",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "lint": "eslint .",
+    "tipos": "tsc --noEmit",
+    "verificar": "npm run lint && npm run tipos && npm test",
+    "checar-ambiente": "node scripts/checar-ambiente.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "eslint": "10.14.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.1",
+    "vitest": "5.1.0"
+  }
+}
