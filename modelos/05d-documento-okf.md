@@ -10,7 +10,7 @@ description: Um tripulante com documento vencido, suspenso ou faltando não pode
 tags: [prontidao, escala]
 sources:
   - id: codigo
-    resource: src/prontidao/regra.ts
+    resource: src/Prontidao/RegraDeProntidao.cs
     title: Regra de prontidão
 generated: { by: claude-code/opus, at: 2026-11-10T14:00:00Z }
 verified:
@@ -27,7 +27,7 @@ os documentos exigidos pela função presentes, ativos e válidos nessa data.
 # Onde é aplicada
 
 - [Escala de voo](../processos/escala.md)
-- O teste `regra.test.ts` cobre o caso.
+- O teste `RegraDeProntidaoTests.cs` cobre o caso.
 
 # Exemplos
 
