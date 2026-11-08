@@ -29,13 +29,8 @@ try
     var arquivo = JsonNode.Parse(Console.In.ReadToEnd())?["tool_input"]?["file_path"]?.GetValue<string>();
     if (arquivo?.EndsWith(".cs") == true)
     {
-        var inicio = new ProcessStartInfo("dotnet", ["format", "whitespace", "--folder", "--include", arquivo])
-        {
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-        };
-        using var processo = Process.Start(inicio);
-        processo?.WaitForExit();
+        using var processo = Process.Start("dotnet", ["format", "whitespace", "--folder", "--include", arquivo]);
+        processo.WaitForExit();
     }
 }
 catch (Exception)
