@@ -20,9 +20,8 @@ const diasEntre = (de: string, ate: string) => (Date.parse(ate) - Date.parse(de)
 
 /** Datas em AAAA-MM-DD. Vale a primeira situação que se aplica, na ordem da tabela do modelo 08. */
 export function avaliarProntidao(funcao: Funcao, documentos: Documento[], dataDeReferencia: string): Prontidao {
-  const exigidos = EXIGIDOS[funcao].map((tipo) => documentos.find((d) => d.tipo === tipo));
-  if (exigidos.includes(undefined)) return "incompleto";
-  const presentes = exigidos as Documento[];
+  const presentes = EXIGIDOS[funcao].flatMap((tipo) => documentos.find((d) => d.tipo === tipo) ?? []);
+  if (presentes.length < EXIGIDOS[funcao].length) return "incompleto";
 
   if (presentes.some((d) => d.situacao === "suspenso")) return "bloqueado";
 
