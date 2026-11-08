@@ -26,7 +26,7 @@ public static class RegraDeProntidao
         var exigidos = funcao == Funcao.Comissario ? DoComissario : DaCabine;
         var presentes = documentos.Where(d => exigidos.Contains(d.Tipo)).ToList();
 
-        if (exigidos.Any(tipo => presentes.All(d => d.Tipo != tipo)))
+        if (exigidos.Except(presentes.Select(d => d.Tipo)).Any())
         {
             return EstadoProntidao.Incompleto;
         }
