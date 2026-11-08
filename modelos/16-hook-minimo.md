@@ -45,4 +45,4 @@ Para adaptar:
 
 - troque o `dotnet format` e a extensão pelo formatador do projeto (por exemplo, `ruff check --fix` para Python);
 - `--folder` formata sem carregar a solução, e por isso responde em poucos segundos; as regras de estilo que dependem de compilação ficam para `dotnet run scripts/verificar.cs`;
-- teste o hook à mão antes de versionar: `echo '{"tool_input":{"file_path":"src/Prontidao/Sistema.cs"}}' | dotnet run .claude/hooks/formatar-arquivo.cs`.
+- teste o hook à mão antes de versionar: desalinhe de propósito um arquivo `.cs` e rode `echo '{"tool_input":{"file_path":"src/Prontidao/Exemplo.cs"}}' | dotnet run .claude/hooks/formatar-arquivo.cs`, com o caminho desse arquivo. Confira que ele foi corrigido: o hook sai com 0 mesmo quando não formata nada.

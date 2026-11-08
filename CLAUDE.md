@@ -10,8 +10,10 @@ Leia `VISION.md` antes de cada tarefa. Quando uma tarefa conflitar com um princ�
 - Testes: `dotnet test`; um teste só: `dotnet test --filter NomeDoTeste`
 - Corrigir a formatação: `dotnet format`
 
-## Mapa
-`ARCHITECTURE.md` e `docs/index.md`.
+## Estrutura
+- `src/Prontidao/`: o código do sistema.
+- `tests/Prontidao.Tests/`: os testes.
+- `ARCHITECTURE.md` e `docs/index.md`: o mapa completo.
 
 ## Como trabalhamos
 - Teste primeiro: o teste novo falha antes da mudança e passa depois.
