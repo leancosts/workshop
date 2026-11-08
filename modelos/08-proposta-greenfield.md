@@ -15,7 +15,7 @@ Os tipos de documento, os prazos e as funções abaixo são fictícios e simplif
 | Laboratório 3 (cada time) | A extensão, com teste primeiro, sob um `/goal`; um hook, a CI no pull request e a revisão do diff |
 | Demonstrações (cada time) | O resultado: a fatia funcionando, o teste, uma decisão da spec e uma coisa que o agente errou |
 
-Cada time trabalha no próprio repositório. O repositório inicial usa TypeScript com Vitest, e não precisa ser a stack da empresa. O time pede ao agente duas ou três opções (por exemplo, Python com pytest, Go), com prós e contras para este domínio, e registra no `ARCHITECTURE.md` o que mudaria. Interface por linha de comando ou API HTTP, à escolha do time. Os dados ficam em memória ou num arquivo local.
+Cada time trabalha no próprio repositório. O repositório inicial usa .NET 10 com xUnit. O time pede ao agente duas ou três outras opções (por exemplo, Python com pytest, Go), com prós e contras para este domínio, e registra no `ARCHITECTURE.md` o que mudaria. Interface por linha de comando ou API HTTP, à escolha do time. Os dados ficam em memória ou num arquivo local.
 
 ## O núcleo, comum a todos os times
 
