@@ -1,7 +1,7 @@
 // Formatação, build e testes com um comando: dotnet run scripts/verificar.cs
 using System.Diagnostics;
 
-string[] passos = ["format --verify-no-changes", "build --no-incremental", "test --no-build"];
+string[] passos = ["format --verify-no-changes", "build", "test --no-build"];
 
 foreach (var passo in passos)
 {
