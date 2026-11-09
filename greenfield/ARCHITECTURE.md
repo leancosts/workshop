@@ -8,14 +8,17 @@ Mapa de onde as coisas ficam e das regras que sustentam o sistema. O greenfield 
 - **API:** Node.js com TypeScript. O framework HTTP é decidido numa ADR pela primeira mudança que precisar de API.
 - **Banco:** PostgreSQL 18, acessado só pelo Drizzle ORM. O schema em TypeScript é a fonte; o `drizzle-kit` gera as migrações.
 - **Qualidade:** ESLint (configuração flat, com `typescript-eslint`) e `tsc --noEmit`. Testes com Vitest, o runner do Vite.
+- **IA:** a API da Anthropic, pelo SDK oficial de TypeScript (`@anthropic-ai/sdk`), com a chave e o modelo lidos do `.env`.
 - **Execução:** Docker. O `docker compose` sobe o Postgres local; a API e a web têm uma imagem cada.
 
 ## Mapa de pastas
 - `VISION.md`: o porquê e os princípios. `DESIGN.md`: o sistema visual.
 - `variables.css`: os tokens como variáveis CSS, a folha que a web importa. `theme.css`: os mesmos tokens no formato `@theme` do Tailwind v4, se o time adotar. `tokens.json`: a fonte em JSON.
-- `docs/prd/`: os PRDs, um arquivo por PRD.
+- `docs/problema.md`: o enunciado da Triagem. `docs/base-de-conhecimento/`: os artigos que o agente usa para responder. `docs/massa-de-teste.md`: os chamados de aceite.
+- `docs/prd/`: os PRDs, um arquivo por PRD. `docs/agents/`: a configuração das skills de Matt Pocock.
+- `.env.example`: as variáveis de ambiente (chave da Anthropic, modelo e banco), sem valores secretos.
 - `openspec/specs/`: o comportamento atual do sistema, por capacidade. `openspec/changes/`: as mudanças em andamento; as concluídas vão para `changes/archive/`.
-- `.claude/`: as skills e os comandos `/opsx:*` do OpenSpec.
+- `.claude/`: as skills e os comandos `/opsx:*` do OpenSpec e as skills de Matt Pocock.
 
 Quando a primeira mudança criar código, ela acrescenta aqui as pastas que criou. A proposta é um monorepo com npm workspaces: `apps/web/`, `apps/api/` e `packages/db/` (o schema do Drizzle e as migrações).
 

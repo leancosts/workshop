@@ -1,12 +1,13 @@
 # Greenfield
 
 ## O que é
-Uma aplicação nova, ainda sem telas e sem funcionalidades. O que ela faz nasce do `VISION.md` e dos PRDs em `docs/prd/`.
+Uma aplicação nova, ainda sem telas e sem funcionalidades. O que ela faz nasce do `VISION.md` e dos PRDs em `docs/prd/`. O problema de negócio é a Triagem, um assistente de atendimento de chamados: `docs/problema.md`.
 
 ## Leia antes de qualquer tarefa
 - `VISION.md`: o porquê e os princípios. Quando uma tarefa conflita com um princípio, levante o conflito em vez de contorná-lo.
 - `ARCHITECTURE.md`: a stack, o mapa de pastas e as regras transversais.
 - `DESIGN.md`: o sistema visual. Os tokens estão em `variables.css`, `theme.css` e `tokens.json`.
+- `docs/problema.md`, `docs/base-de-conhecimento/` e `docs/massa-de-teste.md`: o enunciado, os artigos que o agente usa para responder e os chamados de aceite.
 
 ## Do PRD ao código
 1. O PO escreve o PRD em `docs/prd/NNN-nome.md`, no modelo `../modelos/31-prd.md`. Um PRD diz o quê e por quê; se ele trouxer solução, devolva como pergunta.
@@ -20,6 +21,8 @@ Uma aplicação nova, ainda sem telas e sem funcionalidades. O que ela faz nasce
 As skills chamam a CLI `openspec`, que precisa estar instalada (`README.md` na raiz do repositório).
 
 ## Como rodar
+A configuração local fica em `.env`, criado a partir de `.env.example` (`cp .env.example .env`). A chave `ANTHROPIC_API_KEY` vem do facilitador e nunca vai para um arquivo versionado, um log ou uma mensagem de commit.
+
 Ainda não há código. A primeira mudança que criar código cria também `npm run verificar` e registra aqui os comandos de instalar, subir o banco, rodar e testar.
 
 ## Como trabalhamos
@@ -27,6 +30,18 @@ Ainda não há código. A primeira mudança que criar código cria também `npm 
 - Nunca afirmar algo sobre um código que não foi aberto. Citar arquivo e linha.
 - O documento vivo muda no mesmo commit que o código: as specs do OpenSpec, o `ARCHITECTURE.md` e este arquivo.
 - Toda decisão fora da spec é registrada: no commit, no `design.md` da mudança ou numa ADR.
+
+## Agent skills
+As skills de Matt Pocock (`.claude/skills/`, licença MIT) completam o OpenSpec: `/grill-me` e `/grill-with-docs` para alinhar antes de escrever, `/tdd` para implementar, `/code-review` e `/diagnosing-bugs` para revisar e depurar. A spec e as tarefas ficam no OpenSpec, não em `/to-spec`.
+
+### Issue tracker
+Issues locais em Markdown, em `.scratch/`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+Os cinco rótulos padrão (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
+
+### Domain docs
+Single-context: `GLOSSARY.md` e `docs/adr/` na raiz de `greenfield/`, criados quando o primeiro termo ou decisão aparecer. See `docs/agents/domain.md`.
 
 ## Nunca
 - Editar migração já aplicada.

@@ -10,7 +10,7 @@ Instale o git, o Claude Code e o Claude Desktop, com login. Depois, o Node.js 26
 npm install -g @fission-ai/openspec@1.16.1
 ```
 
-O Docker só é necessário quando a aplicação tiver banco. Teste de acesso:
+O Docker só é necessário quando a aplicação tiver banco. A chave da API da Anthropic é entregue pelo facilitador no dia. Teste de acesso:
 
 ```bash
 git clone https://github.com/leancosts/workshop.git
@@ -31,10 +31,11 @@ cd greenfield-time-N
 git remote set-url origin <repositório do time>
 git push -u origin main
 cd greenfield
+cp .env.example .env   # cole a chave entregue pelo facilitador em ANTHROPIC_API_KEY
 claude
 ```
 
-1. Preencha o `greenfield/VISION.md` (o modelo 05a explica cada seção).
+1. Leia o problema em `greenfield/docs/problema.md` e preencha o `greenfield/VISION.md` (o modelo 05a explica cada seção).
 2. Escreva o primeiro PRD em `greenfield/docs/prd/`, no modelo 31.
 3. Abra a primeira mudança com `/opsx:explore` ou `/opsx:new`. O `greenfield/CLAUDE.md` descreve o fluxo.
 
@@ -47,8 +48,9 @@ claude
 | `greenfield/ARCHITECTURE.md` | A stack decidida: Docker, Node.js, TypeScript, ESLint, React, Vite, PostgreSQL e Drizzle ORM |
 | `greenfield/DESIGN.md` e os tokens | O sistema visual: `variables.css`, `theme.css` e `tokens.json` |
 | `greenfield/CLAUDE.md` | Como o agente trabalha no repositório |
-| `greenfield/docs/prd/` | Os PRDs do time |
-| `greenfield/openspec/`, `greenfield/.claude/` | O OpenSpec 1.16.1, com as skills e os comandos `/opsx:*` para o Claude Code |
+| `greenfield/docs/` | O problema (`problema.md`), a base de conhecimento, a massa de teste e os PRDs do time (`prd/`) |
+| `greenfield/.env.example` | As variáveis de ambiente; copie para `.env`, que fica fora do git |
+| `greenfield/openspec/`, `greenfield/.claude/` | O OpenSpec 1.16.1 (skills e comandos `/opsx:*`) e as skills de Matt Pocock (`/grill-me`, `/tdd`, `/code-review` e outras, licença MIT), configuradas com issues locais |
 
 ## O que não entra aqui
 
