@@ -1,8 +1,0 @@
-<Solution>
-  <Folder Name="/src/">
-    <Project Path="src/Prontidao/Prontidao.csproj" />
-  </Folder>
-  <Folder Name="/tests/">
-    <Project Path="tests/Prontidao.Tests/Prontidao.Tests.csproj" />
-  </Folder>
-</Solution>

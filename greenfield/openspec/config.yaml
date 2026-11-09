@@ -1,0 +1,18 @@
+schema: spec-driven
+
+context: |
+  Language: pt-BR
+  All artifacts must be written in pt-BR.
+  Keep OpenSpec structural headings and SHALL/MUST keywords in English.
+  Projeto: greenfield, uma aplicação nova, ainda sem telas e sem funcionalidades.
+  Antes de cada artefato, leia VISION.md (princípios), ARCHITECTURE.md (stack e regras)
+  e DESIGN.md (sistema visual).
+  Toda mudança nasce de um PRD em docs/prd/; a proposta cita o arquivo do PRD.
+  Stack: TypeScript strict, Node.js 26, React com Vite, PostgreSQL 18 com Drizzle ORM,
+  ESLint, Vitest e Docker.
+
+rules:
+  proposal:
+    - Citar o PRD de origem (docs/prd/NNN-nome.md) e o item do "Pronto quando" que a mudança cobre.
+  tasks:
+    - Cada tarefa de código começa por um teste que falha.
