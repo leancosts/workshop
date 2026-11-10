@@ -33,7 +33,7 @@ Um ponto de partida para o reposit처rio do time. Ele diz como trabalhar; o que �
 
 ## Base de conhecimento
 - Regras de neg처cio, features, processos e decis천es: `docs/index.md`.
-- O frontmatter de cada documento segue o padr찾o da empresa; a checagem do modelo 15 confere.
+- O frontmatter de cada documento segue o padr찾o da empresa; a checagem do frontmatter confere.
 ```
 
 Regras de exemplo, prontas para copiar e adaptar: modelo 05e.

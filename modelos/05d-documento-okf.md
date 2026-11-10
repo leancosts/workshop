@@ -5,13 +5,13 @@ A proposta do workshop para o formato da base de conhecimento é o Open Knowledg
 ```markdown
 ---
 type: Regra de Negócio
-title: Tripulante não apto não é escalado
-description: Um tripulante com documento vencido, suspenso ou faltando não pode ser escalado num voo.
-tags: [prontidao, escala]
+title: Chamado sem artigo na base vai para um analista
+description: O agente de triagem só responde um chamado de atendimento quando um artigo da base cobre o pedido.
+tags: [triagem, atendimento]
 sources:
   - id: codigo
-    resource: src/Prontidao/RegraDeProntidao.cs
-    title: Regra de prontidão
+    resource: src/triagem/responder.ts
+    title: Resposta pela base
 generated: { by: claude-code/opus, at: 2026-11-10T14:00:00Z }
 verified:
   - { by: human:maria.silva, at: 2026-11-11T09:00:00Z }
@@ -21,21 +21,22 @@ stale_after: 2027-05-11T00:00:00Z
 
 # Regra
 
-Um tripulante só é escalado num voo se estiver apto na data do voo: todos
-os documentos exigidos pela função presentes, ativos e válidos nessa data.
+O agente de triagem só responde um chamado de atendimento quando um artigo
+da base de conhecimento cobre o pedido. Sem artigo, o chamado fica aberto
+com o status "aguardando analista", e o solicitante recebe o aviso.
 
 # Onde é aplicada
 
-- [Escala de voo](../processos/escala.md)
-- O teste `RegraDeProntidaoTests.cs` cobre o caso.
+- [Fluxo principal](../processos/fluxo-principal.md)
+- O teste `responder.test.ts` cobre o caso.
 
 # Exemplos
 
-| Situação na data do voo | Pode escalar? |
+| Chamado | Resultado |
 |---|---|
-| Habilitação de tipo suspensa | não |
-| Certificado médico venceu há 10 dias | não |
-| Tudo válido | sim |
+| "Esqueci minha senha do portal" | respondido e fechado |
+| "Minha impressora não funciona" (sem artigo) | aguardando analista |
+| "Preciso de acesso ao sistema financeiro" | aguardando analista (exige aprovação) |
 ```
 
 ## Os campos no método
@@ -60,7 +61,7 @@ docs/
   log.md              o que mudou, por data, a mais recente primeiro
   regras/
     index.md
-    tripulante-nao-apto.md
+    chamado-sem-artigo.md
   processos/
   decisoes/
   specs/              registros datados: type Spec, deprecated depois de construída
@@ -70,10 +71,10 @@ docs/
 Uma linha do `index.md` e uma entrada do `log.md`:
 
 ```markdown
-* [Tripulante não apto não é escalado](tripulante-nao-apto.md) - Um tripulante com documento vencido, suspenso ou faltando não pode ser escalado num voo.
+* [Chamado sem artigo na base vai para um analista](chamado-sem-artigo.md) - O agente de triagem só responde um chamado de atendimento quando um artigo da base cobre o pedido.
 
 ## 2026-11-11
-* **Update**: Regra de escala revisada por uma pessoa.
+* **Update**: Regra de resposta revisada por uma pessoa.
 ```
 
 O `VISION.md` e o `ARCHITECTURE.md` ficam na raiz do repositório, onde o agente os procura, e o `docs/index.md` aponta para eles. O script do modelo 15 confere o resto no push.

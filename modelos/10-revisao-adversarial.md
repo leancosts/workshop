@@ -41,4 +41,4 @@ No caso, há dois comportamentos: no pipeline documentado, a mudança ainda bloq
 - spec ou plano ainda bloqueados: PO e arquiteto decidem e registram no comentário da issue ou numa ADR;
 - código ainda bloqueado: a mudança para e é reportada.
 
-No laboratório do dia 2, spec e plano passam por uma revisão só; no dia 3, cada um tem a sua.
+No dia 2, a mudança do OpenSpec (proposal, design, specs e tasks) passa por uma revisão só; no dia 3, spec e plano têm cada um a sua.

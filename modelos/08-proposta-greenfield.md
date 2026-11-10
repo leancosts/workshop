@@ -1,119 +1,96 @@
+# Proposta de greenfield: Triagem, o assistente de atendimento de chamados
 
-# Proposta de greenfield: prontidão da tripulação
+Um sistema novo e pequeno para o dia 2. Cada time parte do repositório `greenfield` (`github.com/leancosts/workshop`), escreve o `VISION.md` e o PRD e leva o PRD ao código pelo OpenSpec. O cenário é fictício: o domínio é conhecido de todos, as regras cabem numa manhã e as lacunas do enunciado são de propósito.
 
-Um sistema novo e pequeno do ramo de aviação executiva para o dia 2. Cada time parte do repositório inicial (stack, testes e lint prontos), escreve o `VISION.md` e o `CLAUDE.md` e constrói uma fatia seguindo o método. Neste exercício, um tripulante só pode ser escalado com os documentos em dia, e um documento vencido percebido perto do voo cancela ou atrasa a missão. O domínio tem regras claras de data e de estado, usa dados fictícios sem dado pessoal e cabe numa manhã.
+## O problema de negócio
 
-Os tipos de documento, os prazos e as funções abaixo são fictícios e simplificados para o exercício. Não descrevem a regulação aeronáutica nem as regras de uma empresa.
+**Cenário.** Uma área de TI interna atende cerca de 800 colaboradores. Todo pedido entra numa fila única: dúvidas operacionais, bugs, pedidos de ajuste e ideias de sistemas novos. Três analistas fazem a triagem manualmente.
 
-## Como a manhã usa a proposta
+**A dor.** Boa parte dos chamados repete perguntas que já têm resposta documentada, como redefinir senha, configurar a VPN ou pedir acesso a um sistema. Mesmo assim, cada um espera na fila até um analista ler. Chamados mal categorizados chegam ao time errado e voltam. O solicitante fica sem saber se alguém viu o pedido.
 
-| Momento | O que se constrói |
+**A visão.** Um agente faz a primeira leitura de todo chamado. Ele entende o pedido, classifica o chamado e resolve na hora o que a base de conhecimento já cobre. Os casos que dependem de uma pessoa chegam aos analistas já organizados, e o solicitante sempre recebe um retorno imediato e honesto.
+
+## Atores
+
+- **Solicitante:** abre o chamado e recebe o retorno.
+- **Agente de triagem:** classifica, responde quando pode e encaminha quando não pode.
+- **Analista:** assume os chamados encaminhados e os encerra.
+- **Base de conhecimento:** artigos curtos com respostas validadas pela equipe.
+
+## Categorias
+
+| Categoria | Definição | Exemplo |
+|---|---|---|
+| Atendimento | Dúvida ou pedido operacional, sem mudança em sistema | "Como redefino minha senha?" |
+| Correção | Algo que funcionava e deixou de funcionar | "O relatório de vendas dá erro desde ontem" |
+| Melhoria | Mudança de escopo pequeno em algo que já existe | "Incluir filtro por data na tela de pedidos" |
+| Projeto | Algo novo, que exige priorização e orçamento | "Precisamos de um app para os vendedores externos" |
+
+## Fluxo principal
+
+1. O solicitante abre um chamado com um texto livre.
+2. O agente classifica o chamado e justifica a classificação.
+3. Se for atendimento e a base tiver a resposta, o agente responde, registra a resposta no chamado e fecha o chamado.
+4. Se não conseguir responder, o agente mantém o chamado aberto e avisa o solicitante de que uma pessoa vai assumir.
+
+## Indicadores de sucesso
+
+- Taxa de autoatendimento: chamados fechados pelo agente sem intervenção humana.
+- Acurácia da classificação.
+- Tempo até o primeiro retorno ao solicitante.
+- Taxa de respostas automáticas erradas, medida pelos chamados reabertos.
+
+**Fora de escopo:** canais reais (e-mail, Slack, WhatsApp), autenticação, SLA e integração com ferramentas de mercado como Jira e ServiceNow.
+
+## Decisões em aberto, de propósito
+
+O enunciado deixa estas lacunas sem resposta. É nelas que o time sente o esforço de decidir e alinhar antes de gerar código, e é por elas que o `/grill-me` e a revisão adversarial começam.
+
+- **Correção, melhoria e projeto:** o enunciado só diz o que fazer com atendimento. Esses chamados vão todos para pessoas? Para filas diferentes?
+- **"Conseguir responder":** quando o agente pode dizer que sabe a resposta? Como ele decide que não sabe? Qual o limiar de confiança, e quem o define?
+- **Chamado ambíguo ou com dois pedidos:** um texto como "O sistema caiu e, aproveitando, queria um filtro novo" cabe em qual categoria?
+- **Resposta errada:** se o solicitante disser que a resposta não resolveu, o chamado reabre?
+- **Rastreabilidade:** como saber depois qual artigo da base sustentou cada resposta?
+
+## As features
+
+Cada feature cabe numa mudança curta do OpenSpec e pode ser construída sem infraestrutura real.
+
+**Núcleo (caminho crítico, todos os times):**
+
+| # | Feature | Critério de aceite essencial |
+|---|---|---|
+| F1 | Abrir e registrar chamado | O chamado tem id, solicitante, descrição, status e histórico de eventos |
+| F2 | Classificar chamado | Atribui uma das quatro categorias, com a justificativa registrada no histórico |
+| F3 | Responder pela base de conhecimento | Para atendimento coberto pela base: responde, registra a resposta e o artigo usado, e fecha o chamado |
+| F4 | Encaminhar para humano | Quando não há resposta: mantém o chamado aberto, muda o status para "aguardando analista" e avisa o solicitante |
+
+**Complementares (para quem terminar antes):**
+
+| # | Feature | Critério de aceite essencial |
+|---|---|---|
+| F5 | Fila do analista | Lista os chamados abertos por categoria; o analista registra a resposta e fecha |
+| F6 | Feedback do solicitante | O solicitante diz se a resposta resolveu; se não resolveu, o chamado reabre e vai para uma pessoa |
+| F7 | Painel de indicadores | Mostra a taxa de autoatendimento e a distribuição por categoria |
+| F8 | Alimentar a base | O analista transforma a resposta dada a um chamado num novo artigo da base |
+
+A F8 mostra que o valor do agente cresce com a base de conhecimento, não com a interface.
+
+## Massa de teste
+
+O repositório traz uma base de seis artigos curtos (`docs/base-de-conhecimento/`) e esta massa (`docs/massa-de-teste.md`). A resposta esperada vira teste de aceite.
+
+| Chamado | Esperado |
 |---|---|
-| Demonstração (facilitador) | O núcleo: a regra de prontidão, da intenção ao teste verde |
-| Laboratório 1 (cada time) | A partir do repositório inicial: o `VISION.md`, o `CLAUDE.md` e o núcleo, com os cinco exemplos decididos abaixo como testes |
-| Laboratório 2 (cada time) | A intenção da extensão, a issue escrita pelo agente, a spec e o plano, com uma revisão adversarial só para os dois |
-| Laboratório 3 (cada time) | A extensão, com teste primeiro, sob um `/goal`; um hook, a CI no pull request e a revisão do diff |
-| Demonstrações (cada time) | O resultado: a fatia funcionando, o teste, uma decisão da spec e uma coisa que o agente errou |
-
-Cada time trabalha no próprio repositório. O repositório inicial usa .NET 10 com xUnit. O time pede ao agente duas ou três outras opções (por exemplo, Python com pytest, Go), com prós e contras para este domínio, e registra no `ARCHITECTURE.md` o que mudaria. Interface por linha de comando ou API HTTP, à escolha do time. Os dados ficam em memória ou num arquivo local.
-
-## O núcleo, comum a todos os times
-
-```markdown
-## Objetivo
-Saber, a qualquer momento, se cada tripulante pode ser escalado, com base
-na validade dos seus documentos.
-
-## Quem ganha
-A coordenação de operações, que monta a escala, e quem responde pela
-segurança operacional.
-
-## Problema hoje
-A validade dos documentos fica numa planilha. Um documento vencido só é
-percebido perto do voo.
-
-## Como medimos
-Os exemplos decididos da tabela de prontidão passam como testes; o caso
-de borda ganha teste depois que a spec o decide. A regra existe numa
-função só, usada por todas as extensões.
-
-## Fora de escopo
-Login, interface elaborada, banco de dados externo, integração com os
-sistemas da operadora, envio real de mensagem, regra regulatória real.
-
-## Restrições
-Dados fictícios. Matrícula fictícia no lugar do nome de pessoa. Roda
-localmente com um comando.
-
-## Pronto quando
-O núcleo e uma extensão têm testes que falharam antes e passam depois,
-e o commit liga a intenção, a spec, o plano e o veredito da revisão.
-```
-
-Dados do núcleo:
-
-- **Tripulante:** matrícula, função (comandante, copiloto ou comissário), base.
-- **Documento:** matrícula, tipo (certificado médico, habilitação de tipo, treinamento periódico), tipo de aeronave (só na habilitação de tipo), válido até (data), situação (ativo ou suspenso).
-- **Documentos exigidos:** comandante e copiloto precisam dos três tipos; comissário, do certificado médico e do treinamento periódico.
-
-Regra de prontidão, avaliada numa data de referência, na ordem da tabela (vale a primeira linha que se aplica):
-
-| Situação | Prontidão |
-|---|---|
-| Falta um documento exigido pela função | incompleto |
-| Algum documento suspenso | bloqueado |
-| Algum documento venceu há 10 dias | não apto |
-| O primeiro documento a vencer vence em 20 dias | apto, vence em breve (30 dias ou menos) |
-| Todos os documentos vencem em mais de 30 dias | apto |
-| Um documento vale até exatamente a data de referência | a decidir na spec: apto, vence em breve, ou não apto? |
-
-A última linha é de propósito: o time decide a borda na spec do laboratório 2, escreve o teste dela depois da decisão, e a revisão adversarial confere se a decisão foi escrita.
-
-## As cinco extensões, uma por time
-
-### 1. Escala de voo
-Escalar uma matrícula num voo (data, base de saída, tipo de aeronave, função).
-
-- Recusa o tripulante que não está apto na data do voo, com o motivo, usando a regra do núcleo.
-- Recusa comandante ou copiloto sem habilitação de tipo para a aeronave do voo.
-- Recusa o tripulante já escalado em outro voo na mesma data.
-
-### 2. Alertas de vencimento
-Listar o que vence nos próximos N dias, por base.
-
-- Inclui os documentos já vencidos, no topo, e depois os que vencem em até N dias, por data de vencimento.
-- Lista à parte os tripulantes incompletos.
-- Com N igual a 0, lista só os vencidos e os incompletos.
-- Gera um arquivo de aviso por base, com o mesmo conteúdo da lista.
-
-### 3. Trilha de auditoria
-Registrar cada mudança como um evento.
-
-- Cadastro e renovação de documento geram um evento com quem, quando, o antes e o depois.
-- A consulta por matrícula devolve os eventos em ordem de registro.
-- O repositório de eventos não expõe alteração nem exclusão; um teste tenta as duas e falha.
-
-### 4. Importação de planilha
-Importar tripulantes e documentos de um arquivo CSV.
-
-- Aceita as linhas válidas e recusa as inválidas, com o número da linha e o motivo.
-- Importar o mesmo arquivo duas vezes não duplica nada.
-- Uma data num formato inválido é recusada, nunca adivinhada.
-
-### 5. Painel da operação
-Indicadores por base e por função, e um arquivo para a operação.
-
-- Por base: total, apto, vence em breve, não apto, bloqueado, incompleto.
-- Em cada base, o total é igual à soma das cinco categorias; um teste prova isso.
-- Exporta os indicadores em CSV.
+| "Esqueci minha senha do portal" | Atendimento, respondido e fechado |
+| "Como configuro a VPN no Mac?" | Atendimento, respondido e fechado |
+| "Preciso de acesso ao sistema financeiro" | Atendimento, encaminhado (exige aprovação humana) |
+| "A tela de pedidos trava ao salvar desde a atualização" | Correção, encaminhado |
+| "Queria exportar o relatório em Excel além do PDF" | Melhoria, encaminhado |
+| "Precisamos de um portal para fornecedores" | Projeto, encaminhado |
+| "Minha impressora não funciona" (sem artigo na base) | Atendimento, encaminhado |
+| "O sistema caiu e queria um filtro novo" | Ambíguo: força a decisão do time |
 
 ## O que a revisão adversarial deve encontrar
 
-Cada extensão tem um ponto onde é fácil esquecer um caso. Bons revisores perguntam:
-
-- A escala avalia a prontidão na data do voo, ou na data de hoje?
-- A escala usa a mesma regra do núcleo, ou uma cópia que pode divergir?
-- O alerta trata o tripulante incompleto?
-- O repositório de eventos tem algum caminho que altera ou apaga um evento?
-- A importação repetida duplica algum documento?
-- O total de cada base inclui os incompletos?
+Uma proposta que fecha sem decidir as lacunas acima não passa. O revisor procura, em especial: a regra de "conseguir responder" sem critério verificável; uma resposta registrada sem o artigo que a sustenta; o chamado de acesso a sistema respondido sem aprovação humana; e um cenário da massa de teste sem teste correspondente.

@@ -37,7 +37,7 @@ docker compose up -d db
 claude
 ```
 
-1. Leia o problema em `greenfield/docs/problema.md` e preencha o `greenfield/VISION.md` (o modelo 05a explica cada seção).
+1. Leia o problema em `greenfield/docs/problema.md`. O `greenfield/VISION.md` já traz o problema, a solução e as personas; o time escreve os princípios e as metas (o modelo 05a explica cada seção).
 2. Escreva o primeiro PRD em `greenfield/docs/prd/`, no modelo 31.
 3. Abra a primeira mudança com `/opsx:explore` ou `/opsx:new`. O `greenfield/CLAUDE.md` descreve o fluxo.
 
@@ -46,7 +46,7 @@ claude
 | Caminho | O que tem |
 |---|---|
 | `modelos/` | Os modelos do minibook, para copiar e preencher |
-| `greenfield/VISION.md` | O modelo da visão, para o time preencher |
+| `greenfield/VISION.md` | A visão da Triagem; o time escreve os princípios e as metas |
 | `greenfield/ARCHITECTURE.md` | A stack decidida: Docker, Node.js, TypeScript, ESLint, React, Vite, PostgreSQL e Drizzle ORM |
 | `greenfield/DESIGN.md` e os tokens | O sistema visual: `variables.css`, `theme.css` e `tokens.json` |
 | `greenfield/CLAUDE.md` | Como o agente trabalha no repositório |

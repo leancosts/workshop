@@ -1,6 +1,6 @@
 # Modelo: autoavaliação do SDLC mínimo
 
-Proposta do workshop. Cada time marca, no dia 1, os oito itens que o agente precisa encontrar funcionando, na área da feature. O resultado volta no dia 3 (pronto para o agente) e no dia 5 (o que vem antes do piloto).
+Proposta do workshop. Cada time marca, até o dia 3, os oito itens que o agente precisa encontrar funcionando, na área da feature. O resultado volta no dia 3 (pronto para o agente) e no dia 5 (o que vem antes do piloto).
 
 - **Verde:** funciona sem depender de uma pessoa.
 - **Amarelo:** existe, mas depende de alguém ou não barra o merge.

@@ -106,7 +106,7 @@ O que conferir antes de ligar:
 | Rascunho | Uma pessoa aprova, corrige ou descarta cada comentário; a correção é registrada | Critério escrito antes, por exemplo: acerto da classe acima do combinado em quatro semanas seguidas |
 | Automático por classe | A classe que passou publica sozinha; as outras continuam em rascunho | A taxa de correção continua medida; se piorar, a classe volta ao rascunho |
 
-## 6. Demandas de exemplo para a Prática 3
+## 6. Demandas de exemplo para treinar a triagem
 
 Fictícias. Classifique antes de rodar o agente e anote onde divergiram.
 

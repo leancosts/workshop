@@ -4,11 +4,11 @@ Um prompt por etapa, para que o uso do agente não dependa de quem está no tecl
 
 ## Entrada e triagem
 
-Roda sozinho, na pipeline (modelo 24). Para conferir um item à mão:
+Roda sozinho, na pipeline (o modelo de triagem). Para conferir um item à mão:
 
 ```text
 Leia o item <link>. Classifique em dúvida, bug, melhoria ou
-projeto, com a regra do modelo 24. Procure duplicatas abertas.
+projeto, com a regra do modelo de triagem. Procure duplicatas abertas.
 Cite cada fato com o arquivo e a linha, ou o documento da base.
 Não proponha solução. Se não achar fonte, diga "sem fonte".
 ```
@@ -29,7 +29,7 @@ de conhecimento e diga onde achou.
 Depois da entrevista:
 
 ```text
-Escreva a intenção nas sete seções do modelo 01, sem solução
+Escreva a intenção nas sete seções do modelo de intenção, sem solução
 no objetivo. Gere um mockup da tela com os componentes do
 design system. Liste as perguntas que eu não soube responder.
 ```
@@ -41,18 +41,18 @@ Evite: "escreva um PRD para isso" sem entrevista.
 No Claude Code do arquiteto, numa sessão limpa:
 
 ```text
-Escreva a spec da issue <#n> no modelo 03, derivada do PRD
+Escreva a spec da issue <#n> no modelo de spec, derivada do PRD
 <link>. Leia o código e a base antes; cite cada afirmação.
 Pese duas opções, escolha uma e diga o que fica fora.
 Não escreva código.
 ```
 
 ```text
-Escreva o plano no modelo 04: os arquivos, o teste que falha
+Escreva o plano no modelo de plano: os arquivos, o teste que falha
 em cada passo, os critérios de aceite e a ordem.
 ```
 
-Depois, a revisão por outro modelo com a instrução do modelo 10, numa sessão nova, recebendo só as fontes.
+Depois, a revisão por outro modelo com a instrução do revisor adversarial, numa sessão nova, recebendo só as fontes.
 
 Evite: o mesmo modelo escrever e revisar; ir direto ao código numa mudança com gatilho de spec.
 
@@ -74,7 +74,7 @@ Os hooks, o lint, o gitleaks e os testes rodam sozinhos (capítulo 9). O que se 
 
 ```text
 Revise o diff de <branch> contra a issue <#n> e o plano <link>
-com a instrução do modelo 10. Rode os testes tocados. Bloqueie
+com a instrução do revisor adversarial. Rode os testes tocados. Bloqueie
 na dúvida, citando arquivo, linha e a falha concreta.
 ```
 
@@ -83,7 +83,7 @@ Evite: "confira o que você fez" para o mesmo agente que construiu.
 ## 5. OK e verificação
 
 ```text
-Escreva a descrição do PR no modelo 14: a issue, o teste que
+Escreva a descrição do PR no modelo de descrição do PR: a issue, o teste que
 falhou e passou, o veredito do revisor, as decisões fora da
 spec e o que só produção prova.
 ```
@@ -130,7 +130,7 @@ Evite: pedir só a execução quando a decisão ainda não foi tomada; aceitar a
 
 ## Operação
 
-Numa tarefa agendada ou numa pipeline (modelo 18):
+Numa tarefa agendada ou numa pipeline (os prompts de loop):
 
 ```text
 Leia os erros novos das últimas 24 horas em <fonte>. Para cada

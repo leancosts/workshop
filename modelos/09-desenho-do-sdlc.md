@@ -46,7 +46,7 @@ Preenchido em time no laboratório do dia 5, em 62 minutos, e completado no acom
 
 ## Controles
 - Papéis e decisões (PO, arquiteto, agentes, quem dá o OK; a forma dos times):
-- Catracas e loops (pisos que sobem, raias de manutenção):
+- Melhoria contínua (pisos que sobem, raias de manutenção):
 - Medição (lead time do pedido à produção, deploys, falhas, recuperação; o ciclo do bug pequeno, até a triagem e até a correção; a linha de base do dia 1; outros indicadores no modelo 27):
 - Segurança e compliance (a classe de dado de cada repositório; sessões na nuvem, sim ou não; o registro de cada acesso de agente a produção; quem é dono do CLAUDE.md, das regras e das skills compartilhados):
 

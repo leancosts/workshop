@@ -16,6 +16,7 @@ Os termos do método, com o significado que este livro usa. Quando dois nomes pa
 | issue | A unidade de trabalho, no padrão | ticket, card, história |
 | backlog | A fila única de issues, ordenada por critérios escritos | listas paralelas |
 | spec | O quê e por quê da mudança, as opções pesadas, a escolhida e o que fica fora | |
+| SDD | Desenvolvimento guiado por spec: a spec revisada vem antes do código, e o código é conferido contra ela. No dia 2, pelo OpenSpec (proposal, specs, design e tasks) | chamar de SDD um prompt longo sem spec revisada |
 | plano | Os arquivos, o teste que falha em cada passo, os critérios de aceite e a ordem | |
 | design técnico | A parte da spec que descreve como a escolhida será construída | desenho técnico |
 | lote | O conjunto de issues entregues numa execução; cada unidade entra na branch do lote quando é aprovada, e o portão completo roda uma vez, no fim | sprint, batch |
@@ -35,7 +36,7 @@ Os termos do método, com o significado que este livro usa. Quando dois nomes pa
 | revisão adversarial | Revisão de spec, plano ou diff por outro modelo, instruído a bloquear quando tem dúvida | revisão por outro modelo (como nome) |
 | portão | Verificação automática que recusa a mudança | gate |
 | guardrail | O que o agente nunca faz num repositório, escrito como regra e, quando possível, hook ou teste | |
-| catraca | Piso que só sobe, ou lista de legado que só diminui | |
+| piso | Valor mínimo que só sobe, ou lista de legado que só diminui | |
 | raia de teste | Um conjunto de testes que roda junto: unidade, banco, navegador | raia, sozinho |
 | raia de manutenção | Um tema de loop com nota: segurança, pacotes, interface, API, documentação | raia, sozinho |
 | loop de manutenção | Execução agendada que mede a nota de uma raia, corrige o mecânico e abre issue para o resto | `/loop` (o comando que repete um prompt) |
