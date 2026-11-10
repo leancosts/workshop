@@ -10,13 +10,14 @@ Instale o git, o Claude Code e o Claude Desktop, com login. Depois, o Node.js 26
 npm install -g @fission-ai/openspec@1.16.1
 ```
 
-O Docker só é necessário quando a aplicação tiver banco. A chave da API da Anthropic é entregue pelo facilitador no dia. Teste de acesso:
+Instale também o Docker Desktop: a aplicação guarda os dados no Postgres, que sobe num container. A chave da API da Anthropic é entregue pelo facilitador no dia. Teste de acesso:
 
 ```bash
 git clone https://github.com/leancosts/workshop.git
 cd workshop/greenfield
 openspec list
 claude --version
+docker compose up -d --wait db && docker compose down
 ```
 
 O que falhar vai para a lista de obstáculos (modelo 13) e para os facilitadores.
@@ -32,6 +33,7 @@ git remote set-url origin <repositório do time>
 git push -u origin main
 cd greenfield
 cp .env.example .env   # cole a chave entregue pelo facilitador em ANTHROPIC_API_KEY
+docker compose up -d db
 claude
 ```
 
@@ -50,6 +52,7 @@ claude
 | `greenfield/CLAUDE.md` | Como o agente trabalha no repositório |
 | `greenfield/docs/` | O problema (`problema.md`), a base de conhecimento, a massa de teste e os PRDs do time (`prd/`) |
 | `greenfield/.env.example` | As variáveis de ambiente; copie para `.env`, que fica fora do git |
+| `greenfield/docker-compose.yml` | O Postgres 18 local, com os mesmos valores de `DATABASE_URL` |
 | `greenfield/openspec/`, `greenfield/.claude/` | O OpenSpec 1.16.1 (skills e comandos `/opsx:*`) e as skills de Matt Pocock (`/grill-me`, `/tdd`, `/code-review` e outras, licença MIT), configuradas com issues locais |
 
 ## O que não entra aqui

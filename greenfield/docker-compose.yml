@@ -1,0 +1,22 @@
+# Postgres local do greenfield: docker compose up -d db
+# Os valores batem com DATABASE_URL do .env.example. Se a porta 5432 já estiver em uso,
+# troque o lado esquerdo de "ports" e a porta em DATABASE_URL.
+services:
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: greenfield
+      POSTGRES_PASSWORD: greenfield
+      POSTGRES_DB: greenfield
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U greenfield -d greenfield"]
+      interval: 2s
+      timeout: 3s
+      retries: 15
+
+volumes:
+  db-data:

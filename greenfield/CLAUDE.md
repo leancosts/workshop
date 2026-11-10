@@ -23,6 +23,8 @@ As skills chamam a CLI `openspec`, que precisa estar instalada (`README.md` na r
 ## Como rodar
 A configuração local fica em `.env`, criado a partir de `.env.example` (`cp .env.example .env`). A chave `ANTHROPIC_API_KEY` vem do facilitador e nunca vai para um arquivo versionado, um log ou uma mensagem de commit.
 
+O banco local sobe com `docker compose up -d db`. Os dados ficam no Postgres desde a primeira feature, nunca num arquivo JSON (o motivo está no `ARCHITECTURE.md`).
+
 Ainda não há código. A primeira mudança que criar código cria também `npm run verificar` e registra aqui os comandos de instalar, subir o banco, rodar e testar.
 
 ## Como trabalhamos
