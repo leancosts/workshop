@@ -8,6 +8,7 @@ Instale o git, o Claude Code e o Claude Desktop, com login. Depois, o Node.js 26
 
 ```bash
 npm install -g @fission-ai/openspec@1.16.1
+openspec --version   # precisa dizer 1.16.1; uma versão global antiga no PATH quebra as skills
 ```
 
 Instale também o Docker Desktop: a aplicação guarda os dados no Postgres, que sobe num container. A chave da API da Anthropic é entregue pelo facilitador no dia. Teste de acesso:

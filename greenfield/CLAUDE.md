@@ -28,7 +28,9 @@ O banco local sobe com `docker compose up -d db`. Os dados ficam no Postgres des
 Ainda não há código. A primeira mudança que criar código cria também `npm run verificar` e registra aqui os comandos de instalar, subir o banco, rodar e testar.
 
 ## Como trabalhamos
-- Teste primeiro: o teste novo falha antes da mudança e passa depois.
+- Teste primeiro: rode o teste novo, mostre a falha e só então escreva o código. Teste e código escritos juntos não contam.
+- Um commit por artefato do OpenSpec e por task concluída, com o nome da mudança na mensagem. O `.env` nunca entra.
+- Decisão em aberto do `docs/problema.md` é do PO: pergunte, não decida. Registre a resposta no PRD ou numa ADR.
 - Nunca afirmar algo sobre um código que não foi aberto. Citar arquivo e linha.
 - O documento vivo muda no mesmo commit que o código: as specs do OpenSpec, o `ARCHITECTURE.md` e este arquivo.
 - Toda decisão fora da spec é registrada: no commit, no `design.md` da mudança ou numa ADR.

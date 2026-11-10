@@ -15,4 +15,14 @@ rules:
   proposal:
     - Citar o PRD de origem (docs/prd/NNN-nome.md) e o item do "Pronto quando" que a mudança cobre.
   tasks:
-    - Cada tarefa de código começa por um teste que falha.
+    - Cada tarefa de código começa por um teste que falha, e a tarefa diz o comando que mostra a falha.
+    - Não crie tarefa que só se verifica no navegador; a verificação visual fica para o time.
+
+operations:
+  apply:
+    guidance:
+      - Para cada tarefa, rode o teste novo e mostre a falha antes de escrever o código.
+      - Faça um commit ao fim de cada tarefa.
+  archive:
+    guidance:
+      - Sincronize as specs antes de arquivar.
