@@ -1,0 +1,14 @@
+{
+  "name": "@triagem/api",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts"
+  },
+  "dependencies": {
+    "fastify": "5.12.8"
+  },
+  "devDependencies": {
+    "tsx": "4.23.15"
+  }
+}

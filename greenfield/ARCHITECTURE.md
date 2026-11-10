@@ -1,15 +1,15 @@
 # Arquitetura
 
-Mapa de onde as coisas ficam e das regras que sustentam o sistema. O greenfield ainda não tem código: este arquivo registra a stack decidida, e cada PRD parte dela. Leia antes de explorar; quando o código existir, confie nele.
+Mapa de onde as coisas ficam e das regras que sustentam o sistema. O esqueleto do monorepo existe, sem tela e sem funcionalidade de negócio: cada PRD parte dele. Leia antes de explorar; quando o código existir, confie nele.
 
 ## Stack
 - **Linguagem:** TypeScript em modo `strict`, no front-end e no back-end, sobre Node.js 26 LTS.
 - **Web:** React, com build e servidor de desenvolvimento pelo Vite. Cores, fontes e espaçamentos vêm do `DESIGN.md`.
-- **API:** Node.js com TypeScript. O framework HTTP é decidido numa ADR pela primeira mudança que precisar de API.
+- **API:** Node.js com TypeScript. Fastify, decidido em `docs/adr/0001-fastify.md`.
 - **Banco:** PostgreSQL 18, acessado só pelo Drizzle ORM. O schema em TypeScript é a fonte; o `drizzle-kit` gera as migrações.
-- **Qualidade:** ESLint (configuração flat, com `typescript-eslint`) e `tsc --noEmit`. Testes com Vitest, o runner do Vite.
+- **Qualidade:** ESLint (configuração flat, com `typescript-eslint`) e `tsc --build`. O `typescript-eslint` ainda não aceita o TypeScript 7: o projeto fixa o 6.0.3. Testes com Vitest, o runner do Vite.
 - **IA:** a API da Anthropic, pelo SDK oficial de TypeScript (`@anthropic-ai/sdk`), com a chave e o modelo lidos do `.env`.
-- **Execução:** Docker. O `docker compose up -d db` sobe o Postgres local (`docker-compose.yml`); a API e a web têm uma imagem cada.
+- **Execução:** Docker. O `docker compose up -d db` sobe o Postgres local (`docker-compose.yml`); a API e a web rodam localmente com npm. As imagens Docker de cada uma ficam para quando o deploy for decidido.
 
 ## Mapa de pastas
 - `VISION.md`: o porquê e os princípios. `DESIGN.md`: o sistema visual.
@@ -20,7 +20,13 @@ Mapa de onde as coisas ficam e das regras que sustentam o sistema. O greenfield 
 - `openspec/specs/`: o comportamento atual do sistema, por capacidade. `openspec/changes/`: as mudanças em andamento; as concluídas vão para `changes/archive/`.
 - `.claude/`: as skills e os comandos `/opsx:*` do OpenSpec e as skills de Matt Pocock.
 
-Quando a primeira mudança criar código, ela acrescenta aqui as pastas que criou. A proposta é um monorepo com npm workspaces: `apps/web/`, `apps/api/` e `packages/db/` (o schema do Drizzle e as migrações).
+Monorepo com npm workspaces (`package.json` na raiz):
+- `apps/api/`: a API Fastify. `src/app.ts` monta o app e as rotas (hoje só `GET /health`), `src/server.ts` lê o `.env`, lê `PORT` (padrão 3000) e liga a porta. Os testes usam `fastify.inject`.
+- `apps/web/`: React com Vite. `src/main.tsx` importa `variables.css` e monta o `App`, que hoje só mostra o título. O proxy do Vite manda `/api` para a API e tira o prefixo (`/api/health` chega como `/health`).
+- `packages/db/`: `src/schema.ts` (sem tabelas; cada mudança acrescenta as suas), `src/client.ts` (a conexão com o Postgres), `migrations/` (geradas pelo `drizzle-kit`) e `drizzle.config.ts`.
+- `docs/adr/`: as decisões registradas, no modelo `../modelos/12-adr.md`.
+- `docker/initdb/`: o SQL que o Postgres roda na criação do volume e que cria o banco `greenfield_test`.
+- Na raiz: `tsconfig.base.json` (TypeScript `strict`; cada pacote tem o seu `tsconfig.json` e as references ficam em `tsconfig.json`), `eslint.config.js`, `vitest.config.ts` (um projeto por pacote).
 
 ## Regras transversais (não óbvias)
 ### Os dados ficam no Postgres desde o primeiro chamado
@@ -33,7 +39,7 @@ O schema do Drizzle é a fonte. Toda mudança de tabela gera uma migração pelo
 Componente React não declara cor, fonte, raio ou espaçamento literal: usa as variáveis de `variables.css`. Um token novo entra primeiro no `DESIGN.md` e nos três arquivos de tokens, no mesmo commit.
 
 ### Um comando verifica tudo
-A primeira mudança com código cria `npm run verificar`, que roda ESLint, `tsc --noEmit` e Vitest. A CI roda o mesmo comando, e um PR só entra com ele verde.
+O `npm run verificar` já existe: roda ESLint, `tsc --build` e Vitest, e falha se qualquer etapa falhar. A CI roda o mesmo comando, e um PR só entra com ele verde.
 
 ### Segredo fica fora do git
 Configuração por variável de ambiente, lida de um `.env` local que o `.gitignore` exclui. O repositório versiona só um `.env.example` sem valores.

@@ -34,6 +34,8 @@ git remote set-url origin <repositório do time>
 git push -u origin main
 cd greenfield
 cp .env.example .env   # cole a chave entregue pelo facilitador em ANTHROPIC_API_KEY
+npm install
+npm run verificar      # tem de passar antes de qualquer mudança
 docker compose up -d db
 claude
 ```

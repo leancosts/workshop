@@ -1,0 +1,30 @@
+{
+  "name": "triagem",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=26"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "verificar": "npm run lint && npm run typecheck && npm run test",
+    "lint": "eslint .",
+    "typecheck": "tsc --build",
+    "test": "vitest run",
+    "dev:api": "npm run dev --workspace @triagem/api",
+    "dev:web": "npm run dev --workspace @triagem/web",
+    "db:generate": "npm run generate --workspace @triagem/db",
+    "db:migrate": "npm run migrate --workspace @triagem/db"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "26.6.6",
+    "eslint": "10.14.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.2",
+    "vitest": "5.1.0"
+  }
+}
