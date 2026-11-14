@@ -32,6 +32,38 @@ Liste no fim o que o PRD não diz e uma decisão precisa dizer.
 
 Os passos são os do dia 3 (capítulo 11). `<kit>` é a pasta onde o repositório `leancosts/workshop` foi clonado (`../workshop-kit`). O `VISION.md`, o `ARCHITECTURE.md` e o `DESIGN.md` levam o frontmatter do padrão; o `CLAUDE.md` e o `README.md` não.
 
+**Antes do passo 1, só para o time que trabalha só no banco.** O código do banco vai para um repositório, antes do dia 3 (capítulo 11, "Quando o time só trabalha no banco"). O exemplo é Oracle; em outro banco, troque os nomes do Oracle pela ferramenta de export de estrutura e pelo catálogo dele.
+
+```text
+Este time trabalha só no banco de dados. Monte neste repositório
+vazio o código do banco. Você não se conecta a um banco
+compartilhado: escreva os scripts, e eu rodo no SQLcl ou no
+SQL*Plus.
+
+1. scripts/exportar-banco.sql: o DDL de cada objeto dos schemas
+   <schemas>, com DBMS_METADATA.GET_DDL, sem atributos de
+   armazenamento. Só a estrutura, nenhum dado.
+2. A saída em banco/<schema>/<tipo>/<objeto>.sql, um objeto por
+   arquivo: tabelas (as chaves estrangeiras à parte), views,
+   types, sequences, synonyms, packages (especificação e corpo),
+   procedures, functions, triggers, jobs e grants.
+3. banco/dependencias.csv, de ALL_DEPENDENCIES: quem referencia
+   quem.
+4. Um banco descartável em container (ou numa instância que eu
+   possa apagar) que sobe com um comando: cria os objetos, depois
+   as chaves estrangeiras, recompila e lista o que ficou inválido,
+   e por quê. Sem dados: cada teste cria as linhas dele.
+5. README.md com os comandos de exportar, subir o banco e rodar os
+   testes, só os que passaram. Um commit com tudo.
+
+No fim, liste o que não saiu no export, o que o catálogo não
+mostra (SQL dinâmico, a ação de um job, chamadas de outros
+sistemas, objetos que o meu usuário não enxerga) e qualquer senha
+ou endereço que tenha vindo no código.
+```
+
+Daí em diante os passos são os mesmos. No `/pedido`, "até cinco arquivos" são até cinco objetos; no passo 6, o teste chama o objeto no banco descartável a mudança é um script de alteração versionado, e ela segue o gatilho de spec, com o OK de quem responde pelo banco.
+
 **Passo 1, o kit.** O prompt de instalação está em `<kit>/brownfield/README.md`: o agente copia a estrutura de `docs/`, os comandos, o script de checagem e as skills, sem alterar nenhum arquivo que já existe, e faz um commit só com o kit.
 
 **Passo 2, gerar a base.** `/base <a área que o time vai mudar>`. O texto do comando (`.claude/commands/base.md`), em que `$ARGUMENTS` é o que vem depois do comando:
@@ -52,7 +84,7 @@ A área que o time vai mudar: $ARGUMENTS
 
 ## Primeiro, o que o time revisa hoje (um commit por item)
 
-1. `docs/inventario.md` (type: Pesquisa): a stack e as versões, lidas dos manifestos; as entradas (rotas, jobs, filas, telas); os módulos; o banco (tabelas, migrações, procedures, triggers); os comandos de instalar, build, testes e lint, cada um rodado, com o resultado; os testes que existem e o que não cobrem; a documentação antiga, com a data.
+1. `docs/inventario.md` (type: Pesquisa): a stack e as versões, lidas dos manifestos; as entradas (rotas, jobs, filas, telas); os módulos; as features da área do time, numa tabela (a feature, por onde entra, os arquivos, objetos e tabelas que a implementam, os testes que a cobrem), e as do resto do sistema só pelo nome, como hipótese; o banco (tabelas, migrações, procedures, triggers); os comandos de instalar, build, testes e lint, cada um rodado, com o resultado; os testes que existem e o que não cobrem; a documentação antiga, com a data.
 2. `ARCHITECTURE.md` (modelo 05b, type: Arquitetura) e `README.md` (o que o sistema faz, instalar, rodar e testar, só com comandos que passaram).
 3. `docs/padroes/modelagem-de-banco.md` (modelo 32): para cada tema, o que a maioria das tabelas faz, com três exemplos, o arquivo de cada um e a contagem.
 4. `docs/padroes/escrita-de-codigo.md` (modelo 33): camadas, nomes, tratamento de erro, log e acesso ao banco, com um arquivo de referência por camada. Feche com a seção "Testes" (modelo 34): o comando que roda tudo, o que roda um arquivo só, onde os testes ficam e quais pastas não têm teste.
