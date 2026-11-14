@@ -1,0 +1,33 @@
+schema: spec-driven
+
+context: |
+  Language: pt-BR
+  All artifacts must be written in pt-BR.
+  Keep OpenSpec structural headings and SHALL/MUST keywords in English.
+  Sistema legado, com código e dados em uso.
+  Antes de cada artefato, leia CLAUDE.md, VISION.md, ARCHITECTURE.md e os documentos de
+  docs/padroes/ que a mudança toca. Um documento com status: draft no frontmatter é
+  hipótese: confira no código antes de usar.
+  Toda mudança nasce de um PRD em docs/prds/ ou de uma issue; a proposta cita a origem.
+  Stack: <preencha a partir de docs/inventario.md>
+
+rules:
+  proposal:
+    - Citar o PRD (docs/prds/NNN-nome.md) ou a issue de origem e o critério de aceite que a mudança cobre.
+    - Listar os arquivos e as tabelas que a mudança toca e os testes que já protegem a área.
+  design:
+    - Abrir com a seção "Padrões seguidos", citando o documento de docs/padroes/ ou a ADR de docs/adrs/ que sustenta cada decisão.
+    - Tabela, coluna ou migração nova segue docs/padroes/modelagem-de-banco.md; fugir de um padrão pede uma ADR com Status proposta.
+  tasks:
+    - Cada tarefa de código começa por um teste que falha, e a tarefa diz o comando que mostra a falha.
+    - A última tarefa atualiza a base de conhecimento (o PRD, o ARCHITECTURE.md, o padrão tocado, docs/log.md).
+
+operations:
+  apply:
+    guidance:
+      - Para cada tarefa, rode o teste novo e mostre a falha antes de escrever o código.
+      - Depois de cada tarefa, rode os testes de caracterização da área; se um falhar, pare e pergunte.
+      - Faça um commit ao fim de cada tarefa.
+  archive:
+    guidance:
+      - Sincronize as specs antes de arquivar.

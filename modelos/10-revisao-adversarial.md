@@ -36,9 +36,9 @@ um defeito novo do mesmo peso.
 
 ## Se ainda bloquear
 
-No caso, há dois comportamentos: no pipeline documentado, a mudança ainda bloqueada para; no `/deliver`, depois da segunda rodada, o orquestrador (o agente que conduz o lote) decide e registra. Proposta para a empresa:
+No caso, há dois comportamentos: no pipeline documentado, a mudança ainda bloqueada para; no `/eng:deliver`, depois da segunda rodada, o orquestrador (o agente que conduz o lote) decide e registra. Proposta para a empresa:
 
 - spec ou plano ainda bloqueados: PO e arquiteto decidem e registram no comentário da issue ou numa ADR;
 - código ainda bloqueado: a mudança para e é reportada.
 
-No dia 2, a mudança do OpenSpec (proposal, design, specs e tasks) passa por uma revisão só; no dia 3, spec e plano têm cada um a sua.
+No dia 2, a mudança do OpenSpec (proposal, design, specs e tasks) passa por uma revisão só; no dia 3, a revisão é da base de conhecimento do legado, contra o código; no dia 4, do PRD e do diff da mudança.

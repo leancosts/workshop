@@ -17,4 +17,4 @@ Time: <nome do time>.
 | Quem pode ser a pessoa de referência do time nesta semana? | |
 ```
 
-As specs e os prompts existentes são insumo do dia 1 (o `CLAUDE.md`) e do dia 3 (o formato da spec). O uso em conta pessoal é migrado antes do dia 1.
+As specs e os prompts existentes são insumo do dia 1 (o `CLAUDE.md`) e do dia 3 (a base de conhecimento do legado). O uso em conta pessoal é migrado antes do dia 1.

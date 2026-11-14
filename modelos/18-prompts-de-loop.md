@@ -10,7 +10,7 @@ O `/loop` do Claude Code repete um prompt enquanto a sessão está aberta. Há t
 
 Um loop roda só com o Claude Code aberto, entre um turno e outro, e expira em 7 dias. Para rodar sem a sessão aberta, use uma tarefa agendada no Claude Desktop (com a máquina ligada) ou na nuvem (sem a máquina, com intervalo mínimo de 1 hora).
 
-Os prompts abaixo são proposta do workshop. No caso, o `/deliver` roda o caminho de uma issue e o agente que muda uma etapa move o card no quadro.
+Os prompts abaixo são proposta do workshop. No caso, o `/eng:deliver` roda o caminho de uma issue e o agente que muda uma etapa move o card no quadro.
 
 ## Regras para qualquer loop
 
@@ -20,7 +20,7 @@ Os prompts abaixo são proposta do workshop. No caso, o `/deliver` roda o caminh
 - **Quem muda a etapa move o card.** O card muda no mesmo passo da etapa.
 - **Pare com motivo.** O loop para quando a fila esvazia ou quando chega ao limite combinado de issues ou de orçamento. Uma issue cujo portão falha duas vezes seguidas fica `blocked`, e o loop segue para a próxima.
 - **Nada vai para a branch principal sem o OK de uma pessoa.** O loop para no pull request aberto; o da seção 2 retoma depois do merge para verificar o deploy.
-- **Uma skill marcada com `disable-model-invocation: true` não roda num loop agendado**: chega como texto. No caso, o `/deliver` é assim de propósito, porque chamá-lo é o OK do operador para o push.
+- **Uma skill marcada com `disable-model-invocation: true` não roda num loop agendado**: chega como texto. No caso, o `/eng:deliver` é assim de propósito, porque chamá-lo é o OK do operador para o push.
 
 ## 1. A fila do quadro
 

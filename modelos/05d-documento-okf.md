@@ -45,7 +45,7 @@ O OKF só exige `type`. O resto abaixo é política local do método: mais rígi
 
 | Campo | Regra |
 |---|---|
-| `type` | Obrigatório. Um da lista da empresa, que o script aplica. Ponto de partida: Arquitetura (de uma área; o `ARCHITECTURE.md` geral fica na raiz), Regra de Negócio, Processo, Feature, Jornada, Guia, Conceito, Runbook, Decisão, Glossário, Spec, Plano, Pesquisa |
+| `type` | Obrigatório. Um da lista da empresa, que o script aplica. Ponto de partida: Arquitetura (de uma área; o `ARCHITECTURE.md` geral fica na raiz), Regra de Negócio, Processo, Feature, Jornada, Guia, Conceito, Runbook, Decisão, Glossário, Spec, Plano, Pesquisa, PRD, Visão, Design |
 | `title`, `description` | Obrigatórios. `description` é uma frase e aparece no `index.md` |
 | `status` | Obrigatório: `draft` (não revisado), `stable` (vale) ou `deprecated` (histórico) |
 | `sources` | Obrigatório em Feature, Regra de Negócio, Decisão e Pesquisa: lista de entradas, cada uma com `id` e `resource` (caminho do código, link do ticket ou do documento) |

@@ -21,8 +21,8 @@ Os termos do método, com o significado que este livro usa. Quando dois nomes pa
 | design técnico | A parte da spec que descreve como a escolhida será construída | desenho técnico |
 | lote | O conjunto de issues entregues numa execução; cada unidade entra na branch do lote quando é aprovada, e o portão completo roda uma vez, no fim | sprint, batch |
 | unidade | Uma issue, ou uma cadeia de issues que tocam os mesmos arquivos e rodam uma depois da outra, dentro de um lote | teste de unidade (outra coisa) |
-| onda | Sessões de `/deliver` que rodam em paralelo porque não tocam os mesmos arquivos; a onda seguinte vem depois | |
-| via rápida | Uma mudança pequena e certa feita numa sessão e num worktree, sem spec e plano; mantém o teste que falha antes, a revisão do diff por outro modelo e o OK. Para e vai para o `/deliver` se aparece um gatilho de spec, outra área, ou se não fecha no dia | fast lane; no caso, o rótulo `quick-win` |
+| onda | Sessões de `/eng:deliver` que rodam em paralelo porque não tocam os mesmos arquivos; a onda seguinte vem depois | |
+| via rápida | Uma mudança pequena e certa feita numa sessão e num worktree, sem spec e plano; mantém o teste que falha antes, a revisão do diff por outro modelo e o OK. Para e vai para o `/eng:deliver` se aparece um gatilho de spec, outra área, ou se não fecha no dia | fast lane; no caso, o rótulo `quick-win` |
 | grau de automação | Manual (uma pessoa produz a decisão), parcial (o agente produz o artefato e uma pessoa aprova ou edita) ou automático (o agente faz e uma máquina confere), por atividade do SDLC | nível, que fica para o questionário de maturidade |
 | follow-up | Trabalho encontrado durante um lote, fora do critério de aceite; vira issue | anotação solta |
 | orquestrador | O agente que conduz um lote e reúne os resultados dos outros | |

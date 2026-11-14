@@ -24,4 +24,4 @@ Em time, com duplas por arquivo. 25 minutos: cerca de 12 para os arquivos, 8 par
 
 Se reconstruir não couber no tempo, peça ao agente só o plano, em modo de plano, e compare com o que foi feito.
 
-Os arquivos são do app do exercício. O `CLAUDE.md` do repositório do time é gerado no laboratório A do dia 3 (modelos 05 e 05e).
+Os arquivos são do app do exercício. O `CLAUDE.md` do repositório do time é gerado no dia 3, depois da base de conhecimento (modelos 05 e 05e).

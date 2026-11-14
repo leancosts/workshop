@@ -34,4 +34,4 @@ verified:
 - [<título da ADR>](../decisoes/<arquivo>.md)
 ```
 
-Quando o código e o documento discordam, vale o código, e o documento é corrigido no mesmo commit da próxima mudança. Uma seção sem conteúdo é removida, não deixada vazia. No laboratório A do dia 3, bastam `type`, `title`, `description`, `status` e `sources`; `generated` e `verified` entram quando o documento é conferido.
+Quando o código e o documento discordam, vale o código, e o documento é corrigido no mesmo commit da próxima mudança. Uma seção sem conteúdo é removida, não deixada vazia. No dia 3, o agente preenche também `generated`; `verified` entra quando uma pessoa confere o documento.

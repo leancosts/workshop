@@ -10,7 +10,7 @@ O que ele confere:
 - Runbook tem `stale_after`, em ISO 8601 com fuso;
 - `index.md` não tem frontmatter (só o da raiz pode ter `okf_version`), e todo documento da pasta está listado nele.
 
-Um BOM UTF-8 no início do arquivo, comum em editores do Windows, é ignorado. `VISION.md`, `ARCHITECTURE.md` e `CLAUDE.md` ficam na raiz do repositório, fora de `docs/`, e não passam por este script.
+Um BOM UTF-8 no início do arquivo, comum em editores do Windows, é ignorado. `VISION.md`, `ARCHITECTURE.md`, `DESIGN.md` e `CLAUDE.md` ficam na raiz do repositório, fora de `docs/`. Por padrão não passam por este script; num repositório legado, em que os três primeiros também são gerados por agente, a lista `ROOT_FILES` os inclui, e eles levam o mesmo frontmatter (capítulo 11). O `CLAUDE.md` e o `README.md` nunca levam.
 
 ```js
 #!/usr/bin/env node
@@ -21,10 +21,13 @@ import { join, relative } from "node:path";
 
 // Política local: ajuste estas listas para a empresa.
 const TYPES = ["Arquitetura", "Regra de Negócio", "Processo", "Feature", "Jornada", "Guia", "Conceito",
-  "Runbook", "Decisão", "Glossário", "Spec", "Plano", "Pesquisa"];
+  "Runbook", "Decisão", "Glossário", "Spec", "Plano", "Pesquisa", "PRD", "Visão", "Design"];
 const NEEDS_SOURCES = ["Feature", "Regra de Negócio", "Decisão", "Pesquisa"];
 const NEEDS_STALE_AFTER = ["Runbook"];
 const STATUS = ["draft", "stable", "deprecated"];
+// Arquivos da raiz que levam o mesmo bloco. Vazio: nenhum. Num legado, onde eles também nascem gerados por
+// agente: ["VISION.md", "ARCHITECTURE.md", "DESIGN.md"].
+const ROOT_FILES = [];
 const ISO = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:\d{2})$/;
 const ACTOR = /^(human:|process:)\S+$|^[^\s:/]+\/\S+$/;
 
@@ -87,6 +90,23 @@ const checkEvent = (file, field, e) => {
   if (!ISO.test(e.at)) say(file, `${field}.at "${e.at}" não é data e hora ISO 8601 com fuso`);
 };
 
+function checkFields(file, fm) {
+  if (!fm) return say(file, "sem bloco de frontmatter (--- na primeira linha)");
+  if (!fm.type) say(file, "type é obrigatório");
+  else if (!TYPES.includes(fm.type)) say(file, `type "${fm.type}" não está na lista da empresa`);
+  for (const k of ["title", "description", "status"]) if (!fm[k]) say(file, `${k} é obrigatório`);
+  if (fm.status && !STATUS.includes(fm.status)) say(file, `status "${fm.status}" não é draft, stable nem deprecated`);
+  if (NEEDS_SOURCES.includes(fm.type)) {
+    const src = asList(fm.sources);
+    if (!src.length) say(file, `sources é obrigatório em ${fm.type}`);
+    for (const s of src) if (typeof s !== "object" || !s.id || !s.resource) say(file, "cada fonte precisa de id e resource");
+  }
+  if (fm.generated !== undefined) checkEvent(file, "generated", fm.generated);
+  for (const v of asList(fm.verified)) checkEvent(file, "verified", v);
+  if (NEEDS_STALE_AFTER.includes(fm.type) && !fm.stale_after) say(file, `stale_after é obrigatório em ${fm.type}`);
+  if (fm.stale_after && !ISO.test(fm.stale_after)) say(file, `stale_after "${fm.stale_after}" não é data e hora ISO 8601 com fuso`);
+}
+
 function walk(dir) {
   const entries = readdirSync(dir);
   const docs = entries.filter((f) => f.endsWith(".md") && f !== "index.md" && f !== "log.md");
@@ -103,25 +123,17 @@ function walk(dir) {
     const file = join(dir, f);
     const fm = frontmatter(readFileSync(file, "utf8"));
     if (index && !index.includes(`](${f})`) && !index.includes(`](./${f})`)) say(file, `não está listado em ${relative(process.cwd(), indexFile)}`);
-    if (!fm) { say(file, "sem bloco de frontmatter (--- na primeira linha)"); continue; }
-    if (!fm.type) say(file, "type é obrigatório");
-    else if (!TYPES.includes(fm.type)) say(file, `type "${fm.type}" não está na lista da empresa`);
-    for (const k of ["title", "description", "status"]) if (!fm[k]) say(file, `${k} é obrigatório`);
-    if (fm.status && !STATUS.includes(fm.status)) say(file, `status "${fm.status}" não é draft, stable nem deprecated`);
-    if (NEEDS_SOURCES.includes(fm.type)) {
-      const src = asList(fm.sources);
-      if (!src.length) say(file, `sources é obrigatório em ${fm.type}`);
-      for (const s of src) if (typeof s !== "object" || !s.id || !s.resource) say(file, "cada fonte precisa de id e resource");
-    }
-    if (fm.generated !== undefined) checkEvent(file, "generated", fm.generated);
-    for (const v of asList(fm.verified)) checkEvent(file, "verified", v);
-    if (NEEDS_STALE_AFTER.includes(fm.type) && !fm.stale_after) say(file, `stale_after é obrigatório em ${fm.type}`);
-    if (fm.stale_after && !ISO.test(fm.stale_after)) say(file, `stale_after "${fm.stale_after}" não é data e hora ISO 8601 com fuso`);
+    checkFields(file, fm);
   }
   for (const d of subdirs) walk(join(dir, d));
 }
 
 walk(root);
+for (const file of ROOT_FILES) {
+  let text = null;
+  try { text = readFileSync(file, "utf8"); } catch { continue; } // um arquivo que não existe não é cobrado
+  checkFields(file, frontmatter(text));
+}
 if (problems.length) {
   console.error(`docs: ${problems.length} problema(s)\n` + problems.map((p) => `  - ${p}`).join("\n"));
   process.exit(1);
