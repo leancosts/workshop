@@ -1,6 +1,6 @@
 # Modelo: padrão de modelagem de banco
 
-Como o time nomeia, tipa e migra tabelas. Sem este documento, o agente modela no estilo mais comum que conhece, e cada sessão cria uma variante. No legado, o agente o extrai do esquema e das migrações (modelo 23, passo 6), e o time decide o que vale. Fica em `docs/padroes/modelagem-de-banco.md`, no formato da base (modelo 05d), e o `CLAUDE.md` manda lê-lo antes de criar ou alterar tabela, coluna ou migração. Proposta do workshop.
+Como o time nomeia, tipa e migra tabelas. Sem este documento, o agente modela no estilo mais comum que conhece, e cada sessão cria uma variante. No legado, o agente o extrai do esquema e das migrações (modelo 23, passo 2), e o time decide o que vale. Fica em `docs/padroes/modelagem-de-banco.md`, no formato da base (modelo 05d), e o `CLAUDE.md` manda lê-lo antes de criar ou alterar tabela, coluna ou migração. Proposta do workshop.
 
 ```markdown
 ---

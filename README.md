@@ -46,7 +46,7 @@ claude
 
 ## Dias 3 e 4: o repositório legado
 
-O passo a passo está em [`brownfield/README.md`](brownfield/README.md): clonar este repositório ao lado do legado, pedir ao agente a instalação do kit e seguir os passos 3 a 15 com os prompts do modelo 23.
+O passo a passo está em [`brownfield/README.md`](brownfield/README.md): clonar este repositório ao lado do legado, pedir ao agente a instalação do kit e seguir os sete passos, com os comandos do kit e os prompts do modelo 23.
 
 ## O que está aqui
 

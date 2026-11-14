@@ -1,6 +1,6 @@
 # Modelo: padrão de escrita de código
 
-Como o time escreve código neste repositório: camadas, nomes, erros e acesso a dados. No legado, o agente o extrai dos arquivos mais alterados e de módulos recentes (modelo 23, passo 6), e o time decide o que vale. Fica em `docs/padroes/escrita-de-codigo.md`, no formato da base (modelo 05d); um repositório com mais de uma linguagem tem um documento por linguagem. O `CLAUDE.md` manda lê-lo antes de escrever código novo. Proposta do workshop.
+Como o time escreve código neste repositório: camadas, nomes, erros e acesso a dados. No legado, o agente o extrai dos arquivos mais alterados e de módulos recentes (modelo 23, passo 2), e o time decide o que vale. Fica em `docs/padroes/escrita-de-codigo.md`, no formato da base (modelo 05d); um repositório com mais de uma linguagem tem um documento por linguagem. O `CLAUDE.md` manda lê-lo antes de escrever código novo. Proposta do workshop.
 
 ```markdown
 ---

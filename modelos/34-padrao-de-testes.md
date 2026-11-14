@@ -1,6 +1,6 @@
 # Modelo: padrão de testes
 
-O que o time testa, onde e como, e o que uma mudança precisa provar antes do pull request. No legado, o agente o extrai dos testes que existem e lista as áreas sem teste (modelo 23, passo 6). Fica em `docs/padroes/testes.md`, no formato da base (modelo 05d). Proposta do workshop.
+O que o time testa, onde e como, e o que uma mudança precisa provar antes do pull request. No legado, o agente o extrai dos testes que existem e lista as áreas sem teste (modelo 23, passo 2). Nos dois dias do workshop, ele entra como a seção "Testes" do padrão de código; quando crescer, fica em `docs/padroes/testes.md`, no formato da base (modelo 05d). Proposta do workshop.
 
 ```markdown
 ---

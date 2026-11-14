@@ -18,7 +18,7 @@ O plugin se atualiza sozinho e não deixa arquivos no repositório. Para editar 
 
 **Quando usar.** Sempre que um pedido vago vira trabalho: antes de escrever a intenção ou uma spec. O README recomenda o `/grill-me` para o que não é código, como o pedido do PO, e o `/grill-with-docs` para uma mudança no código.
 
-**No método.** Etapa 1. No dia 3, o `/grill-me` entrevista o PO para o `VISION.md` do legado; no dia 4, para o PRD do desafio; as perguntas que ele não soube responder mostram o que faltava no pedido (modelo 07), e as técnicas vão em lista para o arquiteto (modelo 01). A variante `/grill-with-docs` faz a mesma entrevista e atualiza o glossário e os ADRs do repositório.
+**No método.** Etapa 1. No dia 2, o `/grill-me` entrevista o PO para o PRD; no legado, depois da semana, para o `VISION.md`; as perguntas que ele não soube responder mostram o que faltava no pedido (modelo 07), e as técnicas vão em lista para o arquiteto (modelo 01). A variante `/grill-with-docs` faz a mesma entrevista e atualiza o glossário e os ADRs do repositório.
 
 ## /research: a pesquisa com fonte
 

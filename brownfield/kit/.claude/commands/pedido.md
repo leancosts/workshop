@@ -1,0 +1,26 @@
+---
+description: Transforma um item do backlog num pedido pequeno, com critério de aceite
+argument-hint: <o item do backlog, em uma ou duas frases>
+---
+
+O item do backlog: $ARGUMENTS
+
+Leia o CLAUDE.md, o ARCHITECTURE.md, os documentos de docs/padroes/ e o código da área antes de responder. Não comece a mudança.
+
+1. Diga o tipo: feature nova, melhoria ou correção.
+2. Liste os arquivos e as tabelas que a mudança toca, os padrões que se aplicam e os testes que já existem na área.
+3. Meça o tamanho. O pedido é pequeno o suficiente quando:
+   - toca até cinco arquivos do sistema;
+   - não muda o esquema do banco, ou acrescenta no máximo uma coluna ou uma tabela, sem migrar dado que já existe;
+   - não depende de outro time, de outro repositório nem de um acesso que o time não tem;
+   - tem um critério de aceite que um teste automatizado verifica.
+4. Se o item não é pequeno, proponha a menor fatia que um usuário percebe e diga o que fica fora.
+5. Faça no máximo três perguntas, uma por vez, com a sua recomendação em cada uma, só sobre o que o código não responde.
+6. Escreva o pedido em `docs/prds/NNN-nome.md`, no formato de ../workshop-kit/modelos/31-prd.md (type: PRD, status: draft), curto:
+   - "Quem ganha" e "Objetivo", em uma frase cada;
+   - "Problema hoje", com o que o sistema faz hoje, citando arquivo e linha. Numa correção, os passos para reproduzir;
+   - "Pronto quando", com o critério de aceite;
+   - "Fora de escopo".
+7. Se o pedido conflita com um princípio do VISION.md, com uma ADR ou com um padrão, pare e mostre o conflito.
+
+Termine com o caminho do arquivo e espere o PO aprovar.

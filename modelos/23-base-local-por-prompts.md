@@ -28,109 +28,167 @@ Frontmatter OKF em cada arquivo de docs/, status: draft.
 Liste no fim o que o PRD não diz e uma decisão precisa dizer.
 ```
 
-## Brownfield: a base do legado, passo a passo
+## Brownfield: a base do legado, em três passos
 
-Os passos são os do dia 3 (capítulo 11). Cada documento usa o anterior; `<kit>` é a pasta onde o repositório `leancosts/workshop` foi clonado. O `VISION.md`, o `ARCHITECTURE.md` e o `DESIGN.md` levam o frontmatter do padrão; o `CLAUDE.md` e o `README.md` não.
+Os passos são os do dia 3 (capítulo 11). `<kit>` é a pasta onde o repositório `leancosts/workshop` foi clonado (`../workshop-kit`). O `VISION.md`, o `ARCHITECTURE.md` e o `DESIGN.md` levam o frontmatter do padrão; o `CLAUDE.md` e o `README.md` não.
 
-**Passo 2, o kit.** O prompt de instalação está em `<kit>/brownfield/README.md`: o agente copia a estrutura de `docs/`, o script de checagem e as skills, sem alterar nenhum arquivo que já existe, e faz um commit só com o kit.
+**Passo 1, o kit.** O prompt de instalação está em `<kit>/brownfield/README.md`: o agente copia a estrutura de `docs/`, os comandos, o script de checagem e as skills, sem alterar nenhum arquivo que já existe, e faz um commit só com o kit.
 
-**Passo 3, o inventário.** Sem interpretar e sem alterar.
+**Passo 2, gerar a base.** `/base <a área que o time vai mudar>`. O texto do comando (`.claude/commands/base.md`), em que `$ARGUMENTS` é o que vem depois do comando:
 
-```text
-Faça o inventário deste repositório. Não altere nenhum arquivo do
-sistema e não interprete: liste. Stack e versões (dos manifestos);
-entradas (main, rotas, jobs, filas, telas); módulos; banco (tabelas,
-migrações, procedures, triggers); comandos de instalar, build, testes
-e lint (rode cada um e anote o resultado e o tempo); testes (onde
-estão, quantos, o que não cobrem); documentação existente, com a data.
-Cite arquivo e linha. Marque como hipótese o que você deduziu sem ler.
-Escreva em docs/inventario.md (type: Pesquisa, status: draft, sources
-com os manifestos), liste-o em docs/index.md e feche com uma seção
-"Perguntas abertas".
-```
+````text
+Gere a base de conhecimento deste repositório, do começo ao fim, sem parar para perguntar.
+A área que o time vai mudar: $ARGUMENTS
 
-**Passo 4, `ARCHITECTURE.md` e `README.md`.**
+## Regras para todos os documentos
 
-```text
-Com base em docs/inventario.md, escreva o ARCHITECTURE.md no formato
-de <kit>/modelos/05b-architecture-md.md (type: Arquitetura): stack
-com versões, mapa de pastas com o ponto de entrada de cada uma e, em
-"Regras transversais", só o que você leu no código ou num teste.
-Atualize o README.md: o que o sistema faz, pré-requisitos, instalar,
-rodar e testar (só comandos que passaram), variáveis de ambiente (só
-os nomes) e onde está a base. Mostre, antes de apagar, cada trecho
-antigo que o inventário contradiz.
-```
+- Só leitura no sistema: não altere código, esquema nem configuração. Você só cria e edita os documentos abaixo, e cada commit leva só esses documentos (nunca um arquivo que um comando de instalação ou de build tenha alterado).
+- Toda afirmação cita arquivo e linha, ou o comando que você rodou. O que você deduziu sem ler leva a palavra "hipótese".
+- O que o código não responde vira uma pergunta numerada na seção "Decisões para o time", no fim do documento. Nunca escreva um palpite como fato, e nunca escolha entre duas variantes: conte quantas vezes cada uma aparece.
+- Arquivo que já existe: não apague o conteúdo. Acrescente o que falta e liste o que mudou.
+- Todo documento, menos o CLAUDE.md e o README.md, começa com o frontmatter de ../workshop-kit/modelos/05d-documento-okf.md: `status: draft`, `sources` com os arquivos lidos, `generated` com a data de hoje e o seu modelo, e nenhum `verified`. Só uma pessoa escreve `verified`.
+- O repositório inteiro é lido por alto. A área do time é lida em detalhe.
+- Os formatos estão em ../workshop-kit/modelos/.
 
-A prova, numa sessão nova: "Usando só o README.md e o ARCHITECTURE.md, instale e rode os testes; diga em que arquivo eu mexeria para mudar `<regra>`; diga o que os dois arquivos não dizem e você precisou procurar no código."
+## Primeiro, o que o time revisa hoje (um commit por item)
 
-**Passo 5, `VISION.md` e `DESIGN.md`.**
+1. `docs/inventario.md` (type: Pesquisa): a stack e as versões, lidas dos manifestos; as entradas (rotas, jobs, filas, telas); os módulos; o banco (tabelas, migrações, procedures, triggers); os comandos de instalar, build, testes e lint, cada um rodado, com o resultado; os testes que existem e o que não cobrem; a documentação antiga, com a data.
+2. `ARCHITECTURE.md` (modelo 05b, type: Arquitetura) e `README.md` (o que o sistema faz, instalar, rodar e testar, só com comandos que passaram).
+3. `docs/padroes/modelagem-de-banco.md` (modelo 32): para cada tema, o que a maioria das tabelas faz, com três exemplos, o arquivo de cada um e a contagem.
+4. `docs/padroes/escrita-de-codigo.md` (modelo 33): camadas, nomes, tratamento de erro, log e acesso ao banco, com um arquivo de referência por camada. Feche com a seção "Testes" (modelo 34): o comando que roda tudo, o que roda um arquivo só, onde os testes ficam e quais pastas não têm teste.
+5. `CLAUDE.md` (modelo 05), em no máximo 60 linhas: os comandos que passaram; uma linha por arquivo da base, dizendo quando ler; "toda tabela nova segue docs/padroes/modelagem-de-banco.md"; "todo código novo segue docs/padroes/escrita-de-codigo.md"; "um documento com status: draft é hipótese: confira no código"; "a base muda no mesmo commit que o código".
+6. Atualize `docs/index.md` e os índices das pastas, acrescente uma linha em `docs/log.md` e rode `node scripts/check-docs.mjs` até passar. Faça o commit e escreva: "A base mínima está pronta."
 
-```text
-/grill-me
-Leia o README.md, o ARCHITECTURE.md e docs/inventario.md. Proponha um
-rascunho do VISION.md no formato de <kit>/modelos/05a-vision-md.md
-(type: Visão) e me entreviste até fechar cada seção. Para cada
-princípio, pergunte o que ele impede e onde é verificado. Não escreva
-princípio que eu não confirmei.
-```
+## Depois, o que fica em rascunho
 
-```text
-Extraia o sistema visual que este repositório já usa e escreva o
-DESIGN.md no formato de <kit>/modelos/05f-design-md.md (type: Design):
-os tokens que existem, com valor e arquivo, e os componentes que se
-repetem. Não proponha um design novo. Onde houver dois valores para o
-mesmo papel, liste os dois em "Inconsistências" e não escolha.
-```
+7. `VISION.md` (modelo 05a, type: Visão): só o que o código e a documentação antiga sustentam. Cada princípio entra como pergunta para o PO. `DESIGN.md` (modelo 05f, type: Design), só se o sistema tem telas.
+8. `docs/adrs/` (modelo 12): no máximo cinco decisões que o histórico sustenta (mensagens de commit, README antigo, comentários), com Status: proposta e a origem em `sources`. `docs/prds/` (modelo 31, type: PRD): um PRD do que a área do time faz hoje.
+9. Acrescente ao `CLAUDE.md` uma linha para cada documento novo, atualize os índices e rode a checagem de novo.
 
-**Passo 6, os padrões.** Um prompt por documento, nos modelos 32, 33 e 34.
+## A resposta final
+
+1. Os arquivos criados, uma linha cada.
+2. As "Decisões para o time" do ARCHITECTURE.md e dos dois padrões, numeradas, com a sua recomendação em cada uma.
+3. O que você não conseguiu ler ou rodar, e por quê.
+````
+
+**Passo 3, revisar três documentos.** Um documento por vez: o `ARCHITECTURE.md`, o padrão de banco e o padrão de código.
 
 ```text
-Leia <o esquema e as migrações | os dez arquivos mais alterados no
-último ano e três módulos recentes | os testes que existem> e descubra
-o padrão que o time já segue. Escreva docs/padroes/<nome>.md no
-formato de <kit>/modelos/<32, 33 ou 34>. Para cada tema, diga o que a
-maioria do código faz, com três exemplos e o arquivo de cada um. Onde
-houver mais de um padrão, não escolha: liste as variantes em
-"Decisões para o time", com a contagem. Não altere o sistema.
+Vamos revisar <documento> juntos. Faça, uma por vez, as perguntas
+de "Decisões para o time" e as hipóteses, com a sua recomendação.
+A cada resposta, corrija o documento. Depois escolha as três
+afirmações que mais pesam numa mudança, abra o arquivo citado em
+cada uma e me mostre o trecho. Não mude status nem verified.
 ```
 
-**Passo 7, ADRs e PRDs retroativos.**
+Uma pessoa do time, depois de ler, escreve o próprio nome em `verified` e muda o status para `stable`. Depois, o pull request:
 
 ```text
-Procure decisões já tomadas neste repositório (mensagens de commit
-dos últimos 24 meses, README antigo, comentários que explicam um
-porquê, as "Decisões para o time" já respondidas) e escreva um
-candidato a ADR para cada uma em docs/adrs/NNNN-nome.md, no modelo
-12, com Status: proposta e a origem em sources. Onde o motivo não
-está escrito, deixe a pergunta e o nome de quem pode responder.
-No máximo oito.
+Abra um pull request em rascunho da branch base-de-conhecimento
+contra a branch de desenvolvimento (sem linha de comando autenticada,
+escreva a descrição num arquivo). Na descrição: os documentos
+criados, uma linha cada; quais uma pessoa assinou e quais seguem em
+rascunho; as perguntas que ninguém do time soube responder, com o
+nome de quem pode responder. Não escreva nada que não esteja num
+arquivo.
 ```
+
+## Brownfield: uma mudança pequena, em quatro passos
+
+Os passos são os do dia 4 (capítulo 11). Feature nova, melhoria e correção seguem o mesmo caminho.
+
+**Passo 4, o pedido.** `/pedido <o item do backlog>`. O texto do comando:
+
+````text
+O item do backlog: $ARGUMENTS
+
+Leia o CLAUDE.md, o ARCHITECTURE.md, os documentos de docs/padroes/ e o código da área antes de responder. Não comece a mudança.
+
+1. Diga o tipo: feature nova, melhoria ou correção.
+2. Liste os arquivos e as tabelas que a mudança toca, os padrões que se aplicam e os testes que já existem na área.
+3. Meça o tamanho. O pedido é pequeno o suficiente quando:
+   - toca até cinco arquivos do sistema;
+   - não muda o esquema do banco, ou acrescenta no máximo uma coluna ou uma tabela, sem migrar dado que já existe;
+   - não depende de outro time, de outro repositório nem de um acesso que o time não tem;
+   - tem um critério de aceite que um teste automatizado verifica.
+4. Se o item não é pequeno, proponha a menor fatia que um usuário percebe e diga o que fica fora.
+5. Faça no máximo três perguntas, uma por vez, com a sua recomendação em cada uma, só sobre o que o código não responde.
+6. Escreva o pedido em `docs/prds/NNN-nome.md`, no formato de ../workshop-kit/modelos/31-prd.md (type: PRD, status: draft), curto:
+   - "Quem ganha" e "Objetivo", em uma frase cada;
+   - "Problema hoje", com o que o sistema faz hoje, citando arquivo e linha. Numa correção, os passos para reproduzir;
+   - "Pronto quando", com o critério de aceite;
+   - "Fora de escopo".
+7. Se o pedido conflita com um princípio do VISION.md, com uma ADR ou com um padrão, pare e mostre o conflito.
+
+Termine com o caminho do arquivo e espere o PO aprovar.
+````
+
+**Passo 5, a proposta.**
 
 ```text
-Para a área <nome>, liste as capacidades que o sistema já oferece (no
-máximo cinco) e escreva um PRD retroativo para cada uma em
-docs/prds/NNN-nome.md, no modelo 31 (type: PRD). Descreva o que o
-sistema faz hoje, com arquivo e linha em sources. "Objetivo" e "Como
-medimos" são do PO: me entreviste. Um comportamento que parece
-defeito vai para "Anexos", como pergunta.
+/opsx:new <nome>
+
+/opsx:continue
+Parta de docs/prds/NNN-nome.md. Escreva a proposal: por que, o que
+muda e o que fica fora. Liste os arquivos e as tabelas que a mudança
+toca e os testes que já existem na área. Pare depois da proposal: o
+PO aprova antes do resto.
+
+/opsx:continue   (uma vez por artefato: specs, design e tasks)
+No design.md, abra com "Padrões seguidos": para cada decisão, cite o
+documento de docs/padroes/ que a sustenta. Se precisar fugir de um
+padrão, pare e me pergunte. No tasks.md: a primeira task escreve um
+teste do que a área faz hoje; cada task seguinte começa por um teste
+que falha.
 ```
 
-**Passo 8, o `CLAUDE.md` e a checagem.**
+**Passo 6, construir.**
 
 ```text
-Escreva o CLAUDE.md no formato de <kit>/modelos/05-claude-md-
-inicial.md, em no máximo 60 linhas: "Como rodar" (só os comandos do
-inventário que passaram); "Onde procurar" (uma linha por arquivo da
-base, dizendo quando ler); "Como trabalhamos" (teste antes; tabela
-nova segue docs/padroes/modelagem-de-banco.md; código novo segue
-docs/padroes/escrita-de-codigo.md; documento em draft é hipótese; a
-base muda no mesmo commit que o código); "Nunca". Aponte para os
-documentos, não copie. Depois rode node scripts/check-docs.mjs e
-corrija o que falhar. Nunca escreva verified com human:.
+/opsx:apply
+Uma task por vez. Na primeira, escreva o teste do que a área faz
+hoje e me mostre que ele passa sem alterar o sistema. Nas seguintes,
+rode o teste novo e me mostre a falha antes de escrever o código.
+Depois de cada task, rode os testes da área: se um teste que passava
+falhar, pare e me diga se a quebra era esperada. Siga docs/padroes/.
+Um commit por task.
 ```
 
-**Passo 9, a revisão.** Numa sessão nova, com outro modelo (`claude --model opus`):
+Numa correção, o teste que reproduz a falha vem primeiro:
+
+```text
+/diagnosing-bugs
+O defeito: <relato, com o esperado e o que aconteceu>. Reproduza antes
+de explicar: escreva um teste que falha pelo motivo do relato e me
+mostre a falha. Só então diga a causa, com arquivo e linha, e faça a
+correção mínima.
+```
+
+**Passo 7, fechar.** `/fechar <nome da mudança>`. O texto do comando:
+
+````text
+A mudança $ARGUMENTS está construída. Feche o trabalho, nesta ordem:
+
+1. Rode os testes da área e `node scripts/check-docs.mjs`. Se algo falhar, pare e me mostre a saída.
+2. Atualize a base de conhecimento, nesta mesma branch (se uma task já a atualizou, confira e complete):
+   - o pedido em `docs/prds/`: marque o que foi entregue e ligue a mudança de `openspec/changes/`;
+   - `ARCHITECTURE.md` e `README.md`, só se a mudança os desatualizou. Mostre o trecho antes e depois;
+   - `docs/padroes/`: se a mudança criou um caso que o padrão não cobria, proponha o texto e pare para o time decidir;
+   - `CLAUDE.md`: se eu corrigi você mais de uma vez pelo mesmo motivo nesta sessão, proponha a regra que evitaria o erro;
+   - uma linha em `docs/log.md`.
+3. Abra um pull request em rascunho contra a branch de onde esta saiu (a da base, se ela ainda não foi incorporada), com a descrição no formato de ../workshop-kit/modelos/14-descricao-do-pr.md: o pedido, o que mudou e o que ficou fora, a evidência (o teste novo antes e depois), o que mudou na base e o que não ficou pronto. Não escreva nada que você não possa mostrar num arquivo ou numa saída de comando.
+4. Escreva o roteiro da apresentação, em cinco linhas:
+   - o pedido e o tipo;
+   - a mudança, e como mostrar que funciona;
+   - a evidência: o teste que falhava e passa;
+   - o que entrou na base;
+   - um erro seu que o time corrigiu.
+````
+
+## Brownfield: depois da semana
+
+A revisão por outro modelo, numa sessão nova (`claude --model opus`), primeiro da base e depois do diff de cada mudança:
 
 ```text
 Você é o revisor adversarial da base de conhecimento deste
@@ -143,100 +201,25 @@ Bloqueie quando tiver dúvida. Cada ponto cita o documento, a linha e
 o arquivo do código. Responda: APROVADO, ou a lista do que bloqueia.
 ```
 
-## Brownfield: a mudança do backlog
-
-Os passos são os do dia 4 (capítulo 11): 10, classificar; 11, o PRD ou a issue; 12, os testes do que existe; 13 e 14, a mudança no OpenSpec; 15, a revisão e a base.
-
-```text
-Leia o CLAUDE.md, o ARCHITECTURE.md e este item do backlog: <item>.
-Classifique (feature nova, melhoria ou correção), diga os arquivos e
-as tabelas que a mudança toca, os padrões e as ADRs que se aplicam, o
-que existe de teste na área e o que pede mais cuidado. Estime se cabe
-em cerca de uma hora de trabalho com agentes; se não, proponha a menor
-fatia com um critério de aceite. Não comece a mudança.
-```
-
-```text
-/grill-me
-Vamos escrever docs/prds/NNN-nome.md para este item do backlog:
-<item>, no modelo 31. Antes de perguntar, leia o VISION.md, os PRDs
-da mesma área e o código que a feature toca. Escreva "Problema hoje"
-com o que o sistema faz hoje, citando arquivo e linha. Depois me
-entreviste, com a sua recomendação em cada pergunta. Se a feature
-conflita com um princípio ou com uma ADR, pare e me mostre o conflito.
-```
-
-```text
-Escreva a issue desta melhoria no modelo 02, a partir do código:
-<item>. Quem ganha; o problema hoje, com arquivo e linha; o impacto;
-o critério de aceite, verificável por um teste; referências (o PRD da
-capacidade e os padrões que se aplicam). Não proponha a solução.
-```
-
-```text
-/diagnosing-bugs
-O defeito: <relato, com o esperado e o que aconteceu>. Reproduza antes
-de explicar: escreva um teste que falha pelo motivo do relato e me
-mostre a falha. Só então diga a causa raiz, com arquivo e linha.
-Escreva a issue no modelo 02. Não corrija ainda.
-```
-
-```text
-Antes de qualquer mudança, escreva testes de caracterização para
-<área>, seguindo docs/padroes/testes.md: os três comportamentos mais
-importantes, como o código faz HOJE. Todos passam sem tocar no
-sistema. Altere uma linha de propósito, mostre que um teste falha e
-desfaça.
-```
-
-```text
-/opsx:new <nome>
-Parta de docs/prds/NNN-nome.md (ou da issue). Escreva só a proposal:
-por que, o que muda, o que fica fora, os arquivos e as tabelas que a
-mudança toca e os testes que já protegem a área. Pare: o PO valida.
-
-/opsx:continue
-No design.md, abra com "Padrões seguidos": para cada decisão, o
-documento de docs/padroes/ ou a ADR que a sustenta. Fuga de um padrão
-pede uma ADR com Status: proposta. No tasks.md, cada task de código
-começa por um teste que falha, e a última atualiza a base.
-
-/opsx:apply
-Uma task por vez. Mostre a falha do teste novo antes do código. Depois
-de cada task, rode os testes de caracterização: se um falhar, pare.
-Um commit por task. No fim, /opsx:verify.
-```
-
-A revisão do diff, numa sessão nova com outro modelo, ou com a skill `/code-review`:
-
 ```text
 Você é o revisor adversarial desta mudança. Leia o CLAUDE.md,
 docs/padroes/, a proposal e as specs de openspec/changes/<nome>/ e o
 diff desta branch contra a branch principal. Procure: tabela, coluna
 ou migração fora do padrão de banco; código fora do padrão de código;
-cenário sem teste; teste que passa sem a mudança; teste de
-caracterização alterado sem motivo; comportamento fora da proposal;
-base não atualizada. Rode os testes tocados. Cada ponto cita arquivo,
-linha e o padrão violado. Responda: APROVADO, ou a lista do que
-bloqueia.
+cenário sem teste; teste que passa sem a mudança; comportamento fora
+da proposal; base não atualizada. Rode os testes tocados. Cada ponto
+cita arquivo, linha e o padrão violado. Responda: APROVADO, ou a
+lista do que bloqueia.
 ```
 
-```text
-A mudança <nome> está verificada. Atualize a base no mesmo pull
-request: o PRD; o ARCHITECTURE.md e o README.md, se ficaram
-desatualizados; o padrão, se a mudança criou um caso novo (proponha e
-pare); uma ADR para cada decisão fora da spec; uma regra no CLAUDE.md
-para o erro que eu corrigi mais de uma vez; docs/log.md e os índices.
-```
+O `VISION.md` com o PO:
 
 ```text
-Abra um pull request em rascunho contra a branch de desenvolvimento,
-com a descrição no modelo 14: o pedido; a mudança e o que ficou fora;
-a evidência (o teste novo antes e depois, os testes de
-caracterização); o veredito do revisor; a base, uma linha por
-documento alterado; as decisões fora da spec; o que não ficou pronto.
-Não escreva nada que você não possa mostrar num arquivo ou numa saída
-de comando.
+/grill-me
+Leia o README.md, o ARCHITECTURE.md e o rascunho do VISION.md. Me
+entreviste até fechar cada seção. Para cada princípio, pergunte o
+que ele impede e onde é verificado. Não escreva princípio que eu não
+confirmei.
 ```
 
 ## Conferir antes de usar
@@ -244,6 +227,6 @@ de comando.
 | Conferência | Quem |
 |---|---|
 | Os comandos do `CLAUDE.md` rodam numa sessão nova | O agente, numa sessão limpa |
-| Uma sessão nova acha o arquivo de uma regra só com os documentos | O agente, numa sessão limpa (dia 3) |
+| Uma sessão nova acha o arquivo de uma regra só com os documentos | O agente, numa sessão limpa |
 | Cada afirmação bate com o código citado | Outro modelo (modelo 10), depois uma pessoa do time |
 | Regras que valem para mais de um sistema | Sobem para a base corporativa por pull request (capítulo 5) |
