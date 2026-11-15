@@ -10,7 +10,6 @@ description: <As regras de camada, nome e erro deste repositório, em uma frase.
 status: draft
 sources:
   - { id: referencia, resource: <arquivo que serve de modelo> }
-generated: { by: claude-code/<modelo>, at: <AAAA-MM-DDThh:mm:ssZ> }
 ---
 
 # Padrão de escrita de código

@@ -5,8 +5,6 @@ description: O framework HTTP da API da Triagem é o Fastify, em TypeScript.
 status: stable
 sources:
   - { id: arquitetura, resource: ARCHITECTURE.md }
-generated: { by: claude-code/claude-opus-5-5, at: 2026-11-10T12:00:00Z }
-verified: []
 ---
 
 Data: 2026-11-10 · Status: proposta

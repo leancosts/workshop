@@ -10,9 +10,6 @@ description: <O que foi decidido e onde vale.>
 status: stable
 sources:
   - { id: issue, resource: <link da issue ou da spec> }
-generated: { by: claude-code/<modelo>, at: <AAAA-MM-DDThh:mm:ssZ> }
-verified:
-  - { by: human:<id>, at: <AAAA-MM-DDThh:mm:ssZ> }
 ---
 
 Data: <AAAA-MM-DD> · Status: <proposta | aceita | substituída por [...](...)>

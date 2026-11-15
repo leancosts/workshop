@@ -10,7 +10,6 @@ description: <Como os testes deste repositório são escritos e rodados, em uma 
 status: draft
 sources:
   - { id: exemplo, resource: <um teste que serve de modelo> }
-generated: { by: claude-code/<modelo>, at: <AAAA-MM-DDThh:mm:ssZ> }
 ---
 
 # Padrão de testes

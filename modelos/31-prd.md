@@ -13,7 +13,6 @@ status: draft
 owner: <PO>
 sources:
   - { id: visao, resource: VISION.md }
-generated: { by: <claude-desktop/modelo ou human:nome>, at: <AAAA-MM-DDThh:mm:ssZ> }
 ---
 
 # <Título>

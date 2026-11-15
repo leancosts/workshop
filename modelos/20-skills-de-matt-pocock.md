@@ -26,7 +26,7 @@ O plugin se atualiza sozinho e não deixa arquivos no repositório. Para editar 
 
 **Quando usar.** Quando a spec depende de um fato que está fora do repositório: o limite de uma API, o comportamento de uma biblioteca numa versão, uma norma, um preço, o que um fornecedor garante. O que está no código e na base de conhecimento o agente lê direto, ou no subagente do `/grill-me`.
 
-**No método.** Etapa 2, antes da spec. Proposta do workshop: a nota fica em `docs/pesquisas/`, com `type: Pesquisa`, `generated` e as fontes em `sources`; a spec cita a nota nas suas `sources`, e a revisão adversarial confere a nota junto com a spec. O capítulo 4 ("Quem pesquisa é o agente") explica por que a pesquisa não vai colada no prompt.
+**No método.** Etapa 2, antes da spec. Proposta do workshop: a nota fica em `docs/pesquisas/`, com `type: Pesquisa` e as fontes em `sources`; a spec cita a nota nas suas `sources`, e a revisão adversarial confere a nota junto com a spec. O capítulo 4 ("Quem pesquisa é o agente") explica por que a pesquisa não vai colada no prompt.
 
 ## /wayfinder: o mapa de um trabalho grande
 

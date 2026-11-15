@@ -1,6 +1,6 @@
 # Modelo: base local por prompts
 
-Prompts para montar, em horas, uma base de conhecimento local que baste para os agentes trabalharem num repositório, antes de existir a base corporativa. O resultado é rascunho: cada documento sai com `status: draft` e sem `verified` de pessoa, até alguém do time conferir. Formato dos documentos: modelo 05d. Proposta do workshop.
+Prompts para montar, em horas, uma base de conhecimento local que baste para os agentes trabalharem num repositório, antes de existir a base corporativa. O resultado é rascunho: cada documento sai com `status: draft`, até alguém do time conferir e mudar o status para `stable`. Formato dos documentos: modelo 05d. Proposta do workshop.
 
 ## Regras para todos os prompts
 
@@ -8,7 +8,7 @@ Prompts para montar, em horas, uma base de conhecimento local que baste para os 
 - O que o agente deduziu e não leu é marcado como hipótese.
 - Comandos de build e teste entram no `CLAUDE.md` só depois de rodar e passar.
 - Um subagente por módulo, em paralelo, quando os módulos não se cruzam; cada um devolve só o documento.
-- Depois, outro modelo revisa com a instrução do modelo 10, e uma pessoa do time confere antes do `verified`.
+- Depois, outro modelo revisa com a instrução do modelo 10, e uma pessoa do time confere e muda o status para `stable`.
 
 ## Greenfield: do PRD à base
 
@@ -108,7 +108,7 @@ A área que o time vai mudar: $ARGUMENTS
 - O que o código não responde vira uma pergunta numerada na seção "Decisões para o time", no fim do documento. Nunca escreva um palpite como fato, e nunca escolha entre duas variantes: conte quantas vezes cada uma aparece.
 - Arquivo que já existe: não apague o conteúdo. Acrescente o que falta e liste o que mudou. No `README.md` que já existe, uma instrução que o código desmente não fica no arquivo: ela vai para o inventário, na parte da documentação antiga, com a data.
 - Se você subir um processo para testar um comando, guarde o PID do que você abriu e encerre só esse, pelo PID. Nunca encerre processos pelo nome (`taskkill /IM`, `pkill`, `killall`).
-- Todo documento, menos o CLAUDE.md e o README.md, começa com o frontmatter de ../workshop-kit/modelos/05d-documento-okf.md: `status: draft`, `sources` com os arquivos lidos, `generated` com a hora real e o seu modelo, e nenhum `verified`. `generated.at` é a saída de `date -Iseconds` (no PowerShell, `Get-Date -Format o`), lida no momento em que você escreve o arquivo, nunca inventada. O status fica só no frontmatter: não o escreva no corpo do documento. Só uma pessoa escreve `verified`.
+- Todo documento, menos o CLAUDE.md e o README.md, começa com o frontmatter de ../workshop-kit/modelos/05d-documento-okf.md: `status: draft`, e `sources` com os arquivos lidos. Quem escreveu e quando é o que o git registra: não acrescente campos de autoria. O status fica só no frontmatter: não o escreva no corpo do documento. Só uma pessoa muda o status para `stable`: você nunca escreve `status: stable`.
 - O repositório inteiro é lido por alto. A área do time é lida em detalhe.
 - Os formatos estão em ../workshop-kit/modelos/.
 
@@ -118,7 +118,7 @@ A área que o time vai mudar: $ARGUMENTS
 2. `ARCHITECTURE.md` (modelo 05b, type: Arquitetura) e `README.md` (o que o sistema faz, instalar, rodar e testar, só com comandos que passaram).
 3. `docs/padroes/modelagem-de-banco.md` (modelo 32): para cada tema, o que a maioria das tabelas faz, com três exemplos, o arquivo de cada um e a contagem.
 4. `docs/padroes/escrita-de-codigo.md` (modelo 33): camadas, nomes, tratamento de erro, log e acesso ao banco, com um arquivo de referência por camada. Feche com a seção "Testes" (modelo 34): o comando que roda tudo, o que roda um arquivo só, onde os testes ficam e quais pastas não têm teste.
-5. `CLAUDE.md` (modelo 05), em no máximo 60 linhas: os comandos que passaram e os caminhos, sem contagens; uma linha por arquivo da base, dizendo quando ler; "toda tabela nova segue docs/padroes/modelagem-de-banco.md"; "todo código novo segue docs/padroes/escrita-de-codigo.md"; "nos documentos, cite o arquivo e a função, a tabela ou a rota, sem número de linha; a linha fica só na conversa" (no lugar do "citar arquivo e linha" do modelo); "um documento com status: draft é hipótese: confira no código"; "um documento com status: stable não é editado pelo agente sem o OK do time: ele propõe o trecho na resposta; com o OK, aplica o trecho no /fechar, num commit próprio"; "a base muda no mesmo commit que o código"; e, quando o repositório tem código de banco, "nunca rode DDL nem altere dados num banco compartilhado; a mudança no banco é um script versionado".
+5. `CLAUDE.md` (modelo 05), em no máximo 60 linhas: os comandos que passaram e os caminhos, sem contagens; uma linha por arquivo da base, dizendo quando ler; "toda tabela nova segue docs/padroes/modelagem-de-banco.md"; "todo código novo segue docs/padroes/escrita-de-codigo.md"; "nos documentos, cite o arquivo e a função, a tabela ou a rota, sem número de linha; a linha fica só na conversa" (no lugar do "citar arquivo e linha" do modelo); "um documento com status: draft é hipótese: confira no código"; "um documento com status: stable não é editado pelo agente sem o OK do time: ele propõe o trecho na resposta; com o OK, aplica o trecho no /fechar, num commit próprio"; "a base muda no mesmo commit que o código"; "só uma pessoa muda o status de um documento para stable"; e, quando o repositório tem código de banco, "nunca rode DDL nem altere dados num banco compartilhado; a mudança no banco é um script versionado".
 6. Atualize `docs/index.md` e os índices das pastas, acrescente uma linha em `docs/log.md` e rode `node scripts/check-docs.mjs` até passar. Faça o commit e escreva: "A base mínima está pronta."
 
 ## Depois, o que fica em rascunho
@@ -134,7 +134,7 @@ A área que o time vai mudar: $ARGUMENTS
 3. O que você não conseguiu ler ou rodar, e por quê.
 ````
 
-**Passo 3, revisar três documentos.** Um documento por vez: o `ARCHITECTURE.md`, o padrão de banco e o padrão de código. Cada prompt tem as mesmas quatro partes: o agente confere o documento no código, faz as perguntas uma por vez, copia o trecho das afirmações que mais pesam e não mexe em status nem em `verified`.
+**Passo 3, revisar três documentos.** Um documento por vez: o `ARCHITECTURE.md`, o padrão de banco e o padrão de código. Cada prompt tem as mesmas quatro partes: o agente confere o documento no código, faz as perguntas uma por vez, copia o trecho das afirmações que mais pesam e não muda o status.
 
 `ARCHITECTURE.md`:
 
@@ -157,7 +157,7 @@ abra o arquivo citado em cada uma e COPIE na resposta o trecho do
 código, com o arquivo e a função: eu não vejo as suas leituras de
 arquivo.
 
-Não mude status nem verified.
+Não mude o status.
 ```
 
 Padrão de banco:
@@ -166,7 +166,7 @@ Padrão de banco:
 Vamos revisar docs/padroes/modelagem-de-banco.md juntos.
 
 Antes, leia as decisões já tomadas em outros documentos da base (o
-ARCHITECTURE.md assinado, por exemplo): não refaça uma pergunta já
+ARCHITECTURE.md conferido, por exemplo): não refaça uma pergunta já
 decidida, cite a decisão.
 
 Primeiro, confira cada afirmação do documento no arquivo citado,
@@ -186,7 +186,7 @@ e COPIE na resposta o trecho do esquema de cada uma, com o
 arquivo: eu não vejo as suas leituras de arquivo. Escolha também
 as três afirmações que mais pesam e copie o trecho delas.
 
-Não mude status nem verified. Não altere o esquema.
+Não mude o status. Não altere o esquema.
 ```
 
 Padrão de código:
@@ -195,7 +195,7 @@ Padrão de código:
 Vamos revisar docs/padroes/escrita-de-codigo.md juntos.
 
 Antes, leia as decisões já tomadas em outros documentos da base (o
-ARCHITECTURE.md assinado, por exemplo): não refaça uma pergunta já
+ARCHITECTURE.md conferido, por exemplo): não refaça uma pergunta já
 decidida, cite a decisão.
 
 Primeiro, confira cada afirmação do documento no arquivo citado,
@@ -216,18 +216,22 @@ trecho de cada um, com o arquivo e a função: eu não vejo as suas
 leituras de arquivo. Escolha também as três afirmações que mais
 pesam e copie o trecho delas.
 
-Não mude status nem verified.
+Não mude o status.
 ```
 
-Uma pessoa do time, depois de ler o documento e conferir as citações, assina: acrescenta o próprio nome em `verified`, com a hora real (`date -Iseconds`, nunca digitada de cabeça), e muda o status para `stable`. Um documento `stable` não é editado pelo agente sem o OK do time: ele propõe o trecho na resposta; com o OK, aplica o trecho no /fechar, num commit próprio, e quem conferiu assina de novo. Depois, o pull request:
+Uma pessoa do time, depois de ler o documento e conferir as citações no código, muda o status de `draft` para `stable` no editor, e a mudança entra no pull request. Só uma pessoa faz isso: o agente nunca escreve `status: stable`, e o hook do kit (`scripts/guard-status.mjs`) o impede. Um documento `stable` não é editado pelo agente sem o OK do time: ele propõe o trecho na resposta; com o OK, aplica o trecho no /fechar, num commit próprio.
+
+Opcional, antes de marcar um documento como `stable`, quando o time tem acesso a outro modelo: rode só nele a revisão adversarial do primeiro prompt de "Brownfield: depois da semana", numa sessão nova com outro modelo. Sem outro modelo, a conferência da pessoa cobre as citações no código e as decisões do documento.
+
+Depois, o pull request:
 
 ```text
 Abra um pull request em rascunho da branch base-de-conhecimento
 contra <a branch de desenvolvimento>. Sem remoto ou sem linha de
 comando autenticada, escreva a descrição em .tmp/pr-base.md, fora
 do commit (crie .tmp/.gitignore com a linha *). Na descrição: os
-documentos criados, uma linha cada; quais uma pessoa assinou e
-quais seguem em rascunho; as perguntas que ninguém do time soube
+documentos criados, uma linha cada; quais uma pessoa marcou como
+stable e quais seguem em rascunho; as perguntas que ninguém do time soube
 responder, com o nome de quem pode responder. Não escreva nada que
 não esteja num arquivo.
 ```
@@ -260,7 +264,7 @@ Leia o CLAUDE.md, o ARCHITECTURE.md, os documentos de docs/padroes/ e o código 
    Em todo o pedido, de feature ou de correção, cite o arquivo e a função, a tabela ou a rota, sem número de linha: a linha fica só na conversa.
 7. Se o pedido conflita com um princípio do VISION.md, com uma ADR ou com um padrão, pare e mostre o conflito.
 
-Termine com o caminho do arquivo e espere o PO aprovar. Depois que o PO aprovar, faça um commit só com o pedido e diga o próximo comando: `/opsx:new <nome>`. Numa correção, o nome da mudança é `corrige-<nome>`, e o próximo comando é `/opsx:new corrige-<nome>`. Não comece a mudança por outro caminho.
+Termine com o caminho do arquivo e diga que o PO aprova o pedido mudando o status dele para `stable`, no editor: você nunca escreve `status: stable`. Só siga depois de ver o status mudado no arquivo. Então faça um commit só com o pedido e diga o próximo comando: `/opsx:new <nome>`. Numa correção, o nome da mudança é `corrige-<nome>`, e o próximo comando é `/opsx:new corrige-<nome>`. Não comece a mudança por outro caminho.
 ````
 
 **Passo 5, a proposta.** Um `/opsx:continue` escreve um artefato, e os arquivos de `openspec/changes/<nome>/` entram num commit depois de cada um. A mudança abre com `/opsx:new <nome>`, e cada artefato tem a sua linha:
@@ -373,13 +377,15 @@ A revisão por outro modelo, numa sessão nova (`claude --model opus`), primeiro
 
 ```text
 Você é o revisor adversarial da base de conhecimento deste
-repositório. Leia CLAUDE.md, README.md, VISION.md, ARCHITECTURE.md e
+repositório. Revise o documento que eu indicar; sem indicação, a
+base inteira. Leia CLAUDE.md, README.md, VISION.md, ARCHITECTURE.md e
 tudo em docs/. Para cada afirmação sobre o sistema, abra o arquivo
 citado e confira. Procure: afirmação sem fonte; fonte que não diz o
 que o texto diz; comando que não roda; padrão que o código contradiz;
 dois documentos que discordam; decisão do time escrita como fato.
 Bloqueie quando tiver dúvida. Cada ponto cita o documento, a linha e
-o arquivo do código. Responda: APROVADO, ou a lista do que bloqueia.
+o arquivo do código. Não mude o status de nenhum documento. Responda:
+APROVADO, ou a lista do que bloqueia.
 ```
 
 ```text

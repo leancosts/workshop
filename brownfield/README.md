@@ -8,8 +8,8 @@ O kit dos dias 3 e 4 do workshop. Ele não traz conteúdo: traz a estrutura das 
 |---|---|---|---|
 | 3 | 1. Instalar o kit | O prompt abaixo | O kit num commit da branch |
 | 3 | 2. Gerar a base | `/base <área>` | Todos os documentos, em rascunho |
-| 3 | 3. Revisar três documentos | O prompt de revisão | `ARCHITECTURE.md` e os dois padrões assinados, num pull request |
-| 4 | 4. O pedido | `/pedido <item>` | Um pedido pequeno em `docs/prds/`, aprovado pelo PO |
+| 3 | 3. Revisar três documentos | O prompt de revisão | `ARCHITECTURE.md` e os dois padrões `stable`, num pull request |
+| 4 | 4. O pedido | `/pedido <item>` | Um pedido pequeno em `docs/prds/`, que o PO aprova mudando o status para `stable` |
 | 4 | 5. A proposta | `/opsx:new` e `/opsx:continue` | A proposal aprovada pelo PO, e as tasks |
 | 4 | 6. Construir | `/opsx:apply` | O código, com o teste antes |
 | 4 | 7. Fechar | `/fechar <mudança>` | A base atualizada, o pull request e o roteiro da apresentação |
@@ -25,6 +25,7 @@ Os prompts de cada passo estão em `../modelos/23-base-local-por-prompts.md`.
 | `kit/.claude/commands/` | `/base`, `/pedido` e `/fechar` |
 | `kit/docs/` | Os índices de `docs/`, `docs/adrs/`, `docs/prds/` e `docs/padroes/`, e o `log.md` |
 | `kit/scripts/check-docs.mjs` | A checagem do frontmatter (modelo 15), já com `VISION.md`, `ARCHITECTURE.md` e `DESIGN.md` na lista. Também recusa um caminho de `sources` que não existe, uma citação com número de linha e um marcador esquecido (`"+data+"`, `<preencha`, `TODO:`, `NNN`) |
+| `kit/.claude/settings.json` e `kit/scripts/guard-status.mjs` | O hook que impede o agente de escrever `status: stable`: só uma pessoa muda o status, no editor |
 | `kit/openspec-config.yaml` | A configuração do OpenSpec que manda cada artefato ler a base e os padrões |
 | `../modelos/` | Os formatos: 05 (`CLAUDE.md`), 05a (`VISION.md`), 05b (`ARCHITECTURE.md`), 05f (`DESIGN.md`), 12 (ADR), 31 (PRD), 32 e 33 (padrões de banco e de código), 34 (testes) |
 
@@ -47,13 +48,18 @@ repositório, sem alterar nenhum arquivo que já existe:
 
 1. Copie kit/docs/ para docs/. Se docs/ já existe, crie só o que
    falta e me mostre o que encontrou.
-2. Copie kit/scripts/check-docs.mjs para scripts/.
+2. Copie kit/scripts/check-docs.mjs e kit/scripts/guard-status.mjs
+   para scripts/.
 3. Copie kit/.claude/commands/ para .claude/commands/.
-4. Copie para .claude/skills/ as skills grill-me, grilling, tdd,
+4. Copie kit/.claude/settings.json para .claude/settings.json. Se o
+   repositório já tem esse arquivo, acrescente só o hook PreToolUse
+   (matcher Edit|Write|MultiEdit) ao que existe e me mostre o que
+   mudou.
+5. Copie para .claude/skills/ as skills grill-me, grilling, tdd,
    codebase-design, diagnosing-bugs e code-review de
    ../workshop-kit/greenfield/.claude/skills/, com o arquivo
    LICENSE-mattpocock-skills.
-5. Rode openspec init --tools claude, troque o openspec/config.yaml
+6. Rode openspec init --tools claude, troque o openspec/config.yaml
    pelo kit/openspec-config.yaml e preencha a stack com o que você
    ler neste repositório.
 
@@ -91,11 +97,11 @@ docs/
   padroes/   modelagem-de-banco.md, escrita-de-codigo.md
 ```
 
-Todo documento, menos o `CLAUDE.md`, o `README.md`, os `index.md` e o `log.md`, começa com o frontmatter do modelo 05d. O agente preenche `generated` e deixa `status: draft`. O que o código não responde fica em "Decisões para o time", no fim de cada documento.
+Todo documento, menos o `CLAUDE.md`, o `README.md`, os `index.md` e o `log.md`, começa com o frontmatter do modelo 05d. O agente deixa `status: draft`; quem mudou o documento e quando é o que o git registra. O que o código não responde fica em "Decisões para o time", no fim de cada documento.
 
 ## Passo 3: revisar três documentos
 
-O time revisa o `ARCHITECTURE.md`, o padrão de banco e o padrão de código, um por vez. Cada prompt tem as mesmas quatro partes: o agente confere o documento no código, faz as perguntas uma por vez, copia o trecho das afirmações que mais pesam e não mexe em status nem em `verified`. Só muda o que ele abre no fim.
+O time revisa o `ARCHITECTURE.md`, o padrão de banco e o padrão de código, um por vez. Cada prompt tem as mesmas quatro partes: o agente confere o documento no código, faz as perguntas uma por vez, copia o trecho das afirmações que mais pesam e não muda o status. Só muda o que ele abre no fim.
 
 `ARCHITECTURE.md`:
 
@@ -118,7 +124,7 @@ abra o arquivo citado em cada uma e COPIE na resposta o trecho do
 código, com o arquivo e a função: eu não vejo as suas leituras de
 arquivo.
 
-Não mude status nem verified.
+Não mude o status.
 ```
 
 Padrão de banco:
@@ -127,7 +133,7 @@ Padrão de banco:
 Vamos revisar docs/padroes/modelagem-de-banco.md juntos.
 
 Antes, leia as decisões já tomadas em outros documentos da base (o
-ARCHITECTURE.md assinado, por exemplo): não refaça uma pergunta já
+ARCHITECTURE.md conferido, por exemplo): não refaça uma pergunta já
 decidida, cite a decisão.
 
 Primeiro, confira cada afirmação do documento no arquivo citado,
@@ -147,7 +153,7 @@ e COPIE na resposta o trecho do esquema de cada uma, com o
 arquivo: eu não vejo as suas leituras de arquivo. Escolha também
 as três afirmações que mais pesam e copie o trecho delas.
 
-Não mude status nem verified. Não altere o esquema.
+Não mude o status. Não altere o esquema.
 ```
 
 Padrão de código:
@@ -156,7 +162,7 @@ Padrão de código:
 Vamos revisar docs/padroes/escrita-de-codigo.md juntos.
 
 Antes, leia as decisões já tomadas em outros documentos da base (o
-ARCHITECTURE.md assinado, por exemplo): não refaça uma pergunta já
+ARCHITECTURE.md conferido, por exemplo): não refaça uma pergunta já
 decidida, cite a decisão.
 
 Primeiro, confira cada afirmação do documento no arquivo citado,
@@ -177,10 +183,12 @@ trecho de cada um, com o arquivo e a função: eu não vejo as suas
 leituras de arquivo. Escolha também as três afirmações que mais
 pesam e copie o trecho delas.
 
-Não mude status nem verified.
+Não mude o status.
 ```
 
-Só uma pessoa do time, depois de ler, assina: acrescenta o próprio nome em `verified`, com a hora real (`date -Iseconds`, nunca digitada de cabeça), e muda o status para `stable`. Um documento `stable` não é editado pelo agente sem o OK do time: ele propõe o trecho na resposta; com o OK, aplica o trecho no /fechar, num commit próprio. Os outros documentos ficam em rascunho: o agente os trata como hipótese e confere no código.
+Uma pessoa do time, depois de ler o documento e conferir as citações no código, muda o status de `draft` para `stable` no editor, e a mudança entra no pull request. Só uma pessoa faz isso: o agente nunca escreve `status: stable`, e o hook do kit (`scripts/guard-status.mjs`) o impede. Um documento `stable` não é editado pelo agente sem o OK do time: ele propõe o trecho na resposta; com o OK, aplica o trecho no /fechar, num commit próprio. Os outros documentos ficam em rascunho: o agente os trata como hipótese e confere no código.
+
+Opcional, antes de marcar um documento como `stable`, quando o time tem acesso a outro modelo: rode só nele a revisão adversarial do primeiro prompt de "Brownfield: depois da semana" (`../modelos/23-base-local-por-prompts.md`), numa sessão nova com outro modelo. Sem outro modelo, a conferência da pessoa cobre as citações no código e as decisões do documento.
 
 ## Passos 4 a 7: uma mudança pequena
 

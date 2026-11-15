@@ -11,9 +11,6 @@ status: stable
 sources:
   - { id: codigo, resource: <caminho do módulo principal> }
   - { id: testes, resource: <caminho dos testes> }
-generated: { by: claude-code/<modelo>, at: <AAAA-MM-DDThh:mm:ssZ> }
-verified:
-  - { by: human:<id>, at: <AAAA-MM-DDThh:mm:ssZ> }
 ---
 
 # O que faz
@@ -34,4 +31,4 @@ verified:
 - [<título da ADR>](../decisoes/<arquivo>.md)
 ```
 
-Quando o código e o documento discordam, vale o código, e o documento é corrigido no mesmo commit da próxima mudança. Uma seção sem conteúdo é removida, não deixada vazia. No dia 3, o agente preenche também `generated`; `verified` entra quando uma pessoa confere o documento.
+Quando o código e o documento discordam, vale o código, e o documento é corrigido no mesmo commit da próxima mudança. Uma seção sem conteúdo é removida, não deixada vazia. No dia 3, o agente escreve o documento com `status: draft`; uma pessoa o muda para `stable` depois de conferir.

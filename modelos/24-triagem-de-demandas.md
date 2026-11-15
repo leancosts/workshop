@@ -45,7 +45,7 @@ Faça, nesta ordem:
    implementação. Não prometa prazo.
 
 Para uma dúvida, responda só com documento cujo frontmatter
-tenha verified com human:. Sem ele, escreva "sem fonte" e pare.
+tenha `status: stable`. Sem ele, escreva "sem fonte" e pare.
 
 Responda só com este JSON:
 {"classe": "...", "duplicata": "<id ou null>",

@@ -6,13 +6,12 @@ O que ele confere:
 
 - todo documento (menos `index.md` e `log.md`) tem frontmatter, `type` da lista da empresa, `title`, `description` e `status` (`draft`, `stable` ou `deprecated`);
 - Feature, Regra de Negócio, Decisão, Pesquisa, Arquitetura e Visão têm `sources`, cada fonte com `id` e `resource`, e cada `resource` que parece caminho de arquivo (tem `/` ou termina numa extensão) existe no repositório; um sufixo `:símbolo` sai antes, e um endereço, SHA de commit, nome de tabela ou de package, curinga, texto com espaço e caminho que começa por `../` não são conferidos;
-- `generated` e cada `verified` têm `{ by, at }`, com `by` no formato `human:<id>`, `process:<id>` ou `<ferramenta>/<versão>` e `at` em ISO 8601 com fuso;
 - Runbook tem `stale_after`, em ISO 8601 com fuso;
 - `index.md` não tem frontmatter (só o da raiz pode ter `okf_version`), e todo documento da pasta está listado nele;
 - nenhum documento cita número de linha (`arquivo.ext:123`, `arquivo.ext, linha 123`, `arquivo.ext (linha 123)`, `linha 123 de arquivo.ext`, `l. 123`, `linhas 10 a 20`), fora dos blocos de código: a linha muda a cada commit, e a citação certa é o arquivo e a função, a tabela ou a rota;
 - nenhum marcador ficou sem preencher: `"+data+"`, `<preencha`, `TODO:`, e `NNN` no nome de um arquivo ou num link. Um marcador entre crases (código inline) ou num bloco de código é um exemplo, e não conta.
 
-Um BOM UTF-8 no início do arquivo, comum em editores do Windows, é ignorado. `VISION.md`, `ARCHITECTURE.md`, `DESIGN.md` e `CLAUDE.md` ficam na raiz do repositório, fora de `docs/`. Por padrão o frontmatter deles não é conferido; num repositório legado, em que os três primeiros também são gerados por agente, a lista `ROOT_FILES` os inclui, e eles levam o mesmo frontmatter (capítulo 11). O `CLAUDE.md` e o `README.md` nunca levam frontmatter: o script só confere neles o número de linha e o marcador esquecido.
+As chaves `generated` e `verified` de um documento antigo são ignoradas: o git diz quem mudou o documento e quando, e o `status: stable` só entra por uma pessoa (o hook do kit, `guard-status.mjs`, impede o agente de escrevê-lo). Um BOM UTF-8 no início do arquivo, comum em editores do Windows, é ignorado. `VISION.md`, `ARCHITECTURE.md`, `DESIGN.md` e `CLAUDE.md` ficam na raiz do repositório, fora de `docs/`. Por padrão o frontmatter deles não é conferido; num repositório legado, em que os três primeiros também são gerados por agente, a lista `ROOT_FILES` os inclui, e eles levam o mesmo frontmatter (capítulo 11). O `CLAUDE.md` e o `README.md` nunca levam frontmatter: o script só confere neles o número de linha e o marcador esquecido.
 
 ```js
 #!/usr/bin/env node
@@ -48,7 +47,6 @@ const LEFTOVERS = [
   [/\]\([^)]*NNN[^)]*\)/, "link com NNN no lugar do número"],
 ];
 const ISO = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:\d{2})$/;
-const ACTOR = /^(human:|process:)\S+$|^[^\s:/]+\/\S+$/;
 
 const root = process.argv[2] ?? "docs";
 const problems = [];
@@ -103,11 +101,6 @@ function frontmatter(text) {
   return m ? parse(m[1].split(/\r?\n/)) ?? {} : null;
 }
 const asList = (v) => (v == null ? [] : Array.isArray(v) ? v : [v]);
-const checkEvent = (file, field, e) => {
-  if (typeof e !== "object" || !e.by || !e.at) return say(file, `${field} precisa de { by, at }`);
-  if (!ACTOR.test(e.by)) say(file, `${field}.by "${e.by}" não é human:<id>, process:<id> nem <ferramenta>/<versão>`);
-  if (!ISO.test(e.at)) say(file, `${field}.at "${e.at}" não é data e hora ISO 8601 com fuso`);
-};
 
 // Só um resource que parece caminho de arquivo do repositório é conferido: tem "/" ou termina numa extensão de arquivo.
 // Fora disso: endereço, SHA de commit, nome de tabela ou de package, curinga, texto com espaço e caminho que sai do
@@ -148,8 +141,6 @@ function checkFields(file, fm) {
     for (const s of src) if (typeof s !== "object" || !s.id || !s.resource) say(file, "cada fonte precisa de id e resource");
   }
   for (const s of asList(fm.sources)) if (typeof s === "object" && s.resource) checkSourcePath(file, String(s.resource));
-  if (fm.generated !== undefined) checkEvent(file, "generated", fm.generated);
-  for (const v of asList(fm.verified)) checkEvent(file, "verified", v);
   if (NEEDS_STALE_AFTER.includes(fm.type) && !fm.stale_after) say(file, `stale_after é obrigatório em ${fm.type}`);
   if (fm.stale_after && !ISO.test(fm.stale_after)) say(file, `stale_after "${fm.stale_after}" não é data e hora ISO 8601 com fuso`);
 }
@@ -210,4 +201,4 @@ node scripts/check-docs.mjs docs || exit 1
 
 O mesmo comando roda no CI, para que um push que pulou o hook não passe. Quando a empresa muda a lista de tipos, muda o script e o capítulo da base de conhecimento no mesmo commit.
 
-O script foi testado num conjunto de exemplos: documentos válidos passam, inclusive um arquivo com BOM; sem frontmatter, `type` fora da lista, `status` inválido, fonte sem `resource`, `generated` sem `{ by, at }`, data sem fuso e documento fora do índice são recusados, e também um caminho de `sources` que não existe, uma citação com número de linha e um marcador esquecido, cada um com uma linha que diz o arquivo e o problema. Um bloco de código com `TODO:` ou um número de linha não é recusado.
+O script foi testado num conjunto de exemplos: documentos válidos passam, inclusive um arquivo com BOM; sem frontmatter, `type` fora da lista, `status` inválido, fonte sem `resource`, data sem fuso e documento fora do índice são recusados, e também um caminho de `sources` que não existe, uma citação com número de linha e um marcador esquecido, cada um com uma linha que diz o arquivo e o problema. Um bloco de código com `TODO:` ou um número de linha não é recusado.

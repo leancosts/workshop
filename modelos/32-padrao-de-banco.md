@@ -10,7 +10,6 @@ description: <Como nomear, tipar e migrar tabelas neste repositório, em uma fra
 status: draft
 sources:
   - { id: esquema, resource: <pasta das migrações ou do esquema> }
-generated: { by: claude-code/<modelo>, at: <AAAA-MM-DDThh:mm:ssZ> }
 ---
 
 # Padrão de modelagem de banco

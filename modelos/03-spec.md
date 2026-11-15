@@ -12,7 +12,6 @@ description: <Uma frase com a mudança.>
 status: draft
 sources:
   - { id: issue, resource: <link da issue> }
-generated: { by: claude-code/<modelo>, at: <AAAA-MM-DDThh:mm:ssZ> }
 ---
 
 # <Título> (spec, <data>)

@@ -31,7 +31,6 @@ const LEFTOVERS = [
   [/\]\([^)]*NNN[^)]*\)/, "link com NNN no lugar do número"],
 ];
 const ISO = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:\d{2})$/;
-const ACTOR = /^(human:|process:)\S+$|^[^\s:/]+\/\S+$/;
 
 const root = process.argv[2] ?? "docs";
 const problems = [];
@@ -86,11 +85,6 @@ function frontmatter(text) {
   return m ? parse(m[1].split(/\r?\n/)) ?? {} : null;
 }
 const asList = (v) => (v == null ? [] : Array.isArray(v) ? v : [v]);
-const checkEvent = (file, field, e) => {
-  if (typeof e !== "object" || !e.by || !e.at) return say(file, `${field} precisa de { by, at }`);
-  if (!ACTOR.test(e.by)) say(file, `${field}.by "${e.by}" não é human:<id>, process:<id> nem <ferramenta>/<versão>`);
-  if (!ISO.test(e.at)) say(file, `${field}.at "${e.at}" não é data e hora ISO 8601 com fuso`);
-};
 
 // Só um resource que parece caminho de arquivo do repositório é conferido: tem "/" ou termina numa extensão de arquivo.
 // Fora disso: endereço, SHA de commit, nome de tabela ou de package, curinga, texto com espaço e caminho que sai do
@@ -131,8 +125,6 @@ function checkFields(file, fm) {
     for (const s of src) if (typeof s !== "object" || !s.id || !s.resource) say(file, "cada fonte precisa de id e resource");
   }
   for (const s of asList(fm.sources)) if (typeof s === "object" && s.resource) checkSourcePath(file, String(s.resource));
-  if (fm.generated !== undefined) checkEvent(file, "generated", fm.generated);
-  for (const v of asList(fm.verified)) checkEvent(file, "verified", v);
   if (NEEDS_STALE_AFTER.includes(fm.type) && !fm.stale_after) say(file, `stale_after é obrigatório em ${fm.type}`);
   if (fm.stale_after && !ISO.test(fm.stale_after)) say(file, `stale_after "${fm.stale_after}" não é data e hora ISO 8601 com fuso`);
 }

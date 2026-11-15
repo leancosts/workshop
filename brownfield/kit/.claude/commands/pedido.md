@@ -24,4 +24,4 @@ Leia o CLAUDE.md, o ARCHITECTURE.md, os documentos de docs/padroes/ e o código 
    Em todo o pedido, de feature ou de correção, cite o arquivo e a função, a tabela ou a rota, sem número de linha: a linha fica só na conversa.
 7. Se o pedido conflita com um princípio do VISION.md, com uma ADR ou com um padrão, pare e mostre o conflito.
 
-Termine com o caminho do arquivo e espere o PO aprovar. Depois que o PO aprovar, faça um commit só com o pedido e diga o próximo comando: `/opsx:new <nome>`. Numa correção, o nome da mudança é `corrige-<nome>`, e o próximo comando é `/opsx:new corrige-<nome>`. Não comece a mudança por outro caminho.
+Termine com o caminho do arquivo e diga que o PO aprova o pedido mudando o status dele para `stable`, no editor: você nunca escreve `status: stable`. Só siga depois de ver o status mudado no arquivo. Então faça um commit só com o pedido e diga o próximo comando: `/opsx:new <nome>`. Numa correção, o nome da mudança é `corrige-<nome>`, e o próximo comando é `/opsx:new corrige-<nome>`. Não comece a mudança por outro caminho.
