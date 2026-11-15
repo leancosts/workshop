@@ -17,7 +17,7 @@ kit/
   docs/       a estrutura da base e os formatos     copie
   openspec/   a configuração do OpenSpec            copie
   scripts/    a checagem dos documentos e o hook    copie
-  .env.example  o modelo do arquivo de senhas       copie
+  .env.banco.example  só para o time só de banco    copie
 ```
 
 Senha, token e chave nunca são escritos na conversa com o agente: ficam no arquivo `.env`, que não entra no commit.
@@ -89,7 +89,7 @@ Para o time que trabalha só no banco (procedures, functions, packages, triggers
 
 1. Crie uma pasta vazia e cole nela as pastas do kit.
 2. Abra o Claude Code na pasta e digite `/banco`.
-3. O agente pede o arquivo `.env`: copie o `.env.example` para `.env` e preencha, no editor, a conexão do banco de homologação (o tipo do banco, o servidor, a porta, o nome do banco ou do serviço, o usuário e a senha), de preferência de um usuário só de leitura. Depois escreva "pronto". O `.env` não entra no commit, e a senha nunca é escrita na conversa com o agente.
+3. O agente pede o arquivo `.env`: copie o `.env.banco.example` para `.env` e preencha, no editor, a conexão do banco de homologação (o tipo do banco, o servidor, a porta, o nome do banco ou do serviço, o usuário e a senha), de preferência de um usuário só de leitura. Depois escreva "pronto". O `.env` não entra no commit, e a senha nunca é escrita na conversa com o agente.
 4. O agente mostra os objetos de código alterados por último e pergunta qual o time vai mudar. Quem já sabe o nome pode dizê-lo no comando: `/banco PKG_COBRANCA`.
 5. O agente traz para `banco/` esse objeto e o que está em volta dele (as tabelas que ele usa, com os triggers, os índices e as chaves delas), confere a contagem, procura senhas e faz o commit. Depois, `/base`.
 

@@ -10,14 +10,14 @@ Não comece a mudança. Este comando faz, em ordem, os três movimentos do dia 2
 ## Antes
 
 1. Leia o CLAUDE.md, o ARCHITECTURE.md, o docs/inventario.md, os documentos de docs/padroes/ e o código da área do item.
-2. Se a branch atual é a principal ou a `base-de-conhecimento`, crie uma branch para o pedido, com um nome curto, e trabalhe nela.
+2. Se a branch atual é a principal ou a `base-de-conhecimento`, crie uma branch para o pedido, com um nome curto, e trabalhe nela. Se o time pediu um worktree, crie-o dentro do repositório (`git worktree add .worktrees/<nome> -b <nome>`, com `.worktrees/` no `.gitignore`), diga ao time em que pasta abrir o Claude Code e avise que o `.env` e as dependências instaladas não vão junto.
 
 ## 1. O rascunho do PRD
 
 Escreva `docs/prds/NNN-nome.md`, onde `NNN` é o próximo número livre olhando todas as branches (`git log --all --name-only -- docs/prds`), no formato de `docs/modelos/31-prd.md` (type: PRD, status: draft), curto:
 
 - o tipo: feature nova, melhoria ou correção;
-- "Quem ganha" e "Objetivo", em uma frase cada;
+- "Quem ganha" e "Objetivo", em uma frase cada. No frontmatter, não escreva um responsável que ninguém informou;
 - "Problema hoje", com o que o sistema faz hoje, citando o arquivo e a função, a tabela ou a rota, sem número de linha. Numa correção, os passos para reproduzir;
 - "Pronto quando", com o critério de aceite;
 - "Fora de escopo";
@@ -42,8 +42,8 @@ Use a skill `grill-me` sobre o PRD, com estas regras, que valem no lugar das rod
 
 - uma pergunta por mensagem, com o cabeçalho "Pergunta N", o que o código mostra e a sua recomendação, escrita para que "sim" a aceite;
 - só pergunte o que o código não responde: o que você pode ler, leia;
-- quem responde é o PO: pergunte na língua do negócio, sem rota, código HTTP, nome de campo, de tabela ou de função. A tradução técnica de cada resposta é sua, e vai para o PRD;
-- se o pedido cria ou altera uma tabela ou outro objeto do banco, pergunte quem responde pelo banco e se essa pessoa está de acordo, e escreva o nome no PRD, em "Quem aprovou";
+- quem responde é o PO: pergunte na língua do negócio, sem rota, código HTTP, caminho de arquivo, nem nome de campo, de tabela, de função, de trigger ou de view. A tradução técnica de cada resposta é sua, e vai para o PRD;
+- se o pedido cria ou altera uma tabela ou outro objeto do banco, pergunte quem responde pelo banco e se essa pessoa está de acordo, e escreva o nome ou o cargo dela no PRD, em "Quem aprovou" (um cargo basta);
 - pergunte até não restar decisão em aberto. Um item raso pede mais perguntas, não menos. No mínimo: quem ganha; um exemplo do critério de aceite com valores (a entrada e o resultado esperado); o que acontece no vazio, no limite e no erro; o que fica fora;
 - a cada resposta, atualize o PRD e tire a pergunta de "Decisões em aberto";
 - o que é técnico vai para "Perguntas para o engenheiro", no fim do PRD;
@@ -74,7 +74,7 @@ pedido.
 Responda: APROVADO, ou a lista numerada do que bloqueia.
 ```
 
-Cole na resposta o que o revisor respondeu, inteiro, e pare: o time lê antes de qualquer correção. Na mensagem seguinte, corrija só o que foi apontado; cada ponto que é decisão vira uma pergunta ao PO, uma por vez, com a sua recomendação. Depois chame o revisor de novo, só para conferir a lista (ele bloqueia apenas por um defeito novo do mesmo peso), e cole a resposta dele. Se ainda bloquear, cada ponto que resta vira uma pergunta ao PO: você nunca fecha um ponto do revisor sozinho. A decisão fica escrita no PRD.
+Cole na resposta o que o revisor respondeu, inteiro, e pare: o time lê antes de qualquer correção. Na mensagem seguinte, corrija só o que foi apontado; cada ponto que é decisão vira uma pergunta ao PO, uma por vez, com a sua recomendação. Depois chame o revisor de novo, só para conferir a lista (ele bloqueia apenas por um defeito novo do mesmo peso), e cole a resposta dele, também inteira, sem resumir. Se ainda bloquear, cada ponto que resta vira uma pergunta ao PO: você nunca fecha um ponto do revisor sozinho. A decisão fica escrita no PRD.
 
 ## No fim
 

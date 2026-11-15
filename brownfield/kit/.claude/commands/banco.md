@@ -20,7 +20,7 @@ Este time trabalha só no banco de dados (procedures, functions, packages, trigg
 ## 1. A conexão
 
 1. Confira que o `.gitignore` do repositório tem a linha `.env`; se não tem, acrescente-a e diga isso.
-2. Confira, sem mostrar os valores, se o `.env` existe e tem as variáveis `BANCO_TIPO`, `BANCO_SERVIDOR`, `BANCO_PORTA`, `BANCO_NOME`, `BANCO_USUARIO` e `BANCO_SENHA` preenchidas. Se falta algo, peça ao time, nestas palavras, e pare: "Copie o arquivo `.env.example` para `.env`, nesta pasta, e preencha no editor a conexão do banco de homologação: o tipo do banco, o servidor, a porta, o nome do banco ou do serviço, o usuário e a senha. De preferência, um usuário só de leitura. Não escreva a senha aqui na conversa. Depois escreva: pronto."
+2. Confira, sem mostrar os valores, se o `.env` existe e tem as variáveis `BANCO_TIPO`, `BANCO_SERVIDOR`, `BANCO_PORTA`, `BANCO_NOME`, `BANCO_USUARIO` e `BANCO_SENHA` preenchidas. Se falta algo, peça ao time, nestas palavras, e pare: "Copie o arquivo `.env.banco.example` para `.env`, nesta pasta, e preencha no editor a conexão do banco de homologação: o tipo do banco, o servidor, a porta, o nome do banco ou do serviço, o usuário e a senha. De preferência, um usuário só de leitura. Não escreva a senha aqui na conversa. Depois escreva: pronto."
 3. Com o `.env`, conecte com o que a máquina já tem (`sqlplus`, `sql`, `sqlcmd`, `psql`, `mysql`). Se não houver cliente, instale um driver em `.tmp/` (por exemplo, `npm install --prefix .tmp oracledb`, `mssql`, `pg` ou `mysql2`) e escreva lá o que precisar.
 4. Se a conexão falhar, diga ao time, em uma linha, o que a mensagem de erro significa e o que conferir (o endereço, a rede ou a VPN, o usuário). Não tente adivinhar outra senha nem outro servidor.
 
@@ -41,7 +41,7 @@ Se o time informou um nome, ele é o ponto de partida. Se não, mostre o mapa em
 4. Confira e mostre ao time, sempre, uma tabela com três colunas: o schema e o tipo, quantos objetos foram selecionados e quantos arquivos saíram. Mostre a tabela mesmo quando tudo bate, e antes de qualquer outro aviso. Uma diferença é um objeto que o usuário não alcança: diga qual.
 5. Procure senha, token e endereço nos arquivos que saíram. Se achar, pare antes de qualquer commit e mostre só o arquivo, a linha e o nome da constante ou da coluna, nunca o valor. Depois que o time decidir, troque por um marcador só o que o time mandou trocar.
 6. Escreva `banco/README.md`, curto: o tipo e a versão do banco, de que ambiente veio, a data (da saída de `date`), o ponto de partida e como repetir o export. Sem o endereço do servidor e sem o usuário.
-7. Faça um commit com `banco/`, as pastas do kit e o `.env.example`. Nunca com o `.env` nem com `.tmp/`.
+7. Faça um commit com `banco/`, as pastas do kit e o `.env.banco.example`. Nunca com o `.env` nem com `.tmp/`.
 8. Diga, em linguagem simples, o que ficou de fora e o time precisa saber, só com o que você leu nos arquivos: o SQL dinâmico, a ação de um job e as chamadas a outros sistemas que os objetos exportados de fato têm, e os objetos que ficaram só no arquivo de dependências. Não liste um risco que os arquivos não mostram.
 9. Diga o próximo passo: "Digite /base."
 

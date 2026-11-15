@@ -52,7 +52,7 @@ Este time trabalha só no banco de dados (procedures, functions, packages, trigg
 ## 1. A conexão
 
 1. Confira que o `.gitignore` do repositório tem a linha `.env`; se não tem, acrescente-a e diga isso.
-2. Confira, sem mostrar os valores, se o `.env` existe e tem as variáveis `BANCO_TIPO`, `BANCO_SERVIDOR`, `BANCO_PORTA`, `BANCO_NOME`, `BANCO_USUARIO` e `BANCO_SENHA` preenchidas. Se falta algo, peça ao time, nestas palavras, e pare: "Copie o arquivo `.env.example` para `.env`, nesta pasta, e preencha no editor a conexão do banco de homologação: o tipo do banco, o servidor, a porta, o nome do banco ou do serviço, o usuário e a senha. De preferência, um usuário só de leitura. Não escreva a senha aqui na conversa. Depois escreva: pronto."
+2. Confira, sem mostrar os valores, se o `.env` existe e tem as variáveis `BANCO_TIPO`, `BANCO_SERVIDOR`, `BANCO_PORTA`, `BANCO_NOME`, `BANCO_USUARIO` e `BANCO_SENHA` preenchidas. Se falta algo, peça ao time, nestas palavras, e pare: "Copie o arquivo `.env.banco.example` para `.env`, nesta pasta, e preencha no editor a conexão do banco de homologação: o tipo do banco, o servidor, a porta, o nome do banco ou do serviço, o usuário e a senha. De preferência, um usuário só de leitura. Não escreva a senha aqui na conversa. Depois escreva: pronto."
 3. Com o `.env`, conecte com o que a máquina já tem (`sqlplus`, `sql`, `sqlcmd`, `psql`, `mysql`). Se não houver cliente, instale um driver em `.tmp/` (por exemplo, `npm install --prefix .tmp oracledb`, `mssql`, `pg` ou `mysql2`) e escreva lá o que precisar.
 4. Se a conexão falhar, diga ao time, em uma linha, o que a mensagem de erro significa e o que conferir (o endereço, a rede ou a VPN, o usuário). Não tente adivinhar outra senha nem outro servidor.
 
@@ -73,7 +73,7 @@ Se o time informou um nome, ele é o ponto de partida. Se não, mostre o mapa em
 4. Confira e mostre ao time, sempre, uma tabela com três colunas: o schema e o tipo, quantos objetos foram selecionados e quantos arquivos saíram. Mostre a tabela mesmo quando tudo bate, e antes de qualquer outro aviso. Uma diferença é um objeto que o usuário não alcança: diga qual.
 5. Procure senha, token e endereço nos arquivos que saíram. Se achar, pare antes de qualquer commit e mostre só o arquivo, a linha e o nome da constante ou da coluna, nunca o valor. Depois que o time decidir, troque por um marcador só o que o time mandou trocar.
 6. Escreva `banco/README.md`, curto: o tipo e a versão do banco, de que ambiente veio, a data (da saída de `date`), o ponto de partida e como repetir o export. Sem o endereço do servidor e sem o usuário.
-7. Faça um commit com `banco/`, as pastas do kit e o `.env.example`. Nunca com o `.env` nem com `.tmp/`.
+7. Faça um commit com `banco/`, as pastas do kit e o `.env.banco.example`. Nunca com o `.env` nem com `.tmp/`.
 8. Diga, em linguagem simples, o que ficou de fora e o time precisa saber, só com o que você leu nos arquivos: o SQL dinâmico, a ação de um job e as chamadas a outros sistemas que os objetos exportados de fato têm, e os objetos que ficaram só no arquivo de dependências. Não liste um risco que os arquivos não mostram.
 9. Diga o próximo passo: "Digite /base."
 
@@ -193,14 +193,14 @@ Não comece a mudança. Este comando faz, em ordem, os três movimentos do dia 2
 ## Antes
 
 1. Leia o CLAUDE.md, o ARCHITECTURE.md, o docs/inventario.md, os documentos de docs/padroes/ e o código da área do item.
-2. Se a branch atual é a principal ou a `base-de-conhecimento`, crie uma branch para o pedido, com um nome curto, e trabalhe nela.
+2. Se a branch atual é a principal ou a `base-de-conhecimento`, crie uma branch para o pedido, com um nome curto, e trabalhe nela. Se o time pediu um worktree, crie-o dentro do repositório (`git worktree add .worktrees/<nome> -b <nome>`, com `.worktrees/` no `.gitignore`), diga ao time em que pasta abrir o Claude Code e avise que o `.env` e as dependências instaladas não vão junto.
 
 ## 1. O rascunho do PRD
 
 Escreva `docs/prds/NNN-nome.md`, onde `NNN` é o próximo número livre olhando todas as branches (`git log --all --name-only -- docs/prds`), no formato de `docs/modelos/31-prd.md` (type: PRD, status: draft), curto:
 
 - o tipo: feature nova, melhoria ou correção;
-- "Quem ganha" e "Objetivo", em uma frase cada;
+- "Quem ganha" e "Objetivo", em uma frase cada. No frontmatter, não escreva um responsável que ninguém informou;
 - "Problema hoje", com o que o sistema faz hoje, citando o arquivo e a função, a tabela ou a rota, sem número de linha. Numa correção, os passos para reproduzir;
 - "Pronto quando", com o critério de aceite;
 - "Fora de escopo";
@@ -225,8 +225,8 @@ Use a skill `grill-me` sobre o PRD, com estas regras, que valem no lugar das rod
 
 - uma pergunta por mensagem, com o cabeçalho "Pergunta N", o que o código mostra e a sua recomendação, escrita para que "sim" a aceite;
 - só pergunte o que o código não responde: o que você pode ler, leia;
-- quem responde é o PO: pergunte na língua do negócio, sem rota, código HTTP, nome de campo, de tabela ou de função. A tradução técnica de cada resposta é sua, e vai para o PRD;
-- se o pedido cria ou altera uma tabela ou outro objeto do banco, pergunte quem responde pelo banco e se essa pessoa está de acordo, e escreva o nome no PRD, em "Quem aprovou";
+- quem responde é o PO: pergunte na língua do negócio, sem rota, código HTTP, caminho de arquivo, nem nome de campo, de tabela, de função, de trigger ou de view. A tradução técnica de cada resposta é sua, e vai para o PRD;
+- se o pedido cria ou altera uma tabela ou outro objeto do banco, pergunte quem responde pelo banco e se essa pessoa está de acordo, e escreva o nome ou o cargo dela no PRD, em "Quem aprovou" (um cargo basta);
 - pergunte até não restar decisão em aberto. Um item raso pede mais perguntas, não menos. No mínimo: quem ganha; um exemplo do critério de aceite com valores (a entrada e o resultado esperado); o que acontece no vazio, no limite e no erro; o que fica fora;
 - a cada resposta, atualize o PRD e tire a pergunta de "Decisões em aberto";
 - o que é técnico vai para "Perguntas para o engenheiro", no fim do PRD;
@@ -257,7 +257,7 @@ pedido.
 Responda: APROVADO, ou a lista numerada do que bloqueia.
 ```
 
-Cole na resposta o que o revisor respondeu, inteiro, e pare: o time lê antes de qualquer correção. Na mensagem seguinte, corrija só o que foi apontado; cada ponto que é decisão vira uma pergunta ao PO, uma por vez, com a sua recomendação. Depois chame o revisor de novo, só para conferir a lista (ele bloqueia apenas por um defeito novo do mesmo peso), e cole a resposta dele. Se ainda bloquear, cada ponto que resta vira uma pergunta ao PO: você nunca fecha um ponto do revisor sozinho. A decisão fica escrita no PRD.
+Cole na resposta o que o revisor respondeu, inteiro, e pare: o time lê antes de qualquer correção. Na mensagem seguinte, corrija só o que foi apontado; cada ponto que é decisão vira uma pergunta ao PO, uma por vez, com a sua recomendação. Depois chame o revisor de novo, só para conferir a lista (ele bloqueia apenas por um defeito novo do mesmo peso), e cole a resposta dele, também inteira, sem resumir. Se ainda bloquear, cada ponto que resta vira uma pergunta ao PO: você nunca fecha um ponto do revisor sozinho. A decisão fica escrita no PRD.
 
 ## No fim
 
@@ -299,7 +299,7 @@ rules:
     - Citar o pedido (docs/prds/NNN-nome.md) e o critério de aceite que a mudança cobre.
     - Listar os arquivos e as tabelas que a mudança toca e os testes que já protegem a área.
     - Numa mudança em objeto do banco, listar também os objetos que dependem dele (do código e de banco/dependencias.csv, se existir).
-    - Uma mudança num objeto do banco cita, na proposal, quem responde pelo banco e aprovou, pelo nome, como está no pedido ("Quem aprovou"). Se o pedido não traz esse nome, pare antes de escrever os artefatos e mande voltar ao /pedido; nunca escreva um OK que ninguém deu.
+    - Uma mudança num objeto do banco cita, na proposal, quem responde pelo banco e aprovou, pelo nome ou pelo cargo, como está no pedido ("Quem aprovou"); um cargo basta, e não é pendência. Se o pedido não traz ninguém, pare antes de escrever os artefatos e mande voltar ao /pedido; nunca escreva um OK que ninguém deu.
   specs:
     - Um requisito por critério de aceite do pedido, com os valores de exemplo do pedido nos cenários.
   design:
@@ -308,13 +308,14 @@ rules:
   tasks:
     - No máximo seis tasks. Cada task é uma mudança de código verificável com o teste dela; nenhuma task só roda um comando, confere algo à mão ou marca checkbox.
     - Cada task atualiza, no mesmo commit, o documento da base que ela desatualiza (se o documento está stable, a task anota a proposta, e o /fechar a aplica com o OK); não há grupo de tasks de documentação no fim.
-    - A primeira task escreve um teste de caracterização do que a área faz hoje e que a mudança NÃO deve alterar, e ele passa sem alterar o sistema. Um comportamento que o time já sabe que é defeito não entra nele como esperado. Numa correção, a primeira task é o teste que reproduz a falha, escrito com /diagnosing-bugs, e ele faz o papel do teste de caracterização; a correção é a task seguinte.
+    - A primeira task escreve um teste de caracterização do que a área faz hoje e que a mudança NÃO deve alterar, e ele passa sem alterar o sistema. Um comportamento que o time já sabe que é defeito, ou que uma "Decisão para o time" ainda aberta na base põe em dúvida, não entra nele como esperado. Numa correção, a primeira task é o teste que reproduz a falha, escrito com /diagnosing-bugs, e ele faz o papel do teste de caracterização; a correção é a task seguinte.
     - Cada tarefa de código seguinte começa por um teste que falha, e a tarefa diz o comando que mostra a falha.
     - Só em código de banco, o teste é um script que o time roda no ambiente de desenvolvimento e que termina em ROLLBACK, e a mudança é um script de alteração versionado; a task diz o comando que o time roda.
 
 operations:
   apply:
     guidance:
+      - Escreva ao time em pt-BR, inclusive o resumo do fim.
       - Uma task por vez. Para cada tarefa, rode o teste novo e mostre a falha antes de escrever o código.
       - Depois de cada tarefa, rode os testes da área; se um teste que passava falhar, pare e pergunte.
       - Faça um commit ao fim de cada tarefa.
@@ -337,13 +338,13 @@ Se o nome veio vazio, use a mudança aberta em `openspec/changes/`; se há mais 
 2. Atualize a base de conhecimento, nesta mesma branch (se uma task já a atualizou, confira e complete):
    - o pedido em `docs/prds/`: marque o que foi entregue e ligue a mudança de `openspec/changes/`;
    - `ARCHITECTURE.md` e `README.md`, só se a mudança os desatualizou. Mostre o trecho antes e depois;
-   - `docs/padroes/`: se a mudança criou um caso que o padrão não cobria, proponha o texto e pare para o time decidir;
+   - `docs/padroes/`: se a mudança criou um caso que o padrão não cobria, proponha o texto e pare para o time decidir; se ela mudou a contagem de uma variante numa pergunta ainda aberta, atualize a contagem;
    - um documento com status: stable não é editado pelo agente sem o OK do time: ele propõe o trecho na resposta; com o OK, aplica o trecho no /fechar, num commit próprio;
    - `CLAUDE.md`: se eu corrigi você mais de uma vez pelo mesmo motivo nesta sessão, proponha a regra que evitaria o erro;
    - uma linha em `docs/log.md`;
    - em tudo que você escrever ou atualizar: cite o arquivo e a função, a tabela ou a rota, sem número de linha; sem contagens e sem listas de arquivos que toda mudança desatualiza ("45 testes", "seis arquivos"), que conflitam no merge; e toda data vem da saída de `date`, nunca de cabeça.
-3. Termine com um resumo curto, na conversa: o pedido e o que foi entregue; o que mudou no sistema; a evidência (o teste novo, antes e depois); o que mudou na base; o que não ficou pronto. Se a mudança aplicou uma migração no banco local de desenvolvimento, diga o que foi aplicado e como desfazer: o banco é um só para todas as branches. Nada que você não possa mostrar num arquivo ou numa saída de comando.
-4. Não abra o pull request e não escreva roteiro de apresentação: o time abre o pull request como já faz e apresenta como achar melhor.
+3. Termine com um resumo de até dez linhas, na conversa: o pedido e o que foi entregue; o que mudou no sistema; a evidência (o teste novo, antes e depois); o que mudou na base; o que não ficou pronto. Se a mudança aplicou uma migração no banco local de desenvolvimento, diga o que foi aplicado e como desfazer: o banco é um só para todas as branches. Nada que você não possa mostrar num arquivo ou numa saída de comando.
+4. Não abra o pull request e não escreva roteiro de apresentação. A última linha da sua resposta diz: "O time abre o pull request da branch <esta> contra <a branch de onde ela saiu>, como já faz."
 5. Não arquive a mudança agora: o `/opsx:archive` fica para depois do merge.
 ````
 

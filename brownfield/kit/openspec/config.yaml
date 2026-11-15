@@ -30,7 +30,7 @@ rules:
     - Citar o pedido (docs/prds/NNN-nome.md) e o critério de aceite que a mudança cobre.
     - Listar os arquivos e as tabelas que a mudança toca e os testes que já protegem a área.
     - Numa mudança em objeto do banco, listar também os objetos que dependem dele (do código e de banco/dependencias.csv, se existir).
-    - Uma mudança num objeto do banco cita, na proposal, quem responde pelo banco e aprovou, pelo nome, como está no pedido ("Quem aprovou"). Se o pedido não traz esse nome, pare antes de escrever os artefatos e mande voltar ao /pedido; nunca escreva um OK que ninguém deu.
+    - Uma mudança num objeto do banco cita, na proposal, quem responde pelo banco e aprovou, pelo nome ou pelo cargo, como está no pedido ("Quem aprovou"); um cargo basta, e não é pendência. Se o pedido não traz ninguém, pare antes de escrever os artefatos e mande voltar ao /pedido; nunca escreva um OK que ninguém deu.
   specs:
     - Um requisito por critério de aceite do pedido, com os valores de exemplo do pedido nos cenários.
   design:
@@ -39,13 +39,14 @@ rules:
   tasks:
     - No máximo seis tasks. Cada task é uma mudança de código verificável com o teste dela; nenhuma task só roda um comando, confere algo à mão ou marca checkbox.
     - Cada task atualiza, no mesmo commit, o documento da base que ela desatualiza (se o documento está stable, a task anota a proposta, e o /fechar a aplica com o OK); não há grupo de tasks de documentação no fim.
-    - A primeira task escreve um teste de caracterização do que a área faz hoje e que a mudança NÃO deve alterar, e ele passa sem alterar o sistema. Um comportamento que o time já sabe que é defeito não entra nele como esperado. Numa correção, a primeira task é o teste que reproduz a falha, escrito com /diagnosing-bugs, e ele faz o papel do teste de caracterização; a correção é a task seguinte.
+    - A primeira task escreve um teste de caracterização do que a área faz hoje e que a mudança NÃO deve alterar, e ele passa sem alterar o sistema. Um comportamento que o time já sabe que é defeito, ou que uma "Decisão para o time" ainda aberta na base põe em dúvida, não entra nele como esperado. Numa correção, a primeira task é o teste que reproduz a falha, escrito com /diagnosing-bugs, e ele faz o papel do teste de caracterização; a correção é a task seguinte.
     - Cada tarefa de código seguinte começa por um teste que falha, e a tarefa diz o comando que mostra a falha.
     - Só em código de banco, o teste é um script que o time roda no ambiente de desenvolvimento e que termina em ROLLBACK, e a mudança é um script de alteração versionado; a task diz o comando que o time roda.
 
 operations:
   apply:
     guidance:
+      - Escreva ao time em pt-BR, inclusive o resumo do fim.
       - Uma task por vez. Para cada tarefa, rode o teste novo e mostre a falha antes de escrever o código.
       - Depois de cada tarefa, rode os testes da área; se um teste que passava falhar, pare e pergunte.
       - Faça um commit ao fim de cada tarefa.
