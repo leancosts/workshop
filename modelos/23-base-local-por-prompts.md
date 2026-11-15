@@ -49,9 +49,9 @@ Etapa 1, o export. Pare no fim dela e espere a minha saída.
    meu usuário tem o papel SELECT_CATALOG_ROLE. Sem esse papel, o
    GET_DDL só devolve os objetos do próprio usuário; nesse caso eu
    rodo o script como o dono de cada schema. O script roda no
-   SQL*Plus sem pedir valor nenhum (SET DEFINE OFF). Você não pode
-   rodá-lo: confira a sintaxe do SQL*Plus linha a linha antes de
-   entregar.
+   SQL*Plus sem pedir valor nenhum (SET DEFINE OFF) e cria as pastas
+   de saída antes de gravar. Você não pode rodá-lo: confira a
+   sintaxe do SQL*Plus linha a linha antes de entregar.
 2. A saída em banco/<schema>/<tipo>/<objeto>.sql, um objeto por
    arquivo: tabelas (as chaves estrangeiras à parte), índices,
    views, types, sequences, synonyms (os públicos que apontam para
@@ -66,13 +66,16 @@ Etapa 1, o export. Pare no fim dela e espere a minha saída.
 
 Etapa 2, depois que eu rodar o export e colar a saída.
 5. Confira a contagem e procure senha, token e endereço no que
-   saiu. Se achar, pare e me mostre antes de qualquer commit.
+   saiu. Se achar, pare e me mostre antes de qualquer commit;
+   depois que eu decidir, o próprio script de export troca o valor
+   por um marcador, para o próximo export não trazê-lo de volta.
 6. Um banco descartável em container (ou numa instância que eu
    possa apagar) que sobe com um comando: cria o usuário de cada
    schema e os que recebem grants, carrega cada schema como o dono
-   dele, depois as chaves estrangeiras, recompila e imprime quantos
-   comandos falharam e quantos objetos ficaram inválidos, e por
-   quê. Sem dados: cada teste cria as linhas dele.
+   dele, depois as chaves estrangeiras, e recompila. No fim, o
+   mesmo comando imprime na tela quantos comandos falharam e
+   quantos objetos ficaram inválidos, e por quê. Sem dados: cada
+   teste cria as linhas dele.
 7. README.md com os comandos de exportar e de subir o banco, só os
    que passaram, e como comparar o export de dois ambientes. Não
    escreva testes agora: eles são do dia 4. Um commit com tudo.
@@ -89,7 +92,40 @@ O passo leva mais de uma rodada de conversa, e o time reserva um turno para ele.
 
 Daí em diante os passos são os mesmos. No `/pedido`, "até cinco arquivos" são até cinco objetos (a especificação e o corpo de um package contam como um); no passo 6, o teste chama o objeto no banco descartável e a mudança é um script de alteração versionado, e ela segue o gatilho de spec, com o OK de quem responde pelo banco.
 
-**Passo 1, o kit.** O prompt de instalação está em `<kit>/brownfield/README.md`: o agente copia a estrutura de `docs/`, os comandos, o script de checagem e as skills, sem alterar nenhum arquivo que já existe, e faz um commit só com o kit.
+**Passo 1, o kit.** O agente copia a estrutura de `docs/`, os comandos, o script de checagem, o hook e as skills, sem alterar nenhum arquivo que já existe, e faz um commit só com o kit. O time clona o kit ao lado do repositório legado, cria a branch e abre o Claude Code:
+
+```bash
+git clone https://github.com/leancosts/workshop.git workshop-kit
+cd <repositório legado>
+git switch -c base-de-conhecimento
+claude
+```
+
+```text
+Leia ../workshop-kit/brownfield/README.md e instale o kit neste
+repositório, sem alterar nenhum arquivo que já existe:
+
+1. Copie kit/docs/ para docs/. Se docs/ já existe, crie só o que
+   falta e me mostre o que encontrou.
+2. Copie kit/scripts/check-docs.mjs e kit/scripts/guard-status.mjs
+   para scripts/.
+3. Copie kit/.claude/commands/ para .claude/commands/.
+4. Copie kit/.claude/settings.json para .claude/settings.json. Se o
+   repositório já tem esse arquivo, acrescente só o hook PreToolUse
+   (matcher Edit|Write|MultiEdit|Bash) ao que existe e me mostre o
+   que mudou.
+5. Copie para .claude/skills/ as skills grill-me, grilling, tdd,
+   codebase-design, diagnosing-bugs e code-review de
+   ../workshop-kit/greenfield/.claude/skills/, com o arquivo
+   LICENSE-mattpocock-skills.
+6. Rode openspec init --tools claude, troque o openspec/config.yaml
+   pelo kit/openspec-config.yaml e preencha a stack com o que você
+   ler neste repositório.
+
+Liste o que copiou e faça um commit só com o kit.
+```
+
+Depois o time sai e entra de novo no Claude Code (`/exit` e `claude`), para ele carregar os comandos.
 
 **Passo 2, gerar a base.** `/base <a área que o time vai mudar>`. O texto do comando (`.claude/commands/base.md`), em que `$ARGUMENTS` é o que vem depois do comando:
 
@@ -118,7 +154,7 @@ A área que o time vai mudar: $ARGUMENTS
 2. `ARCHITECTURE.md` (modelo 05b, type: Arquitetura) e `README.md` (o que o sistema faz, instalar, rodar e testar, só com comandos que passaram).
 3. `docs/padroes/modelagem-de-banco.md` (modelo 32): para cada tema, o que a maioria das tabelas faz, com três exemplos, o arquivo de cada um e a contagem.
 4. `docs/padroes/escrita-de-codigo.md` (modelo 33): camadas, nomes, tratamento de erro, log e acesso ao banco, com um arquivo de referência por camada. Feche com a seção "Testes" (modelo 34): o comando que roda tudo, o que roda um arquivo só, onde os testes ficam e quais pastas não têm teste.
-5. `CLAUDE.md` (modelo 05), em no máximo 60 linhas: os comandos que passaram e os caminhos, sem contagens; uma linha por arquivo da base, dizendo quando ler; "toda tabela nova segue docs/padroes/modelagem-de-banco.md"; "todo código novo segue docs/padroes/escrita-de-codigo.md"; "nos documentos, cite o arquivo e a função, a tabela ou a rota, sem número de linha; a linha fica só na conversa" (no lugar do "citar arquivo e linha" do modelo); "um documento com status: draft é hipótese: confira no código"; "um documento com status: stable não é editado pelo agente sem o OK do time: ele propõe o trecho na resposta; com o OK, aplica o trecho no /fechar, num commit próprio"; "a base muda no mesmo commit que o código"; "só uma pessoa muda o status de um documento para stable"; e, quando o repositório tem código de banco, "nunca rode DDL nem altere dados num banco compartilhado; a mudança no banco é um script versionado".
+5. `CLAUDE.md` (modelo 05), em no máximo 60 linhas: os comandos que passaram e os caminhos, sem contagens; uma linha por arquivo da base, dizendo quando ler; "toda tabela nova segue docs/padroes/modelagem-de-banco.md"; "todo código novo segue docs/padroes/escrita-de-codigo.md"; "nos documentos, cite o arquivo e a função, a tabela ou a rota, sem número de linha; a linha fica só na conversa" (no lugar do "citar arquivo e linha" do modelo); "um documento com status: draft é hipótese: confira no código"; "um documento com status: stable não é editado pelo agente sem o OK do time: ele propõe o trecho na resposta; com o OK, aplica o trecho no /fechar, num commit próprio"; "a base muda no mesmo commit que o código"; "só uma pessoa muda o status de um documento para stable, no editor; o agente não muda, nem a pedido do time"; e, quando o repositório tem código de banco, "nunca rode DDL nem altere dados num banco compartilhado; a mudança no banco é um script versionado".
 6. Atualize `docs/index.md` e os índices das pastas, acrescente uma linha em `docs/log.md` e rode `node scripts/check-docs.mjs` até passar. Faça o commit e escreva: "A base mínima está pronta."
 
 ## Depois, o que fica em rascunho
@@ -144,7 +180,8 @@ Vamos revisar ARCHITECTURE.md juntos.
 Primeiro, confira cada afirmação do documento no arquivo citado,
 corrija o que não bate e liste o que você corrigiu. No documento,
 cite o arquivo e a função, a tabela ou a rota, sem número de
-linha: a linha fica só na conversa.
+linha: a linha fica só na conversa. Sem contagens e sem listas de
+arquivos que toda mudança desatualiza.
 
 Depois faça, uma por vez, as perguntas de "Decisões para o time"
 e, em seguida, uma pergunta para cada frase marcada "hipótese",
@@ -172,14 +209,17 @@ decidida, cite a decisão.
 Primeiro, confira cada afirmação do documento no arquivo citado,
 corrija o que não bate e liste o que você corrigiu. No documento,
 cite o arquivo e a função, a tabela ou a rota, sem número de
-linha: a linha fica só na conversa.
+linha: a linha fica só na conversa. Sem contagens e sem listas de
+arquivos que toda mudança desatualiza (as variantes só são
+contadas nas perguntas ainda abertas).
 
 Depois faça, uma por vez, as perguntas de "Decisões para o time",
 com a contagem de cada variante e a sua recomendação. A cada
-resposta, escreva a regra na seção do tema, com um exemplo, tire a
-pergunta de "Decisões para o time" e anote quem decidiu e a data.
-Um comportamento que o time reconhece como defeito não vira regra
-do padrão: anote-o como item do backlog.
+resposta, escreva a regra na seção do tema, com um exemplo e sem a
+contagem das variantes, tire a pergunta de "Decisões para o time"
+e anote quem decidiu e a data. Um comportamento que o time
+reconhece como defeito não vira regra do padrão: anote-o como item
+do backlog.
 
 Por fim, abra três tabelas que seguem o padrão e uma que foge dele
 e COPIE na resposta o trecho do esquema de cada uma, com o
@@ -201,14 +241,17 @@ decidida, cite a decisão.
 Primeiro, confira cada afirmação do documento no arquivo citado,
 corrija o que não bate e liste o que você corrigiu. No documento,
 cite o arquivo e a função, a tabela ou a rota, sem número de
-linha: a linha fica só na conversa.
+linha: a linha fica só na conversa. Sem contagens e sem listas de
+arquivos que toda mudança desatualiza (as variantes só são
+contadas nas perguntas ainda abertas).
 
 Depois faça, uma por vez, as perguntas de "Decisões para o time",
 com a contagem de cada variante e a sua recomendação. A cada
-resposta, escreva a regra na seção do tema, com um exemplo, tire a
-pergunta de "Decisões para o time" e anote quem decidiu e a data.
-Um comportamento que o time reconhece como defeito não vira regra
-do padrão: anote-o como item do backlog.
+resposta, escreva a regra na seção do tema, com um exemplo e sem a
+contagem das variantes, tire a pergunta de "Decisões para o time"
+e anote quem decidiu e a data. Um comportamento que o time
+reconhece como defeito não vira regra do padrão: anote-o como item
+do backlog.
 
 Por fim, abra um arquivo de referência por camada e uma rota, um
 job ou um objeto do banco que foge do padrão e COPIE na resposta o
@@ -219,7 +262,9 @@ pesam e copie o trecho delas.
 Não mude o status.
 ```
 
-Uma pessoa do time, depois de ler o documento e conferir as citações no código, muda o status de `draft` para `stable` no editor, e a mudança entra no pull request. Só uma pessoa faz isso: o agente nunca escreve `status: stable`, e o hook do kit (`scripts/guard-status.mjs`) o impede. Um documento `stable` não é editado pelo agente sem o OK do time: ele propõe o trecho na resposta; com o OK, aplica o trecho no /fechar, num commit próprio.
+Uma pessoa do time, depois de ler o documento e conferir as citações no código, muda o status de `draft` para `stable` no editor, e a mudança entra no pull request. Só uma pessoa faz isso: o agente nunca escreve `status: stable`, e o hook do kit (`scripts/guard-status.mjs`) o impede, também por um comando do terminal que grave a linha. Um documento `stable` não é editado pelo agente sem o OK do time: ele propõe o trecho na resposta; com o OK, aplica o trecho no /fechar, num commit próprio.
+
+Antes de mudar a linha, a pessoa confere três coisas: as citações abrem no arquivo certo; as decisões do time estão escritas; nada do documento contradiz o que o time sabe.
 
 Opcional, antes de marcar um documento como `stable`, quando o time tem acesso a outro modelo: rode só nele a revisão adversarial do primeiro prompt de "Brownfield: depois da semana", numa sessão nova com outro modelo. Sem outro modelo, a conferência da pessoa cobre as citações no código e as decisões do documento.
 
@@ -231,9 +276,11 @@ contra <a branch de desenvolvimento>. Sem remoto ou sem linha de
 comando autenticada, escreva a descrição em .tmp/pr-base.md, fora
 do commit (crie .tmp/.gitignore com a linha *). Na descrição: os
 documentos criados, uma linha cada; quais uma pessoa marcou como
-stable e quais seguem em rascunho; as perguntas que ninguém do time soube
-responder, com o nome de quem pode responder. Não escreva nada que
-não esteja num arquivo.
+stable e quais seguem em rascunho, dizendo que quem conferiu cada
+documento é o nome na mensagem do commit que mudou o status
+("conferido por <nome>"); as perguntas que
+ninguém do time soube responder, com o nome de quem pode
+responder. Não escreva nada que não esteja num arquivo.
 ```
 
 ## Brownfield: uma mudança pequena, em quatro passos
@@ -288,20 +335,21 @@ toca e os testes que já existem na área. Se a mudança altera um
 objeto do banco, liste os objetos que dependem dele e peça o OK de quem responde
 pelo banco: só o registre na proposal depois que ele vier, com o
 nome de quem o deu, e nunca escreva um OK que ninguém deu. Pare
-depois da proposal: o PO aprova antes do resto.
+depois da proposal: o PO aprova antes do resto. Faça um commit com
+o artefato.
 ```
 
 ```text
 /opsx:continue
 Escreva as specs: o comportamento novo, um requisito por critério de
-aceite do pedido.
+aceite do pedido. Faça um commit com o artefato.
 ```
 
 ```text
 /opsx:continue
 Escreva o design.md. Abra com "Padrões seguidos": para cada decisão,
 cite o documento de docs/padroes/ que a sustenta. Se precisar fugir
-de um padrão, pare e me pergunte.
+de um padrão, pare e me pergunte. Faça um commit com o artefato.
 ```
 
 ```text
@@ -312,6 +360,8 @@ alterar; cada task seguinte começa por um teste que falha.
 
 Numa correção, a primeira task é o teste que reproduz a falha,
 escrito com /diagnosing-bugs; a correção é a task seguinte.
+
+Faça um commit com o artefato.
 ```
 
 **Passo 6, construir.**
@@ -360,14 +410,14 @@ A mudança $ARGUMENTS está construída. Feche o trabalho, nesta ordem:
    - um documento com status: stable não é editado pelo agente sem o OK do time: ele propõe o trecho na resposta; com o OK, aplica o trecho no /fechar, num commit próprio;
    - `CLAUDE.md`: se eu corrigi você mais de uma vez pelo mesmo motivo nesta sessão, proponha a regra que evitaria o erro;
    - uma linha em `docs/log.md`;
-   - em tudo que você escrever ou atualizar: cite o arquivo e a função, a tabela ou a rota, sem número de linha; não escreva contagens ("45 testes", "seis arquivos"), que a próxima mudança desatualiza e que conflitam no merge; e toda data vem da saída de `date`, nunca de cabeça.
+   - em tudo que você escrever ou atualizar: cite o arquivo e a função, a tabela ou a rota, sem número de linha; sem contagens e sem listas de arquivos que toda mudança desatualiza ("45 testes", "seis arquivos"), que conflitam no merge; e toda data vem da saída de `date`, nunca de cabeça.
 3. Abra um pull request em rascunho contra a branch de onde esta saiu (a da base, se ela ainda não foi incorporada), com a descrição no formato de ../workshop-kit/modelos/14-descricao-do-pr.md: o pedido, o que mudou e o que ficou fora, a evidência (o teste novo antes e depois), o que mudou na base e o que não ficou pronto. Não escreva nada que você não possa mostrar num arquivo ou numa saída de comando. Sem remoto ou sem linha de comando autenticada, escreva a descrição em `.tmp/pr-<nome>.md`, dentro do repositório e fora do commit (crie `.tmp/.gitignore` com a linha `*`, se ele não existe), e diga ao time que abra o pull request pela interface web. Se a mudança aplicou uma migração no banco local de desenvolvimento, escreva na descrição o que foi aplicado e como desfazer: o banco é um só para todas as branches, a migração continua aplicada quando o time troca de branch, e antes de trocar o time a desfaz ou recria o banco local.
 4. Escreva o roteiro da apresentação, em cinco linhas (sem remoto, em `.tmp/roteiro-<nome>.md`, também fora do commit):
    - o pedido e o tipo;
    - a mudança, e como mostrar que funciona;
    - a evidência: o teste que falhava e passa;
    - o que entrou na base;
-   - um erro seu que o time ou um teste pegou.
+   - um erro seu que o time ou um teste pegou; se nada foi pego, diga isso.
 5. Não arquive a mudança agora: o `/opsx:archive` fica para depois do merge.
 ````
 
