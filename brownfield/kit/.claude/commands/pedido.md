@@ -15,12 +15,12 @@ Leia o CLAUDE.md, o ARCHITECTURE.md, os documentos de docs/padroes/ e o código 
    - não depende de outro time, de outro repositório nem de um acesso que o time não tem;
    - tem um critério de aceite que um teste automatizado verifica.
 4. Se o item não é pequeno, proponha a menor fatia que um usuário percebe e diga o que fica fora.
-5. Faça no máximo três perguntas, uma por vez, com a sua recomendação em cada uma, só sobre o que o código não responde.
-6. Escreva o pedido em `docs/prds/NNN-nome.md`, no formato de ../workshop-kit/modelos/31-prd.md (type: PRD, status: draft), curto:
+5. Faça no máximo três perguntas, uma por vez, com a sua recomendação em cada uma, só sobre o que o código não responde. Faça as perguntas ANTES de escrever o arquivo: o pedido só é escrito com as respostas.
+6. Depois das respostas, escreva o pedido em `docs/prds/NNN-nome.md`, onde `NNN` é o próximo número livre olhando todas as branches (`git log --all --name-only -- docs/prds`), no formato de ../workshop-kit/modelos/31-prd.md (type: PRD, status: draft), curto:
    - "Quem ganha" e "Objetivo", em uma frase cada;
-   - "Problema hoje", com o que o sistema faz hoje, citando arquivo e linha. Numa correção, os passos para reproduzir;
+   - "Problema hoje", com o que o sistema faz hoje, citando o arquivo e a função. Numa correção, os passos para reproduzir;
    - "Pronto quando", com o critério de aceite;
    - "Fora de escopo".
 7. Se o pedido conflita com um princípio do VISION.md, com uma ADR ou com um padrão, pare e mostre o conflito.
 
-Termine com o caminho do arquivo e espere o PO aprovar.
+Termine com o caminho do arquivo e espere o PO aprovar. Depois que o PO aprovar, faça um commit só com o pedido e diga o próximo comando: `/opsx:new <nome>`. Não comece a mudança por outro caminho. Numa correção, o próximo passo é o mesmo.

@@ -66,6 +66,8 @@ Depois, saia do Claude Code e entre de novo (`/exit` e `claude`), para ele carre
 node scripts/check-docs.mjs    # precisa rodar; sem documentos, não há o que recusar
 ```
 
+Se o repositório já tinha Markdown em `docs/`, a checagem só passa depois do `/base` (passo 2), que dá frontmatter ao que existia. Antes disso ela lista esses arquivos, e isso é esperado.
+
 No Claude Code, `/` precisa mostrar `/base`, `/pedido`, `/fechar` e `/opsx:new`. A CLI do OpenSpec é a do dia 2: `openspec --version` diz 1.16.1.
 
 ## Passo 2: gerar a base
@@ -93,30 +95,90 @@ Todo documento, menos o `CLAUDE.md`, o `README.md`, os `index.md` e o `log.md`, 
 
 ## Passo 3: revisar três documentos
 
-O time revisa o `ARCHITECTURE.md`, o padrão de banco e o padrão de código, um por vez:
+O time revisa o `ARCHITECTURE.md`, o padrão de banco e o padrão de código, um por vez. Cada prompt tem as mesmas quatro partes: o agente confere o documento no código, faz as perguntas uma por vez, copia o trecho das afirmações que mais pesam e não mexe em status nem em `verified`. Só muda o que ele abre no fim.
+
+`ARCHITECTURE.md`:
 
 ```text
-Vamos revisar <documento> juntos. Faça, uma por vez, as perguntas
-de "Decisões para o time" e as hipóteses, com a sua recomendação.
-A cada resposta, corrija o documento. Depois escolha as três
-afirmações que mais pesam numa mudança, abra o arquivo citado em
-cada uma e me mostre o trecho. Não mude status nem verified.
+Vamos revisar ARCHITECTURE.md juntos.
+
+Primeiro, confira cada afirmação do documento no arquivo citado,
+corrija o que não bate e liste o que você corrigiu.
+
+Depois faça, uma por vez, as perguntas de "Decisões para o time" e
+as hipóteses, com a sua recomendação. A cada resposta, escreva a
+regra na seção do tema, tire a pergunta de "Decisões para o time" e
+anote quem decidiu e a data.
+
+Por fim, escolha as três afirmações que mais pesam numa mudança,
+abra o arquivo citado em cada uma e COPIE na resposta o trecho do
+código, com o arquivo e a função: eu não vejo as suas leituras de
+arquivo.
+
+Não mude status nem verified.
 ```
 
-Só uma pessoa do time, depois de ler, acrescenta o próprio nome em `verified` e muda o status para `stable`. Os outros documentos ficam em rascunho: o agente os trata como hipótese e confere no código.
+Padrão de banco:
+
+```text
+Vamos revisar docs/padroes/modelagem-de-banco.md juntos.
+
+Primeiro, confira cada afirmação do documento no arquivo citado,
+corrija o que não bate e liste o que você corrigiu.
+
+Depois faça, uma por vez, as perguntas de "Decisões para o time",
+com a contagem de cada variante e a sua recomendação. A cada
+resposta, escreva a regra na seção do tema, com um exemplo, tire a
+pergunta de "Decisões para o time" e anote quem decidiu e a data.
+
+Por fim, abra três tabelas que seguem o padrão e uma que foge dele
+e COPIE na resposta o trecho do esquema de cada uma, com o arquivo:
+eu não vejo as suas leituras de arquivo. Escolha também as três
+afirmações que mais pesam e copie o trecho delas.
+
+Não mude status nem verified.
+```
+
+Padrão de código:
+
+```text
+Vamos revisar docs/padroes/escrita-de-codigo.md juntos.
+
+Primeiro, confira cada afirmação do documento no arquivo citado,
+corrija o que não bate e liste o que você corrigiu.
+
+Depois faça, uma por vez, as perguntas de "Decisões para o time",
+com a contagem de cada variante e a sua recomendação. A cada
+resposta, escreva a regra na seção do tema, com um exemplo, tire a
+pergunta de "Decisões para o time" e anote quem decidiu e a data.
+
+Por fim, abra um arquivo de referência por camada e uma rota que
+foge do padrão e COPIE na resposta o trecho de cada um, com o
+arquivo e a função: eu não vejo as suas leituras de arquivo.
+Escolha também as três afirmações que mais pesam e copie o trecho
+delas.
+
+Não mude status nem verified.
+```
+
+Só uma pessoa do time, depois de ler, assina: acrescenta o próprio nome em `verified`, com a hora real (`date -Iseconds`, nunca digitada de cabeça), e muda o status para `stable`. Um documento `stable` só muda depois com o OK do time. Os outros documentos ficam em rascunho: o agente os trata como hipótese e confere no código.
 
 ## Passos 4 a 7: uma mudança pequena
 
 ```text
 /pedido <o item do backlog>
 /opsx:new <nome>          abre a mudança
-/opsx:continue            escreve a proposal; o PO aprova
-/opsx:continue            specs, design e tasks, um por vez
+/opsx:continue            proposal: cita o pedido e os arquivos; o PO aprova
+/opsx:continue            specs: o comportamento novo, um requisito por critério de aceite
+/opsx:continue            design: abre com "Padrões seguidos", um documento por decisão
+/opsx:continue            tasks: no máximo seis, a primeira é o teste de caracterização
 /opsx:apply               uma task por vez, o teste antes do código
 /fechar <nome>
 ```
 
-Feature nova, melhoria e correção seguem o mesmo caminho. O que muda é o tamanho: o `/pedido` mede o item e propõe uma fatia menor quando ele não cabe.
+Um `/opsx:continue` escreve um artefato. Feature nova, melhoria e correção seguem o mesmo caminho. O que muda é o tamanho: o `/pedido` mede o item e propõe uma fatia menor quando ele não cabe.
+
+**Correção.** O caminho é o mesmo dos passos 4 a 7: `/pedido`, `/opsx:new corrige-<nome>`, `/opsx:continue` até as tasks, `/opsx:apply` e `/fechar corrige-<nome>`. No `/opsx:apply` de uma correção, a primeira task usa a skill `/diagnosing-bugs` para escrever o teste que reproduz a falha; ele faz o papel do teste de caracterização.
 
 ## O que não entra aqui
 

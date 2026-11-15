@@ -10,12 +10,13 @@ A mudança $ARGUMENTS está construída. Feche o trabalho, nesta ordem:
    - o pedido em `docs/prds/`: marque o que foi entregue e ligue a mudança de `openspec/changes/`;
    - `ARCHITECTURE.md` e `README.md`, só se a mudança os desatualizou. Mostre o trecho antes e depois;
    - `docs/padroes/`: se a mudança criou um caso que o padrão não cobria, proponha o texto e pare para o time decidir;
+   - um documento com `status: stable` só muda com o OK do time: proponha o trecho e pare, sem editar por conta própria; a mudança entra no pull request, e quem conferiu assina de novo;
    - `CLAUDE.md`: se eu corrigi você mais de uma vez pelo mesmo motivo nesta sessão, proponha a regra que evitaria o erro;
    - uma linha em `docs/log.md`.
-3. Abra um pull request em rascunho contra a branch de onde esta saiu (a da base, se ela ainda não foi incorporada), com a descrição no formato de ../workshop-kit/modelos/14-descricao-do-pr.md: o pedido, o que mudou e o que ficou fora, a evidência (o teste novo antes e depois), o que mudou na base e o que não ficou pronto. Não escreva nada que você não possa mostrar num arquivo ou numa saída de comando.
-4. Escreva o roteiro da apresentação, em cinco linhas:
+3. Abra um pull request em rascunho contra a branch de onde esta saiu (a da base, se ela ainda não foi incorporada), com a descrição no formato de ../workshop-kit/modelos/14-descricao-do-pr.md: o pedido, o que mudou e o que ficou fora, a evidência (o teste novo antes e depois), o que mudou na base e o que não ficou pronto. Não escreva nada que você não possa mostrar num arquivo ou numa saída de comando. Sem remoto ou sem linha de comando autenticada, escreva a descrição em `.tmp/pr-<nome>.md`, dentro do repositório e fora do commit, e diga ao time que abra o pull request pela interface web.
+4. Escreva o roteiro da apresentação, em cinco linhas (sem remoto, em `.tmp/roteiro-<nome>.md`, também fora do commit):
    - o pedido e o tipo;
    - a mudança, e como mostrar que funciona;
    - a evidência: o teste que falhava e passa;
    - o que entrou na base;
-   - um erro seu que o time corrigiu.
+   - um erro seu que o time ou um teste pegou.

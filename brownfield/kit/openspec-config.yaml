@@ -9,7 +9,7 @@ context: |
   docs/padroes/ que a mudança toca. Um documento com status: draft no frontmatter é
   hipótese: confira no código antes de usar.
   Toda mudança nasce de um pedido em docs/prds/; a proposta cita a origem.
-  Stack: <preencha a partir de docs/inventario.md>
+  Stack: <preencha a partir dos manifestos do repositório: package.json, pom.xml, docker-compose.yml...>
 
 rules:
   proposal:
@@ -19,7 +19,10 @@ rules:
     - Abrir com a seção "Padrões seguidos", citando o documento de docs/padroes/ ou a ADR de docs/adrs/ que sustenta cada decisão.
     - Tabela, coluna ou migração nova segue docs/padroes/modelagem-de-banco.md; fugir de um padrão pede uma ADR com Status proposta.
   tasks:
-    - A primeira tarefa escreve um teste do que a área faz hoje, que passa sem alterar o sistema.
+    - No máximo seis tasks. Cada task é uma mudança de código verificável com o teste dela; nenhuma task só roda um comando, confere algo à mão ou marca checkbox.
+    - Cada task atualiza, no mesmo commit, o documento da base que ela desatualiza; não há grupo de tasks de documentação no fim.
+    - A primeira task escreve um teste de caracterização do que a área faz hoje e que a mudança NÃO deve alterar, e ele passa sem alterar o sistema. Um comportamento que o time já sabe que é defeito não entra nele como esperado. Numa correção, a primeira task é o teste que reproduz a falha, e ele faz o papel do teste de caracterização.
+    - Um artefato já escrito (proposal, specs, design) só muda com o OK do time.
     - Cada tarefa de código seguinte começa por um teste que falha, e a tarefa diz o comando que mostra a falha.
 
 operations:
