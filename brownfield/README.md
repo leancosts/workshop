@@ -24,7 +24,7 @@ Os prompts de cada passo estão em `../modelos/23-base-local-por-prompts.md`.
 |---|---|
 | `kit/.claude/commands/` | `/base`, `/pedido` e `/fechar` |
 | `kit/docs/` | Os índices de `docs/`, `docs/adrs/`, `docs/prds/` e `docs/padroes/`, e o `log.md` |
-| `kit/scripts/check-docs.mjs` | A checagem do frontmatter (modelo 15), já com `VISION.md`, `ARCHITECTURE.md` e `DESIGN.md` na lista |
+| `kit/scripts/check-docs.mjs` | A checagem do frontmatter (modelo 15), já com `VISION.md`, `ARCHITECTURE.md` e `DESIGN.md` na lista. Também recusa um caminho de `sources` que não existe, uma citação com número de linha e um marcador esquecido (`"+data+"`, `<preencha`, `TODO:`, `NNN`) |
 | `kit/openspec-config.yaml` | A configuração do OpenSpec que manda cada artefato ler a base e os padrões |
 | `../modelos/` | Os formatos: 05 (`CLAUDE.md`), 05a (`VISION.md`), 05b (`ARCHITECTURE.md`), 05f (`DESIGN.md`), 12 (ADR), 31 (PRD), 32 e 33 (padrões de banco e de código), 34 (testes) |
 
@@ -103,12 +103,15 @@ O time revisa o `ARCHITECTURE.md`, o padrão de banco e o padrão de código, um
 Vamos revisar ARCHITECTURE.md juntos.
 
 Primeiro, confira cada afirmação do documento no arquivo citado,
-corrija o que não bate e liste o que você corrigiu.
+corrija o que não bate e liste o que você corrigiu. No documento,
+cite o arquivo e a função, a tabela ou a rota, sem número de
+linha: a linha fica só na conversa.
 
-Depois faça, uma por vez, as perguntas de "Decisões para o time" e
-as hipóteses, com a sua recomendação. A cada resposta, escreva a
-regra na seção do tema, tire a pergunta de "Decisões para o time" e
-anote quem decidiu e a data.
+Depois faça, uma por vez, as perguntas de "Decisões para o time"
+e, em seguida, uma pergunta para cada frase marcada "hipótese",
+com a sua recomendação. A cada resposta, escreva a regra na seção
+do tema, tire a pergunta de "Decisões para o time" e anote quem
+decidiu e a data.
 
 Por fim, escolha as três afirmações que mais pesam numa mudança,
 abra o arquivo citado em cada uma e COPIE na resposta o trecho do
@@ -123,20 +126,28 @@ Padrão de banco:
 ```text
 Vamos revisar docs/padroes/modelagem-de-banco.md juntos.
 
+Antes, leia as decisões já tomadas em outros documentos da base (o
+ARCHITECTURE.md assinado, por exemplo): não refaça uma pergunta já
+decidida, cite a decisão.
+
 Primeiro, confira cada afirmação do documento no arquivo citado,
-corrija o que não bate e liste o que você corrigiu.
+corrija o que não bate e liste o que você corrigiu. No documento,
+cite o arquivo e a função, a tabela ou a rota, sem número de
+linha: a linha fica só na conversa.
 
 Depois faça, uma por vez, as perguntas de "Decisões para o time",
 com a contagem de cada variante e a sua recomendação. A cada
 resposta, escreva a regra na seção do tema, com um exemplo, tire a
 pergunta de "Decisões para o time" e anote quem decidiu e a data.
+Um comportamento que o time reconhece como defeito não vira regra
+do padrão: anote-o como item do backlog.
 
 Por fim, abra três tabelas que seguem o padrão e uma que foge dele
-e COPIE na resposta o trecho do esquema de cada uma, com o arquivo:
-eu não vejo as suas leituras de arquivo. Escolha também as três
-afirmações que mais pesam e copie o trecho delas.
+e COPIE na resposta o trecho do esquema de cada uma, com o
+arquivo: eu não vejo as suas leituras de arquivo. Escolha também
+as três afirmações que mais pesam e copie o trecho delas.
 
-Não mude status nem verified.
+Não mude status nem verified. Não altere o esquema.
 ```
 
 Padrão de código:
@@ -144,24 +155,32 @@ Padrão de código:
 ```text
 Vamos revisar docs/padroes/escrita-de-codigo.md juntos.
 
+Antes, leia as decisões já tomadas em outros documentos da base (o
+ARCHITECTURE.md assinado, por exemplo): não refaça uma pergunta já
+decidida, cite a decisão.
+
 Primeiro, confira cada afirmação do documento no arquivo citado,
-corrija o que não bate e liste o que você corrigiu.
+corrija o que não bate e liste o que você corrigiu. No documento,
+cite o arquivo e a função, a tabela ou a rota, sem número de
+linha: a linha fica só na conversa.
 
 Depois faça, uma por vez, as perguntas de "Decisões para o time",
 com a contagem de cada variante e a sua recomendação. A cada
 resposta, escreva a regra na seção do tema, com um exemplo, tire a
 pergunta de "Decisões para o time" e anote quem decidiu e a data.
+Um comportamento que o time reconhece como defeito não vira regra
+do padrão: anote-o como item do backlog.
 
-Por fim, abra um arquivo de referência por camada e uma rota que
-foge do padrão e COPIE na resposta o trecho de cada um, com o
-arquivo e a função: eu não vejo as suas leituras de arquivo.
-Escolha também as três afirmações que mais pesam e copie o trecho
-delas.
+Por fim, abra um arquivo de referência por camada e uma rota, um
+job ou um objeto do banco que foge do padrão e COPIE na resposta o
+trecho de cada um, com o arquivo e a função: eu não vejo as suas
+leituras de arquivo. Escolha também as três afirmações que mais
+pesam e copie o trecho delas.
 
 Não mude status nem verified.
 ```
 
-Só uma pessoa do time, depois de ler, assina: acrescenta o próprio nome em `verified`, com a hora real (`date -Iseconds`, nunca digitada de cabeça), e muda o status para `stable`. Um documento `stable` só muda depois com o OK do time. Os outros documentos ficam em rascunho: o agente os trata como hipótese e confere no código.
+Só uma pessoa do time, depois de ler, assina: acrescenta o próprio nome em `verified`, com a hora real (`date -Iseconds`, nunca digitada de cabeça), e muda o status para `stable`. Um documento `stable` não é editado pelo agente sem o OK do time: ele propõe o trecho na resposta; com o OK, aplica o trecho no /fechar, num commit próprio. Os outros documentos ficam em rascunho: o agente os trata como hipótese e confere no código.
 
 ## Passos 4 a 7: uma mudança pequena
 
@@ -171,14 +190,16 @@ Só uma pessoa do time, depois de ler, assina: acrescenta o próprio nome em `ve
 /opsx:continue            proposal: cita o pedido e os arquivos; o PO aprova
 /opsx:continue            specs: o comportamento novo, um requisito por critério de aceite
 /opsx:continue            design: abre com "Padrões seguidos", um documento por decisão
-/opsx:continue            tasks: no máximo seis, a primeira é o teste de caracterização
+/opsx:continue            tasks: no máximo seis, a primeira é o teste de caracterização (numa correção, o teste que reproduz a falha)
 /opsx:apply               uma task por vez, o teste antes do código
 /fechar <nome>
 ```
 
-Um `/opsx:continue` escreve um artefato. Feature nova, melhoria e correção seguem o mesmo caminho. O que muda é o tamanho: o `/pedido` mede o item e propõe uma fatia menor quando ele não cabe.
+Um `/opsx:continue` escreve um artefato, e os arquivos de `openspec/changes/<nome>/` entram num commit depois de cada um. Feature nova, melhoria e correção seguem o mesmo caminho. O que muda é o tamanho: o `/pedido` mede o item e propõe uma fatia menor quando ele não cabe.
 
-**Correção.** O caminho é o mesmo dos passos 4 a 7: `/pedido`, `/opsx:new corrige-<nome>`, `/opsx:continue` até as tasks, `/opsx:apply` e `/fechar corrige-<nome>`. No `/opsx:apply` de uma correção, a primeira task usa a skill `/diagnosing-bugs` para escrever o teste que reproduz a falha; ele faz o papel do teste de caracterização.
+**Correção.** O caminho é o mesmo dos passos 4 a 7: `/pedido`, `/opsx:new corrige-<nome>` (o `/pedido` sugere esse nome), `/opsx:continue` até as tasks, `/opsx:apply` e `/fechar corrige-<nome>`. Numa correção, a primeira task é o teste que reproduz a falha, escrito com a skill `/diagnosing-bugs`, e ele faz o papel do teste de caracterização. A correção mínima é a task seguinte. Uma task por vez, com um commit entre elas.
+
+O banco de desenvolvimento é um só para todas as branches: uma migração aplicada numa branch continua aplicada quando o time troca de branch. Antes de trocar, o time a desfaz ou recria o banco local.
 
 ## O que não entra aqui
 

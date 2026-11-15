@@ -9,20 +9,24 @@ context: |
   docs/padroes/ que a mudança toca. Um documento com status: draft no frontmatter é
   hipótese: confira no código antes de usar.
   Toda mudança nasce de um pedido em docs/prds/; a proposta cita a origem.
+  Um documento com status: stable não é editado pelo agente sem o OK do time: ele propõe o trecho na resposta; com o OK, aplica o trecho no /fechar, num commit próprio.
+  Um artefato já escrito (proposal, specs, design) só muda com o OK do time.
+  Nos documentos, cite o arquivo e a função, a tabela ou a rota, sem número de linha.
   Stack: <preencha a partir dos manifestos do repositório: package.json, pom.xml, docker-compose.yml...>
 
 rules:
   proposal:
     - Citar o pedido (docs/prds/NNN-nome.md) e o critério de aceite que a mudança cobre.
     - Listar os arquivos e as tabelas que a mudança toca e os testes que já protegem a área.
+    - Numa mudança em objeto do banco, listar também os objetos que dependem dele (do código e de banco/dependencias.csv, se existir).
+    - Uma mudança num objeto do banco pede, na proposal, o OK de quem responde pelo banco, pelo nome. O agente pede o OK e só o registra depois que ele vier, com o nome de quem o deu; nunca escreve um OK que ninguém deu.
   design:
     - Abrir com a seção "Padrões seguidos", citando o documento de docs/padroes/ ou a ADR de docs/adrs/ que sustenta cada decisão.
     - Tabela, coluna ou migração nova segue docs/padroes/modelagem-de-banco.md; fugir de um padrão pede uma ADR com Status proposta.
   tasks:
     - No máximo seis tasks. Cada task é uma mudança de código verificável com o teste dela; nenhuma task só roda um comando, confere algo à mão ou marca checkbox.
-    - Cada task atualiza, no mesmo commit, o documento da base que ela desatualiza; não há grupo de tasks de documentação no fim.
-    - A primeira task escreve um teste de caracterização do que a área faz hoje e que a mudança NÃO deve alterar, e ele passa sem alterar o sistema. Um comportamento que o time já sabe que é defeito não entra nele como esperado. Numa correção, a primeira task é o teste que reproduz a falha, e ele faz o papel do teste de caracterização.
-    - Um artefato já escrito (proposal, specs, design) só muda com o OK do time.
+    - Cada task atualiza, no mesmo commit, o documento da base que ela desatualiza (se o documento está stable, a task anota a proposta, e o /fechar a aplica com o OK); não há grupo de tasks de documentação no fim.
+    - A primeira task escreve um teste de caracterização do que a área faz hoje e que a mudança NÃO deve alterar, e ele passa sem alterar o sistema. Um comportamento que o time já sabe que é defeito não entra nele como esperado. Numa correção, a primeira task é o teste que reproduz a falha, escrito com /diagnosing-bugs, e ele faz o papel do teste de caracterização; a correção é a task seguinte.
     - Cada tarefa de código seguinte começa por um teste que falha, e a tarefa diz o comando que mostra a falha.
 
 operations:

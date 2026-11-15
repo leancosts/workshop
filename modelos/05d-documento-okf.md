@@ -48,7 +48,7 @@ O OKF só exige `type`. O resto abaixo é política local do método: mais rígi
 | `type` | Obrigatório. Um da lista da empresa, que o script aplica. Ponto de partida: Arquitetura (de uma área; o `ARCHITECTURE.md` geral fica na raiz), Regra de Negócio, Processo, Feature, Jornada, Guia, Conceito, Runbook, Decisão, Glossário, Spec, Plano, Pesquisa, PRD, Visão, Design |
 | `title`, `description` | Obrigatórios. `description` é uma frase e aparece no `index.md` |
 | `status` | Obrigatório: `draft` (não revisado), `stable` (vale) ou `deprecated` (histórico) |
-| `sources` | Obrigatório em Feature, Regra de Negócio, Decisão e Pesquisa: lista de entradas, cada uma com `id` e `resource` (caminho do código, link do ticket ou do documento) |
+| `sources` | Obrigatório em Feature, Regra de Negócio, Decisão, Pesquisa, Arquitetura e Visão: lista de entradas, cada uma com `id` e `resource` (caminho do código, link do ticket ou do documento) |
 | `generated` | `{ by, at }`: `by` é `claude-code/<modelo>` ou `human:<id>`; `at` em ISO 8601 com fuso |
 | `verified` | Lista de `{ by, at }`. Sem a chave: não verificado. Só agentes ou `process:`: confirmado por máquina. Com `human:`: revisado por pessoa. Sem `human:`, o documento é uma hipótese; a confirmação por máquina é um sinal, não uma revisão |
 | `stale_after` | Obrigatório em Runbook: instante em ISO 8601 com fuso (`2027-05-01T00:00:00Z`) a partir do qual o conteúdo precisa ser conferido de novo |

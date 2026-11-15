@@ -36,7 +36,7 @@ dentro de transação.>
 - <Um arquivo por camada que mostra o padrão aplicado.>
 
 ## Faça e não faça
-- <Um exemplo correto, com arquivo e linha.>
+- <Um exemplo correto, com o arquivo e a função.>
 - <Um contraexemplo do próprio repositório, se houver.>
 
 ## Onde cada regra é verificada
