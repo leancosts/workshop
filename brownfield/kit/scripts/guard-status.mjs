@@ -60,8 +60,13 @@ function segments(command) {
   return parts;
 }
 
+// Um .md em .tmp/ (a descrição de um pull request, um roteiro) não é documento da base: pode citar a linha do status.
+const inTmp = (path) => /(^|[\\/])\.tmp[\\/]/.test(path);
+
 function segmentIntroduces(segment) {
   const clean = segment.replace(COMMIT_MESSAGE, " ").replace(HARMLESS_REDIRECT, "");
+  const mds = clean.match(/[\w.\\/-]+\.md\b/gi) ?? [];
+  if (mds.length && mds.every(inTmp)) return false;
   const names = BASH_STABLE.test(clean) || (BASH_SWAP.test(clean) && /\.md\b/i.test(clean));
   return names && BASH_WRITES.some((w) => w.test(clean));
 }
@@ -77,7 +82,7 @@ function applyEdit(content, e, replaceAll) {
 
 function introduces(input, base) {
   const path = text(input.file_path);
-  if (!/\.md$/i.test(path)) return false;
+  if (!/\.md$/i.test(path) || inTmp(path)) return false;
   const file = isAbsolute(path) ? path : resolve(base, path);
   let before = null;
   try { if (existsSync(file)) before = readFileSync(file, "utf8"); } catch { /* arquivo ilegível: conta como inexistente */ }

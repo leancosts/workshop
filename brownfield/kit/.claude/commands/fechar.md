@@ -1,9 +1,11 @@
 ---
-description: Fecha a mudança (testes, base atualizada, pull request e roteiro da apresentação)
-argument-hint: <o nome da mudança no OpenSpec>
+description: Fecha a mudança (testes, base atualizada e o resumo do que mudou)
+argument-hint: [opcional: o nome da mudança no OpenSpec]
 ---
 
-A mudança $ARGUMENTS está construída. Feche o trabalho, nesta ordem:
+A mudança (pode vir vazio): $ARGUMENTS
+
+Se o nome veio vazio, use a mudança aberta em `openspec/changes/`; se há mais de uma, pergunte qual. A mudança está construída. Feche o trabalho, nesta ordem:
 
 1. Rode os testes da área e `node scripts/check-docs.mjs`. Se algo falhar, pare e me mostre a saída.
 2. Atualize a base de conhecimento, nesta mesma branch (se uma task já a atualizou, confira e complete):
@@ -14,11 +16,6 @@ A mudança $ARGUMENTS está construída. Feche o trabalho, nesta ordem:
    - `CLAUDE.md`: se eu corrigi você mais de uma vez pelo mesmo motivo nesta sessão, proponha a regra que evitaria o erro;
    - uma linha em `docs/log.md`;
    - em tudo que você escrever ou atualizar: cite o arquivo e a função, a tabela ou a rota, sem número de linha; sem contagens e sem listas de arquivos que toda mudança desatualiza ("45 testes", "seis arquivos"), que conflitam no merge; e toda data vem da saída de `date`, nunca de cabeça.
-3. Abra um pull request em rascunho contra a branch de onde esta saiu (a da base, se ela ainda não foi incorporada), com a descrição no formato de ../workshop-kit/modelos/14-descricao-do-pr.md: o pedido, o que mudou e o que ficou fora, a evidência (o teste novo antes e depois), o que mudou na base e o que não ficou pronto. Não escreva nada que você não possa mostrar num arquivo ou numa saída de comando. Sem remoto ou sem linha de comando autenticada, escreva a descrição em `.tmp/pr-<nome>.md`, dentro do repositório e fora do commit (crie `.tmp/.gitignore` com a linha `*`, se ele não existe), e diga ao time que abra o pull request pela interface web. Se a mudança aplicou uma migração no banco local de desenvolvimento, escreva na descrição o que foi aplicado e como desfazer: o banco é um só para todas as branches, a migração continua aplicada quando o time troca de branch, e antes de trocar o time a desfaz ou recria o banco local.
-4. Escreva o roteiro da apresentação, em cinco linhas (sem remoto, em `.tmp/roteiro-<nome>.md`, também fora do commit):
-   - o pedido e o tipo;
-   - a mudança, e como mostrar que funciona;
-   - a evidência: o teste que falhava e passa;
-   - o que entrou na base;
-   - um erro seu que o time ou um teste pegou; se nada foi pego, diga isso.
+3. Termine com um resumo curto, na conversa: o pedido e o que foi entregue; o que mudou no sistema; a evidência (o teste novo, antes e depois); o que mudou na base; o que não ficou pronto. Se a mudança aplicou uma migração no banco local de desenvolvimento, diga o que foi aplicado e como desfazer: o banco é um só para todas as branches. Nada que você não possa mostrar num arquivo ou numa saída de comando.
+4. Não abra o pull request e não escreva roteiro de apresentação: o time abre o pull request como já faz e apresenta como achar melhor.
 5. Não arquive a mudança agora: o `/opsx:archive` fica para depois do merge.

@@ -16,6 +16,8 @@ const STATUS = ["draft", "stable", "deprecated"];
 const ROOT_FILES = ["VISION.md", "ARCHITECTURE.md", "DESIGN.md"];
 // Documentos sem frontmatter, conferidos só nas checagens de texto (número de linha e marcador esquecido).
 const TEXT_FILES = ["CLAUDE.md", "README.md"];
+// Pastas de docs/ que não são documentos da base: os formatos que os comandos do kit leem.
+const SKIP_DIRS = ["modelos"];
 // Número de linha numa citação: arquivo.ext:123, arquivo.ext#L123, arquivo.ext, linha 123, arquivo.ext (linha 123),
 // arquivo.ext, l. 123 ou linha 123 de arquivo.ext (também linhas 10 a 20). A linha muda a cada commit.
 const EXT = "(?:js|jsx|ts|tsx|mjs|cjs|py|rb|java|kt|go|rs|cs|php|sql|pks|pkb|pls|sh|md|ya?ml|json|xml|html|css|csv|conf|properties)";
@@ -133,7 +135,7 @@ function walk(dir) {
   const entries = readdirSync(dir);
   const mds = entries.filter((f) => f.endsWith(".md"));
   const docs = mds.filter((f) => f !== "index.md" && f !== "log.md");
-  const subdirs = entries.filter((f) => statSync(join(dir, f)).isDirectory());
+  const subdirs = entries.filter((f) => !SKIP_DIRS.includes(f) && statSync(join(dir, f)).isDirectory());
   const indexFile = join(dir, "index.md");
   let index = "";
   try { index = readFileSync(indexFile, "utf8"); } catch { if (docs.length) say(indexFile, "falta o index.md: toda pasta com documentos tem um"); }

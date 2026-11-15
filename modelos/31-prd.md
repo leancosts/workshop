@@ -2,7 +2,7 @@
 
 O PRD é a intenção do modelo 01 num arquivo do repositório: as mesmas sete seções, com frontmatter e anexos. Ele diz o quê e por quê, nunca como. O PO o escreve a partir do `VISION.md`, de preferência no Claude Desktop, e o agente de triagem (modelo 01a) o confere antes do arquiteto começar.
 
-No repositório `greenfield`, o PRD fica em `docs/prd/NNN-nome.md`. Cada mudança do OpenSpec que nasce dele cita o arquivo na proposta; um PRD pode gerar várias mudanças, e nenhuma delas reescreve o PRD. O status vai de `draft` a `stable` quando a triagem passa, e a `deprecated` quando o sinal de "Como medimos" é lido: a partir daí, as specs em `openspec/specs/` são a referência.
+No repositório `greenfield`, o PRD fica em `docs/prd/NNN-nome.md`; num repositório legado com o kit do brownfield, em `docs/prds/NNN-nome.md`, escrito pelo comando `/pedido`. Cada mudança do OpenSpec que nasce dele cita o arquivo na proposta; um PRD pode gerar várias mudanças, e nenhuma delas reescreve o PRD. O status vai de `draft` a `stable` quando a triagem passa, e a `deprecated` quando o sinal de "Como medimos" é lido: a partir daí, as specs em `openspec/specs/` são a referência.
 
 ```markdown
 ---
@@ -45,4 +45,4 @@ sources:
 - Mudanças do OpenSpec: <`openspec/changes/<nome>`, preenchido quando abertas.>
 ```
 
-Uma seção vazia, uma palavra vaga onde cabe um número ou uma solução escrita como objetivo voltam ao PO como pergunta. Para abrir a primeira mudança a partir do PRD, no Claude Code: `/opsx:new <nome>` e "parta de `docs/prd/NNN-nome.md`".
+Uma seção vazia, uma palavra vaga onde cabe um número ou uma solução escrita como objetivo voltam ao PO como pergunta. Para abrir a primeira mudança a partir do PRD, no Claude Code: `/opsx:new <nome>` e "parta de `docs/prd/NNN-nome.md`"; no legado, `/opsx:ff <nome>`, que o `/pedido` diz no fim.

@@ -1,6 +1,6 @@
 # Repositório inicial do workshop
 
-Ponto de partida do programa de Engenharia de Software Agêntica. Tem três pastas: os modelos do minibook; a aplicação `greenfield`, do dia 2, que ainda não tem telas nem funcionalidades; e o kit `brownfield`, dos dias 3 e 4, para escrever a base de conhecimento de um repositório legado. No dia 2, cada time escreve o `VISION.md` e os PRDs da aplicação e leva os PRDs ao código pelo OpenSpec. Nos dias 3 e 4, cada time instala o kit no próprio repositório, escreve a base a partir do código e faz uma mudança do backlog.
+Ponto de partida do programa de Engenharia de Software Agêntica. Tem três pastas: os modelos do minibook; a aplicação `greenfield`, do dia 2, que ainda não tem telas nem funcionalidades; e o kit `brownfield`, dos dias 3 e 4, para escrever a base de conhecimento de um repositório legado. No dia 2, cada time escreve o `VISION.md` e os PRDs da aplicação e leva os PRDs ao código pelo OpenSpec. Nos dias 3 e 4, cada time copia o kit para o próprio repositório, gera a base a partir do código e faz uma mudança do backlog.
 
 ## Antes do dia 1
 
@@ -46,14 +46,14 @@ claude
 
 ## Dias 3 e 4: o repositório legado
 
-O passo a passo está em [`brownfield/README.md`](brownfield/README.md): clonar este repositório ao lado do legado, pedir ao agente a instalação do kit e seguir os sete passos, com os comandos do kit e os prompts do modelo 23.
+O passo a passo está em [`brownfield/README.md`](brownfield/README.md): copiar as pastas de `brownfield/kit` para o repositório legado e seguir os sete passos, com seis comandos e nenhum prompt para colar.
 
 ## O que está aqui
 
 | Caminho | O que tem |
 |---|---|
 | `modelos/` | Os modelos do minibook, para copiar e preencher |
-| `brownfield/` | O kit do repositório legado: a estrutura de `docs/` (ADRs, PRDs, padrões), a checagem do frontmatter e a configuração do OpenSpec |
+| `brownfield/` | O kit do repositório legado, pronto para copiar: os comandos, a estrutura de `docs/` (ADRs, PRDs, padrões), a checagem do frontmatter e a configuração do OpenSpec |
 | `greenfield/VISION.md` | A visão da Triagem; o time escreve os princípios e as metas |
 | `greenfield/ARCHITECTURE.md` | A stack decidida: Docker, Node.js, TypeScript, ESLint, React, Vite, PostgreSQL e Drizzle ORM |
 | `greenfield/DESIGN.md` e os tokens | O sistema visual: `variables.css`, `theme.css` e `tokens.json` |

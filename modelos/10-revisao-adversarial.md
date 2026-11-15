@@ -41,4 +41,4 @@ No caso, há dois comportamentos: no pipeline documentado, a mudança ainda bloq
 - spec ou plano ainda bloqueados: PO e arquiteto decidem e registram no comentário da issue ou numa ADR;
 - código ainda bloqueado: a mudança para e é reportada.
 
-No dia 2, a mudança do OpenSpec (proposal, design, specs e tasks) passa por uma revisão só; nos dias 3 e 4, o time confere a base e a mudança, e a revisão por outro modelo (da base contra o código, e do diff de cada mudança) fica para depois da semana (modelo 23).
+No dia 2, a mudança do OpenSpec (proposal, design, specs e tasks) passa por uma revisão só; no dia 3, o time confere a base com o agente; no dia 4, o pedido passa pela revisão de um subagente com contexto limpo antes da proposta, e a revisão por outro modelo da base contra o código e do diff de cada mudança fica para depois da semana (modelo 23).
